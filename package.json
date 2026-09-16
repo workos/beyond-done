@@ -1,0 +1,33 @@
+{
+  "name": "workshop-glossary",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx scripts/dev.ts",
+    "generate": "tsx scripts/generate.ts",
+    "build": "tsc --noEmit && vite build",
+    "build:workshop": "tsx scripts/build-workshop.ts",
+    "chat-key": "tsx scripts/chat-key.ts",
+    "estimate-chat": "tsx scripts/estimate-chat.ts",
+    "create-workshop": "bash scripts/create-workshop.sh",
+    "typecheck": "tsc --noEmit --pretty false",
+    "test": "tsx --test scripts/*.test.ts"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260915.1",
+    "@types/node": "^24.3.1",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "wrangler": "^4.33.2"
+  }
+}
