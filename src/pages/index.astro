@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import ClassLayout from "../layouts/ClassLayout.astro";
+import { classConfig as config } from "../class-config";
+const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
+---
+<ClassLayout>
+  <main id="content">
+    <header class="hero">
+      <div class="measure">
+        <div class="topline"><span>{config.event || "Class materials"}</span></div>
+        <h1>{config.title}</h1>
+        <p class="subtitle">{config.description}</p>
+        <p class="promise">Work through the lessons in order, try the exercises, and use the glossary whenever you need it.</p>
+        <p class="class-credit">{config.credit}</p>
+      </div>
+    </header>
+    <section class="measure main" aria-labelledby="lessons-heading">
+      <div class="section-kicker">Your class materials</div>
+      <h2 id="lessons-heading">Lessons</h2>
+      <ol class="lesson-list">
+        {lessons.map((lesson, index) => <li>
+          <a href={`/lessons/${lesson.id}/`}>
+            <span class="lesson-number">{String(index + 1).padStart(2, "0")}</span>
+            <div><h3>{lesson.data.title}</h3><p>{lesson.data.description}</p>{lesson.data.duration && <small>{lesson.data.duration}</small>}</div>
+            <span aria-hidden="true">→</span>
+          </a>
+        </li>)}
+      </ol>
+      <aside class="class-reference"><strong>Need a definition?</strong><p>The glossary is a reference, not homework. Look things up as you go.</p><a href="/glossary/">Open the glossary →</a></aside>
+      <footer><strong>{config.title}</strong><span>{config.credit}</span></footer>
+    </section>
+  </main>
+</ClassLayout>

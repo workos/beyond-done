@@ -1,0 +1,12 @@
+---
+import ClassLayout from "../layouts/ClassLayout.astro";
+import { Glossary } from "../App";
+import { loadClassGlossary } from "../class-glossary";
+import { classConfig } from "../class-config";
+const workshop = await loadClassGlossary();
+---
+<ClassLayout title="Glossary">
+  <div id="content">
+    <Glossary client:load workshop={workshop} features={classConfig.features} embedded />
+  </div>
+</ClassLayout>

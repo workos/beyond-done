@@ -1,10 +1,6 @@
-# Copy to mise.local.toml and edit for your workshop. Paths are relative to this repo.
+# Optional chat provisioning settings. The class itself uses class.config.json.
+# Copy to mise.local.toml only if you want a capped attendee chat key.
 [env]
-WORKSHOP_DIR = "../my-workshop"
-WORKSHOP_SOURCE = "../my-workshop/.studio.slides.md"
-WORKSHOP_SLUG = "handoff"
-WORKSHOP_TITLE = "Handoff"
-WORKER_NAME = "handoff-companion"
 OPENROUTER_MODEL = "anthropic/claude-haiku-4.5"
 CHAT_BUDGET_USD = "15"
 # Replace with an actual future date, preferably two days after the workshop.

@@ -6,7 +6,19 @@ pnpm = "12.4.1"
 _.file = ".env"
 
 [tasks.generate]
-description = "Regenerate the configured workshop glossary"
+description = "Generate the class glossary from lessons and slides"
+run = "pnpm glossary"
+
+[tasks.deploy]
+description = "Build and deploy the class to its configured hostname"
+run = "pnpm deploy"
+
+[tasks.dev]
+description = "Preview class materials with Astro"
+run = "pnpm dev"
+
+[tasks."companion:generate"]
+description = "Regenerate an external standalone companion glossary"
 shell = "bash -eu -o pipefail -c"
 run = '''
 : "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
@@ -16,8 +28,8 @@ run = '''
 pnpm run generate "$WORKSHOP_SOURCE" --out "$WORKSHOP_DIR/generated/glossary.json" --slug "$WORKSHOP_SLUG" --title "$WORKSHOP_TITLE"
 '''
 
-[tasks.deploy]
-description = "Build without slide links and deploy; never creates chat keys"
+[tasks."companion:deploy"]
+description = "Build and deploy an external standalone companion without slide links"
 shell = "bash -eu -o pipefail -c"
 run = '''
 : "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
@@ -31,8 +43,8 @@ description = "Create a capped, expiring key, install chat secrets, and verify t
 shell = "bash -eu -o pipefail -c"
 run = '''
 set +x
-: "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
-: "${WORKER_NAME:?Set WORKER_NAME in mise.local.toml}"
+WORKSHOP_DIR="${WORKSHOP_DIR:-.}"
+WORKER_NAME="${WORKER_NAME:-$(node -p 'require("./class.config.json").slug')}"
 : "${OPENROUTER_MANAGEMENT_KEY:?Set OPENROUTER_MANAGEMENT_KEY in your environment or .env}"
 : "${CHAT_EXPIRES_AT:?Set CHAT_EXPIRES_AT to a future ISO date in mise.local.toml}"
 export OPENROUTER_MODEL="${OPENROUTER_MODEL:-anthropic/claude-haiku-4.5}"
@@ -68,7 +80,7 @@ pnpm exec wrangler secret list --name "$WORKER_NAME" | node -e '
 description = "Revoke the configured workshop's inference key"
 shell = "bash -eu -o pipefail -c"
 run = '''
-: "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
+WORKSHOP_DIR="${WORKSHOP_DIR:-.}"
 pnpm run chat-key revoke --receipt "$WORKSHOP_DIR/generated/openrouter-chat-key.json"
 '''
 

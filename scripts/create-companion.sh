@@ -315,7 +315,7 @@ pnpm run generate "${GENERATE_ARGS[@]}"
 
 stage "Preview the generated companion"
 PREVIEW_LOG=$(mktemp)
-pnpm run dev "$OUTPUT" >"$PREVIEW_LOG" 2>&1 &
+pnpm run dev:companion "$OUTPUT" >"$PREVIEW_LOG" 2>&1 &
 DEV_PID=$!
 READY=false
 for _ in 1 2 3 4 5 6 7 8 9 10; do

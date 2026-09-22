@@ -1,0 +1,43 @@
+---
+import { classConfig as config } from "../class-config";
+import "../styles.css";
+import "../class.css";
+interface Props { title?: string; description?: string; }
+const { title, description = config.description } = Astro.props;
+const path = Astro.url.pathname;
+const [r, g, b] = [1, 3, 5].map(offset => parseInt(config.theme.accent.slice(offset, offset + 2), 16));
+const contrast = (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#111111" : "#ffffff";
+---
+<!doctype html>
+<html lang="en" data-palette={config.theme.preset} style={`--accent: ${config.theme.accent}; --accent-dark: ${config.theme.accent}; --accent-contrast: ${contrast}`}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title ? `${title} · ${config.title}` : config.title}</title>
+    <script is:inline>
+      try { document.documentElement.dataset.theme = localStorage.getItem("workshop-companion-theme") || "light"; } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="class-header">
+      <nav class="measure class-nav" aria-label="Class navigation">
+        <a class="class-brand" href="/">{config.title}</a>
+        <a href="/" aria-current={path === "/" || path.startsWith("/lessons/") ? "page" : undefined}>Lessons</a>
+        <a href="/glossary/" aria-current={path.startsWith("/glossary/") ? "page" : undefined}>Glossary</a>
+        {config.slides.publish && <a href="/slides/">Slides</a>}
+        <button id="theme-toggle" class="pill" aria-label="Toggle dark mode">Theme</button>
+      </nav>
+    </header>
+    <slot />
+    <script>
+      document.querySelector("#theme-toggle")?.addEventListener("click", () => {
+        const root = document.documentElement;
+        root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+        try { localStorage.setItem("workshop-companion-theme", root.dataset.theme); } catch {}
+        window.dispatchEvent(new Event("class-theme-change"));
+      });
+    </script>
+  </body>
+</html>

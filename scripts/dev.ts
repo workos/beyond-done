@@ -6,7 +6,7 @@ import { workshopGlossarySchema } from "../src/schema.js";
 async function main(): Promise<void> {
   const input = process.argv[2];
   if (!input) {
-    console.error("Usage: pnpm dev <workshop/glossary.json>");
+    console.error("Usage: pnpm dev:companion <workshop/glossary.json>");
     process.exit(2);
   }
   const data = resolve(input);

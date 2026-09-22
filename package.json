@@ -1,34 +1,46 @@
 {
-  "name": "workshop-companion",
+  "name": "class-materials-template",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@12.4.1",
   "type": "module",
   "scripts": {
-    "dev": "tsx scripts/dev.ts",
+    "dev": "astro dev",
+    "dev:companion": "tsx scripts/dev.ts",
+    "slides": "slidev slides/slides.md",
+    "glossary": "tsx scripts/class.ts generate",
+    "preview": "tsx scripts/class.ts preview",
+    "deploy": "tsx scripts/class.ts deploy",
     "generate": "tsx scripts/generate.ts",
-    "build": "tsc --noEmit && vite build",
+    "build": "pnpm typecheck && tsx scripts/class.ts build",
     "build:workshop": "tsx scripts/build-workshop.ts",
     "chat-key": "tsx scripts/chat-key.ts",
     "estimate-chat": "tsx scripts/estimate-chat.ts",
     "create-companion": "bash scripts/create-companion.sh",
-    "typecheck": "tsc --noEmit --pretty false",
+    "typecheck": "astro check && tsc --noEmit --pretty false",
     "test": "tsx --test scripts/*.test.ts"
   },
   "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/react": "^6.0.6",
+    "astro": "^7.3.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "zod": "^4.1.5"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260915.1",
+    "@slidev/cli": "^53.0.0",
+    "@slidev/parser": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
     "@types/node": "^24.3.1",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.2",
+    "@vitejs/plugin-react": "^6.1.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5",
+    "vite": "^8.3.0",
     "wrangler": "^4.33.2"
   }
 }

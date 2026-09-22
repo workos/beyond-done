@@ -63,18 +63,27 @@ if (args.includes("provision")) {
 }
 
 test("mise tasks orchestrate scripts without live API calls", { skip: !mise }, async (t) => {
-  await t.test("generation uses configuration; deployment omits slides and never creates keys", async () => {
+  await t.test("class tasks use the template commands", async () => {
     const f = await fixture();
     try {
-      await f.run("generate", {}, ["--include", "materials with spaces"]);
+      await f.run("generate");
       await f.run("deploy");
+      assert.deepEqual(await f.calls(), [["glossary"], ["deploy"]]);
+    } finally { await f.cleanup(); }
+  });
+
+  await t.test("standalone companion tasks preserve external configuration", async () => {
+    const f = await fixture();
+    try {
+      await f.run("companion:generate", {}, ["--include", "materials with spaces"]);
+      await f.run("companion:deploy");
       const calls = await f.calls();
       assert.equal(calls.length, 3);
       assert.deepEqual(calls[0].slice(-6), ["--slug", "handoff", "--title", "Handoff workshop", "--include", "materials with spaces"]);
       assert.equal(calls[1][1], "build:workshop");
       assert.equal(calls[1].at(-1), "--no-slides");
       assert.deepEqual(calls[2], ["exec", "wrangler", "deploy", "--name", "handoff-companion"]);
-      await assert.rejects(f.run("deploy", { FAIL_BUILD: "1" }));
+      await assert.rejects(f.run("companion:deploy", { FAIL_BUILD: "1" }));
       assert.equal((await f.calls()).length, 4, "failed build must not deploy");
     } finally { await f.cleanup(); }
   });

@@ -1,199 +1,153 @@
-# Workshop Companion
+# Class materials template
 
-Generate an interactive companion from workshop slides and materials. The reusable app lives here, while each workshop keeps its generated glossary, quizzes, resources, demos, and deployment metadata.
+An Astro site for teaching a class. Lessons are the main content. A glossary, Slidev deck, and optional interactive tools support them.
 
-The companion includes:
+## Start a class
 
-- A built-in AI basics section
-- Workshop-specific terms and cross-links
-- Search, progress, sharing, quizzes, resources, and fixed interactive demos
-- Optional slide links when the source has reliable slide numbers
-- Glossary-grounded chat with a per-workshop OpenRouter key
-
-## Start with the wizard
-
-Install and authenticate Pi first. The generator reuses that configured model access.
+Create a repository from this template, then:
 
 ```bash
 pnpm install
-pnpm create-companion
+pnpm dev
 ```
 
-You may pass the workshop directory to skip the first question:
+Use Node 24 and pnpm 12.4.1, or run `mise install` for the versions in `mise.toml`. The starter runs without model credentials or a Cloudflare account.
+
+Edit `class.config.json`:
+
+- Set `slug`, `title`, `description`, `event`, and `credit` for your class.
+- Set `hostname` to your chosen subdomain, such as `agents.typevoid.com`.
+- Adjust `theme.preset` and `theme.accent`. The existing paper design is the default; clean and contrast palettes are also available.
+- Set `slides.publish` to publish the deck. It defaults to `false`.
+- Enable any of `features.quiz`, `features.demos`, `features.progress`, and `features.chat`. They default to `false`.
+
+Use a distinct slug and hostname for each class. The slug is also the Cloudflare Worker name. Deployment refuses the starter values `my-class` and `my-class.typevoid.com`.
+
+Quiz questions, demos, and chat appear in the glossary. Progress adds lesson-completion buttons and learned-term tracking, saved in the student's browser without an account.
+
+## Write lessons
+
+Lessons live in `src/content/lessons/`. Both Markdown and MDX work:
+
+```markdown
+---
+title: Your lesson
+description: What students will practice.
+order: 3
+duration: 20 minutes
+---
+
+## Exercise
+
+Write the instructions here.
+
+## Resources
+
+Add links next to the exercise that uses them.
+```
+
+The filename becomes the URL. `03-your-lesson.md` becomes `/lessons/03-your-lesson/`. Lessons sort by `order`, then filename. Each page has previous and next links. Use MDX when a lesson needs a component; ordinary lessons can stay Markdown.
+
+All files in this collection are published. Keep instructor-only material outside it. Put public downloads in `public/`, never private slides or credentials. Customize the shared layout in `src/layouts/ClassLayout.astro` and the design in `src/styles.css` and `src/class.css`.
+
+## Work on slides
+
+Edit `slides/slides.md`, including its title. Run the presenter separately:
 
 ```bash
-pnpm create-companion ../my-workshop
+pnpm slides
 ```
 
-The wizard:
+The Slidev title and content belong to the deck; changing the class title does not rewrite them.
 
-1. Detects `.studio.slides.md`, `slides.md`, `deck.md`, or `presentation.md` in the workshop directory.
-2. Optionally includes another materials file or directory.
-3. Asks for the title, workshop ID, event label, presenter credit, slides URL, color preset, and accent color.
-4. Uses a short-lived Pi RPC session to generate and validate the glossary with your existing Pi authentication.
-5. Opens a local preview for review.
-6. Lets you select the attendee chat model.
-7. Asks for attendee count and expected questions per attendee.
-8. Fetches current OpenRouter pricing and estimates tokens and cost per attendee from the generated glossary.
-9. Adds a 50% buffer and recommends a hard key cap with a minimum of $15.
-10. Optionally builds, deploys, and provisions the limited workshop chat key. Before building, asks whether to include slide links if you supplied a slides URL.
+With `slides.publish: true`, the class build includes the deck at `/slides/` and adds navigation and glossary slide links. Slide links use hash routing so they work on Cloudflare static assets. Public builds omit speaker notes.
 
-## What counts as workshop input
+With `slides.publish: false`, the build includes no deck output or slide navigation. The published glossary removes slide numbers, source-path metadata, and resources linking to the deck. Glossary generation still reads the slides. This hides the deck, not the concepts derived from it. A public GitHub repository also exposes slide source regardless of this setting.
 
-The best primary input is one resolved Markdown slide deck. Slidev's generated `.studio.slides.md` is ideal because it contains the final ordered workshop content and preserves reliable slide numbers.
+`pnpm dev` previews lesson and glossary edits. Use `pnpm slides` while editing the deck, or `pnpm preview` to test the assembled site, including published slides and the chat Worker.
 
-The generator accepts `.md`, `.mdx`, and `.txt` files. An optional materials directory is read recursively for those formats. It ignores `.git`, `node_modules`, hidden directories, and `dist`.
+## Generate the glossary
 
-Example workshop layout:
+The starter shows the maintained terms in `src/core-glossary.ts`. It needs no AI call to build. Edit that file to change the defaults; keep term IDs unique and update references when removing terms.
 
-```text
-my-workshop/
-  .studio.slides.md
-  materials/
-    handout.md
-    exercises.md
-  generated/
-    glossary.json
-    openrouter-chat-key.json
-  dist/
-    glossary/
-```
-
-`generated/glossary.json` contains the workshop title, theme, terms, quiz, resources, demos, and source references. `generated/openrouter-chat-key.json` is a nonsecret receipt containing only the key hash, cap, and expiry.
-
-## Built-in AI basics
-
-Every glossary starts with the same maintained core terms:
-
-- Artificial intelligence
-- Model
-- Large language model
-- Token
-- Prompt
-- Context window
-- Hallucination
-- Grounding
-- Agent
-- Tool use
-
-The model is told not to duplicate these terms. Workshop-specific terms may link to them and quizzes may reference them.
-
-## Generation with Pi
-
-Local generation runs `pi --mode rpc` in an ephemeral, tool-free session. It uses the model and authentication already configured in Pi, including subscription or OAuth credentials. Set `PI_GENERATION_MODEL` or pass `--model` to override Pi's configured default model.
-
-Pi receives the collected workshop text, returns JSON, and gets one repair attempt if the response fails schema validation. It cannot edit the workshop because all tools, extensions, skills, prompts, and project context are disabled for this subprocess.
-
-## OpenRouter keys
-
-The wizard needs `OPENROUTER_MANAGEMENT_KEY` only when you choose to deploy attendee chat. It creates and revokes limited workshop inference keys. A Management API key cannot call models and is not used by Pi for glossary generation.
-
-If the management key is absent, the wizard asks for it with hidden input. It does not write the key into the workshop.
-
-Create a Management API key at <https://openrouter.ai/settings/management-keys>. Management keys cannot call models.
-
-Each deployed workshop receives its own normal OpenRouter key with:
-
-- A configurable model
-- A calculated USD lifetime cap
-- `limit_reset: null`, so the budget never replenishes
-- An expiry two days after the workshop
-- Server-side storage as a Cloudflare Worker secret
-
-A `$100` key cap does not charge `$100`. OpenRouter charges actual usage up to the cap.
-
-Revoke a workshop key after the event:
+Install Pi and authenticate with your chosen model, then run:
 
 ```bash
-pnpm chat-key revoke \
-  --receipt ../my-workshop/generated/openrouter-chat-key.json
+pnpm glossary
+# Optional model override:
+pnpm glossary --model provider/model
 ```
 
-## Manual generation
+This reads the resolved Slidev deck and all lesson Markdown/MDX, combines generated terms with the defaults, and writes `generated/glossary.json`. Slidev imports, slide frontmatter, and hidden slides are resolved before assigning slide numbers. Imported decks must stay inside `slides/`.
 
-The wizard is the normal path. The lower-level command remains available:
+Review and commit the JSON. Run generation again when lessons, slides, or default terms change. Generation replaces the JSON, including manual edits, so commit edits before regenerating. It uses a tool-free Pi RPC session with your existing Pi authentication. Source text is sent to that model provider. One schema-repair attempt is allowed; failed validation leaves the previous file intact.
+
+Build and deploy never invoke the model or overwrite the reviewed glossary. Until `generated/glossary.json` exists, the site uses the starter defaults and a sample quiz. Invalid generated JSON fails the build instead of silently falling back.
+
+## Deploy to Cloudflare
+
+The `typevoid.com` zone must be active in the Cloudflare account you use. Authenticate once:
 
 ```bash
-pnpm generate \
-  ../my-workshop/.studio.slides.md \
-  --include ../my-workshop/materials \
-  --out ../my-workshop/generated/glossary.json \
-  --slug my-workshop \
-  --title "My Workshop" \
-  --theme-preset paper \
-  --accent '#b94724' \
-  --slides-url /slides
+pnpm exec wrangler login
 ```
 
-Omit `--model` to use Pi's configured default, or add `--model <provider/model>` for a one-run override.
-
-## Deploy an existing companion
-
-Use mise to run the existing scripts. Generation, deployment, and chat provisioning are separate tasks, so rebuilding or deploying never creates another key.
-
-### Configure once
-
-From this repository:
+Then deploy the hostname configured in `class.config.json`:
 
 ```bash
-mise trust
-mise install
-pnpm install
-cp mise.local.toml.example mise.local.toml
+pnpm deploy
 ```
 
-Edit `mise.local.toml` with your workshop directory, source file, title, slug, and Worker name. Set `CHAT_EXPIRES_AT` to a real future ISO date, preferably two days after your workshop. The example defaults to a $15 lifetime cap and `anthropic/claude-haiku-4.5`.
+The command builds Astro, optionally builds Slidev, and deploys a Worker with static assets and a Custom Domain route for exactly that hostname. Cloudflare manages the hostname's DNS record and certificate. Existing conflicting DNS records may need to be removed or migrated first. This command changes Cloudflare resources; use a hostname assigned to this class.
 
-Mise inherits your existing `OPENROUTER_MANAGEMENT_KEY`. It also loads `.env` if present. Do not add an empty management-key entry to `.env` if your shell already supplies it. Both `.env` and `mise.local.toml` are gitignored. The management key stays local; only the limited inference key goes to Cloudflare.
+For CI, supply `CLOUDFLARE_API_TOKEN` with Workers deployment and zone permissions, plus `CLOUDFLARE_ACCOUNT_ID`. Do not commit credentials.
 
-### Deploy and enable chat
-
-```bash
-pnpm exec wrangler login  # once, if not already authenticated
-mise run deploy
-mise run chat:setup
-```
-
-`deploy` builds the existing `generated/glossary.json` without slide links, then deploys to `WORKER_NAME`. It does not regenerate content. Wrangler prints the public URL. Attach `handoff.typetovoid.com` in the Worker's Cloudflare settings under Domains & Routes if you have not already done so.
-
-`chat:setup` uses your management key to create a capped, expiring inference key. It installs `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` together and verifies that both secret names exist on the Worker. The plaintext key is passed directly to Wrangler, not printed or saved. The nonsecret receipt lives at `<WORKSHOP_DIR>/generated/openrouter-chat-key.json`.
-
-An existing receipt blocks creation of another key. If installation fails, setup attempts to revoke the new key. If verification or revocation fails, the task reports failure; run `mise run chat:revoke` before retrying. Setup archives a revoked receipt on the next run.
-
-The glossary, quizzes, and demos work without chat credentials. Skip `chat:setup` if you do not need chat.
-
-### Update or retire a workshop
+To check the deployment bundle without publishing:
 
 ```bash
-mise run generate     # only when you want fresh content; replaces the glossary
-mise run deploy       # rebuild and redeploy; keeps existing chat secrets
-mise run chat:revoke  # revoke the workshop key after the event
-```
-
-Save manual glossary edits before regenerating. Extra generator flags can be passed through, for example `mise run generate --include ../my-workshop/materials`.
-
-To run from another directory, use `mise -C /absolute/path/to/workshop-glossary run deploy`. Paths in workshop configuration are relative to this repository, not your shell's working directory.
-
-For several workshops, keep separate `mise.handoff.local.toml`, `mise.another.local.toml`, etc. instead of `mise.local.toml`. Select one with `mise -E handoff run deploy` or `mise -E handoff run chat:setup`. Give each workshop a distinct directory and Worker name. Deploy one at a time because builds share `dist`.
-
-### Lower-level commands
-
-The pnpm commands still work without mise:
-
-```bash
-pnpm build:workshop ../my-workshop/generated/glossary.json --out ./dist --no-slides
-pnpm exec wrangler deploy --name handoff-companion
-```
-
-`--no-slides` hides slide links and source-file labels, and removes local-only resources and links into the configured slide deck from the build. It leaves the original glossary unchanged. Omit it to keep slide references. The companion never bundles or hosts the slide deck itself.
-
-## Checks
-
-`mise run check` runs tests and typechecking. Task tests use fake OpenRouter and Wrangler commands and skip if mise is not installed.
-
-```bash
-pnpm test
-pnpm typecheck
 pnpm build
-bash -n scripts/create-companion.sh
+pnpm exec wrangler deploy --config .class-build/wrangler.json --dry-run
 ```
+
+`.class-build/wrangler.json` is generated from class configuration. Do not edit or commit it. Use `pnpm deploy` for the class site; the root `wrangler.jsonc` remains for the older standalone companion commands.
+
+## Optional attendee chat
+
+Set `features.chat` to `true` and deploy. Chat stays grounded in the published glossary. It requires server-side `OPENROUTER_API_KEY` and optionally `OPENROUTER_MODEL` secrets:
+
+```bash
+pnpm exec wrangler secret put OPENROUTER_API_KEY --config .class-build/wrangler.json
+pnpm exec wrangler secret put OPENROUTER_MODEL --config .class-build/wrangler.json
+```
+
+Use a capped, expiring inference key for each class. The existing provisioning tools can create one:
+
+```bash
+cp mise.local.toml.example mise.local.toml
+# Set a future CHAT_EXPIRES_AT and your budget in mise.local.toml.
+# Set OPENROUTER_MANAGEMENT_KEY in your environment or gitignored .env.
+mise run chat:setup
+# After the class:
+mise run chat:revoke
+```
+
+The class defaults to the current directory and its configured slug for key provisioning. If migrating this working copy from the old companion setup, remove old `WORKSHOP_DIR` and `WORKER_NAME` overrides from `mise.local.toml` first. Keys are never created by deploy. The nonsecret receipt is stored in `generated/openrouter-chat-key.json` and ignored by Git.
+
+For local chat, copy `.dev.vars.example` to `.dev.vars`, set an inference key, and run `pnpm preview --env-file .dev.vars`. Astro's development server alone does not run the chat Worker. Disabling chat and redeploying blocks `/api/chat` even if old secrets remain; revoke the key separately when retiring it.
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Edit class materials with Astro |
+| `pnpm slides` | Present or edit slides locally |
+| `pnpm glossary` | Regenerate the reviewable glossary |
+| `pnpm build` | Check types and build the class site |
+| `pnpm preview` | Build and run the local Cloudflare Worker |
+| `pnpm deploy` | Build and publish to the configured hostname |
+| `pnpm test` | Run unit and enabled/disabled build tests |
+| `pnpm typecheck` | Check Astro and TypeScript |
+
+Mise aliases are `mise run dev`, `mise run generate`, `mise run deploy`, and `mise run check`.
+
+The older external-companion workflow is still available through `pnpm create-companion`, `pnpm generate <source> --out <file>`, `pnpm dev:companion <file>`, and `pnpm build:workshop <file> --out <directory>`. Its Mise tasks are now `companion:generate` and `companion:deploy`.

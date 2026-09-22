@@ -1,6 +1,10 @@
 node_modules/
 dist/
 .wrangler/
+.astro/
+.class-build/
+slides/.slidev/
+generated/openrouter-chat-key.json*
 .env
 .env.*
 !.env.example

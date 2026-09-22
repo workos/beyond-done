@@ -1,0 +1,50 @@
+---
+import { getCollection, render } from "astro:content";
+import ClassLayout from "../../layouts/ClassLayout.astro";
+import { classConfig as config } from "../../class-config";
+export async function getStaticPaths() {
+  const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
+  return lessons.map((lesson, index) => ({ params: { id: lesson.id }, props: { lesson, index, lessons } }));
+}
+const { lesson, index, lessons } = Astro.props;
+const { Content } = await render(lesson);
+const previous = lessons[index - 1];
+const next = lessons[index + 1];
+---
+<ClassLayout title={lesson.data.title} description={lesson.data.description}>
+  <main id="content" class="measure lesson-page">
+    <nav aria-label="Breadcrumb"><a href="/">All lessons</a> / Lesson {index + 1}</nav>
+    <header class="lesson-heading">
+      <div class="section-kicker">Lesson {index + 1} of {lessons.length}{lesson.data.duration ? ` · ${lesson.data.duration}` : ""}</div>
+      <h1>{lesson.data.title}</h1>
+      <p class="subtitle">{lesson.data.description}</p>
+    </header>
+    <article class="prose"><Content /></article>
+    {config.features.progress && <button class="pill lesson-complete" data-key={`class-lessons:${config.slug}`} data-lesson={lesson.id} aria-pressed="false">Mark lesson complete</button>}
+    <nav class="lesson-pagination" aria-label="Lesson navigation">
+      {previous ? <a href={`/lessons/${previous.id}/`}>← {previous.data.title}</a> : <a href="/">← All lessons</a>}
+      {next ? <a href={`/lessons/${next.id}/`}>{next.data.title} →</a> : <a href="/glossary/">Explore the glossary →</a>}
+    </nav>
+    <footer><strong>{config.title}</strong><span>{config.credit}</span></footer>
+  </main>
+  <script>
+    const button = document.querySelector<HTMLButtonElement>(".lesson-complete");
+    if (button) {
+      const key = button.dataset.key!;
+      const lesson = button.dataset.lesson!;
+      let completed = new Set<string>();
+      try { completed = new Set(JSON.parse(localStorage.getItem(key) || "[]")); } catch {}
+      const update = () => {
+        const done = completed.has(lesson);
+        button.setAttribute("aria-pressed", String(done));
+        button.textContent = done ? "Lesson complete ✓" : "Mark lesson complete";
+      };
+      update();
+      button.addEventListener("click", () => {
+        if (completed.has(lesson)) completed.delete(lesson); else completed.add(lesson);
+        try { localStorage.setItem(key, JSON.stringify([...completed])); } catch {}
+        update();
+      });
+    }
+  </script>
+</ClassLayout>

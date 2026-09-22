@@ -5,6 +5,7 @@ export interface Env {
   ASSETS: Fetcher;
   OPENROUTER_API_KEY?: string;
   OPENROUTER_MODEL?: string;
+  CHAT_ENABLED?: string;
 }
 
 const hits = new Map<string, { count: number; startedAt: number }>();
@@ -47,6 +48,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/api/chat") {
+      if (env.CHAT_ENABLED === "false") return json({ error: "Chat is disabled for this class." }, 404);
       if (request.method !== "POST") return json({ error: "Method not allowed." }, 405);
       try {
         return await handleChat(request, env);

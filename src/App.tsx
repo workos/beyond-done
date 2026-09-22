@@ -2,6 +2,9 @@ import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from "
 import { ChatDrawer } from "./ChatDrawer.js";
 import { InlineDemo } from "./InlineDemo.js";
 import type { GlossaryTerm, WorkshopGlossary } from "./schema.js";
+import type { ClassFeatures } from "./class-config.js";
+
+const ALL_FEATURES: ClassFeatures = { quiz: true, demos: true, progress: true, chat: true };
 
 interface CrossLinkIndex {
   regex: RegExp | null;
@@ -46,11 +49,12 @@ function CrossLinkedText({ text, selfId, index }: { text: string; selfId: string
   );
 }
 
-function useStoredSet(key: string) {
+function useStoredSet(key: string, enabled = true) {
   const [items, setItems] = useState<Set<string>>(new Set());
   useEffect(() => {
+    if (!enabled) return;
     try { setItems(new Set(JSON.parse(localStorage.getItem(key) ?? "[]") as string[])); } catch { setItems(new Set()); }
-  }, [key]);
+  }, [key, enabled]);
 
   const toggle = (id: string) => setItems((current) => {
     const next = new Set(current);
@@ -137,12 +141,13 @@ function Quiz({ workshop }: { workshop: WorkshopGlossary }) {
   );
 }
 
-function TermEntry({ term, workshop, learned, toggleLearned, crossLinks }: {
+function TermEntry({ term, workshop, learned, toggleLearned, crossLinks, features }: {
   term: GlossaryTerm;
   workshop: WorkshopGlossary;
   learned: boolean;
   toggleLearned: (id: string) => void;
   crossLinks: CrossLinkIndex;
+  features: ClassFeatures;
 }) {
   const [copied, setCopied] = useState(false);
   const resources = workshop.resources.filter((resource) => resource.termIds.includes(term.id));
@@ -165,13 +170,13 @@ function TermEntry({ term, workshop, learned, toggleLearned, crossLinks }: {
         <h3>{term.term}<a className="anchor" href={`#${term.id}`} aria-label={`Link to ${term.term}`}>#</a></h3>
         <div className="term-actions">
           <button onClick={shareTerm}>{copied ? "Copied" : "Share"}</button>
-          <button aria-pressed={learned} onClick={() => toggleLearned(term.id)}>{learned ? "Learned ✓" : "Mark learned"}</button>
+          {features.progress && <button aria-pressed={learned} onClick={() => toggleLearned(term.id)}>{learned ? "Learned ✓" : "Mark learned"}</button>}
         </div>
       </div>
       <p className="definition"><CrossLinkedText text={term.definition} selfId={term.id} index={crossLinks} /></p>
       <p className="why"><strong>Why it matters</strong>{term.whyItMatters}</p>
       {term.hear && <p className="hear"><span>You’ll hear</span>{term.hear}</p>}
-      <InlineDemo kind={term.demo} />
+      {features.demos && <InlineDemo kind={term.demo} />}
       {(related.length > 0 || resources.length > 0 || (workshop.slidesUrl && term.slide)) && (
         <div className="term-links">
           {related.map((item) => <a href={`#${item.id}`} key={item.id}>{item.term}</a>)}
@@ -189,7 +194,7 @@ function accentContrast(hex: string): "#111111" | "#ffffff" {
   return (red * 299 + green * 587 + blue * 114) / 1_000 > 150 ? "#111111" : "#ffffff";
 }
 
-export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
+export function Glossary({ workshop, features = ALL_FEATURES, embedded = false }: { workshop: WorkshopGlossary; features?: ClassFeatures; embedded?: boolean }) {
   const [query, setQuery] = useState("");
   const [dark, setDark] = useState(() => {
     try { return localStorage.getItem("workshop-companion-theme") === "dark"; } catch { return false; }
@@ -198,7 +203,7 @@ export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
   const sectionIds = useMemo(() => workshop.sections.map((section) => section.id), [workshop]);
   const activeSection = useActiveSection(sectionIds);
   const crossLinks = useMemo(() => buildCrossLinkIndex(workshop), [workshop]);
-  const { items: learned, toggle: toggleLearned } = useStoredSet(`workshop-companion-learned:${workshop.slug}`);
+  const { items: learned, toggle: toggleLearned } = useStoredSet(`workshop-companion-learned:${workshop.slug}`, features.progress);
   const allTerms = workshop.sections.flatMap((section) => section.terms);
   const normalizedQuery = query.trim().toLowerCase();
   const sections = normalizedQuery
@@ -207,6 +212,12 @@ export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
         terms: section.terms.filter((term) => [term.term, term.definition, term.whyItMatters, ...term.aliases].some((value) => value.toLowerCase().includes(normalizedQuery))),
       })).filter((section) => section.terms.length)
     : workshop.sections;
+
+  useEffect(() => {
+    const sync = () => setDark(document.documentElement.dataset.theme === "dark");
+    window.addEventListener("class-theme-change", sync);
+    return () => window.removeEventListener("class-theme-change", sync);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -220,18 +231,18 @@ export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
 
   return (
     <div>
-      <div className="reading-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>
+      {features.progress && <div className="reading-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>}
       <header className="hero">
         <div className="measure">
-          <div className="topline"><span>{workshop.event || "Workshop companion"}</span><button onClick={() => setDark((value) => !value)}>{dark ? "Light" : "Dark"}</button></div>
-          <h1>{workshop.title}</h1>
+          <div className="topline"><span>{workshop.event || "Workshop companion"}</span>{!embedded && <button onClick={() => setDark((value) => !value)}>{dark ? "Light" : "Dark"}</button>}</div>
+          <h1>{embedded ? "Class glossary" : workshop.title}</h1>
           <p className="subtitle">{workshop.subtitle}</p>
           <p className="promise">No dumb questions. Use this page during the workshop and keep it afterward.</p>
           <dl className="stats">
             <div><dt>Terms</dt><dd>{allTerms.length}</dd></div>
             <div><dt>Levels</dt><dd>{workshop.sections.length}</dd></div>
             <div><dt>Resources</dt><dd>{workshop.resources.length}</dd></div>
-            <div><dt>Learned</dt><dd>{learned.size}/{allTerms.length}</dd></div>
+            {features.progress && <div><dt>Learned</dt><dd>{learned.size}/{allTerms.length}</dd></div>}
           </dl>
         </div>
       </header>
@@ -239,7 +250,7 @@ export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
       <nav className="jumpbar" aria-label="Glossary sections">
         <div className="measure jumpbar-inner">
           {workshop.sections.map((section, index) => <a className={activeSection === section.id ? "active" : ""} href={`#${section.id}`} key={section.id}><span>{index}</span>{section.name}</a>)}
-          <a href="#quiz">Quiz</a>
+          {features.quiz && <a href="#quiz">Quiz</a>}
           <label className="search"><span className="sr-only">Search glossary</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Search ${allTerms.length} terms`} /></label>
         </div>
       </nav>
@@ -250,7 +261,7 @@ export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
           <section className="level" id={section.id} key={section.id}>
             <div className="level-head"><span>0{index}</span><div><div className={`difficulty ${section.difficulty}`}>{section.difficulty}</div><h2>{section.name}</h2></div><small>{section.terms.length} terms</small></div>
             <p className="level-intro">{section.intro}</p>
-            {section.terms.map((term) => <TermEntry crossLinks={crossLinks} key={term.id} learned={learned.has(term.id)} term={term} toggleLearned={toggleLearned} workshop={workshop} />)}
+            {section.terms.map((term) => <TermEntry features={features} crossLinks={crossLinks} key={term.id} learned={learned.has(term.id)} term={term} toggleLearned={toggleLearned} workshop={workshop} />)}
           </section>
         ))}
 
@@ -258,10 +269,10 @@ export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
           const content: ReactNode = <><strong>{resource.title}</strong><span>{resource.description}</span>{workshop.slidesUrl && <small>{resource.sourcePath}</small>}</>;
           return resource.url ? <a href={resource.url} key={resource.id} rel="noreferrer" target="_blank">{content}</a> : <div key={resource.id}>{content}</div>;
         })}</div></section>}
-        <Quiz workshop={workshop} />
+        {features.quiz && <Quiz workshop={workshop} />}
         <footer><strong>{workshop.title}</strong><span>{workshop.credit}{workshop.credit ? " · " : ""}Updated {workshop.updated}</span></footer>
       </main>
-      <ChatDrawer workshop={workshop} />
+      {features.chat && <ChatDrawer workshop={workshop} />}
     </div>
   );
 }

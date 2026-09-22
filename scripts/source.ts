@@ -1,5 +1,6 @@
 import { lstat, readFile, readdir } from "node:fs/promises";
 import { basename, extname, relative, resolve } from "node:path";
+import { load } from "@slidev/parser/fs";
 
 const SUPPORTED_EXTENSIONS = new Set([".md", ".mdx", ".txt"]);
 const IGNORED_DIRECTORIES = new Set([".git", "dist", "node_modules"]);
@@ -35,34 +36,32 @@ async function collectFiles(path: string): Promise<string[]> {
   return files;
 }
 
-function annotateSlides(markdown: string): { content: string; count: number } {
-  const lines = markdown.split("\n");
-  let frontmatterEnd = -1;
-  if (lines[0]?.trim() === "---") {
-    frontmatterEnd = lines.findIndex((line, index) => index > 0 && line.trim() === "---");
-  }
-
-  const slides: string[][] = [[]];
-  for (let index = 0; index < lines.length; index++) {
-    const isSeparator = lines[index].trim() === "---" && index !== 0 && index !== frontmatterEnd;
-    if (isSeparator) slides.push([]);
-    else slides[slides.length - 1].push(lines[index]);
-  }
-
+async function annotateSlides(file: string): Promise<{ content: string; count: number }> {
+  const root = resolve(file, "..");
+  let size = 0;
+  const deck = await load({ roots: [root], userRoot: root, allowedRoots: [root] }, file, async (path) => {
+    const text = await readFile(path, "utf8");
+    size += text.length;
+    if (size > MAX_SOURCE_CHARS) throw new Error(`Slide source exceeds ${MAX_SOURCE_CHARS} characters.`);
+    return text;
+  });
+  const errors = Object.values(deck.markdownFiles).flatMap((file) => file.errors ?? []);
+  if (errors.length) throw new Error(`Invalid slide source: ${errors.map((error) => error.message).join("\n")}`);
+  if (!deck.slides.length) throw new Error("The slide deck has no visible slides.");
   return {
-    content: slides.map((slide, index) => `[SLIDE ${index + 1}]\n${slide.join("\n").trim()}`).join("\n\n"),
-    count: slides.length,
+    content: deck.slides.map((slide, index) => `[SLIDE ${index + 1}]\n${slide.content.trim()}`).join("\n\n"),
+    count: deck.slides.length,
   };
 }
 
-export async function collectSource(input: string): Promise<CollectedSource> {
+export async function collectSource(input: string, isSlideSource = true): Promise<CollectedSource> {
   const inputPath = resolve(input);
   const stat = await lstat(inputPath);
   const files = (await collectFiles(inputPath)).sort();
   if (files.length === 0) throw new Error(`No .md, .mdx, or .txt files found in ${inputPath}`);
 
   const root = stat.isDirectory() ? inputPath : resolve(inputPath, "..");
-  const hasReliableSlideNumbers = files.length === 1 && [".md", ".mdx"].includes(extname(files[0]).toLowerCase());
+  const hasReliableSlideNumbers = isSlideSource && files.length === 1 && [".md", ".mdx"].includes(extname(files[0]).toLowerCase());
   const chunks: string[] = [];
   let slideCount: number | null = null;
   let size = 0;
@@ -70,7 +69,7 @@ export async function collectSource(input: string): Promise<CollectedSource> {
   for (const file of files) {
     const sourcePath = relative(root, file) || file.split("/").pop()!;
     const raw = await readFile(file, "utf8");
-    const annotated = hasReliableSlideNumbers ? annotateSlides(raw) : null;
+    const annotated = hasReliableSlideNumbers ? await annotateSlides(file) : null;
     const body = annotated?.content ?? raw;
     slideCount = annotated?.count ?? slideCount;
     const chunk = `===== SOURCE: ${sourcePath} =====\n${body.trim()}`;
@@ -96,7 +95,7 @@ export async function collectWorkshopSource(primary: string, includes: string[] 
   const main = await collectSource(primary);
   if (includes.length === 0) return main;
 
-  const sources = [main, ...(await Promise.all(includes.map(collectSource)))];
+  const sources = [main, ...(await Promise.all(includes.map((input) => collectSource(input, false))))];
   const files: string[] = [];
   const chunks: string[] = [];
   let slideSourcePath = main.slideSourcePath;
