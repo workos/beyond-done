@@ -164,12 +164,9 @@ HTTP-Referer: <your site URL>
 X-Title: <your app name>
 ```
 
-OpenRouter's app-ranking docs describe these as the mechanism for attribution and rankings. This project already sends them in both OpenRouter call sites:
+OpenRouter's app-ranking docs describe these as the mechanism for attribution and rankings. Attendee chat sends `HTTP-Referer: https://github.com/nicknisi/workshop-companion` and `X-Title: Workshop Companion` from `src/openrouter.ts`.
 
-- `scripts/generate.ts`: `HTTP-Referer: https://github.com/nicknisi/workshop-glossary`, `X-Title: Workshop Glossary Generator`
-- `src/openrouter.ts`: `HTTP-Referer: https://github.com/nicknisi/workshop-glossary`, `X-Title: Workshop Glossary`
-
-For deployed workshop-specific sites, `HTTP-Referer` should ideally be changed to the public workshop or glossary URL if the desired ranking attribution is the workshop site instead of the GitHub repository.
+For deployed workshop-specific sites, `HTTP-Referer` should ideally be changed to the public workshop companion URL if the desired ranking attribution is the workshop site instead of the GitHub repository.
 
 ### Security and storage guidance
 
@@ -181,7 +178,7 @@ Source-backed guidance from the OpenRouter flow:
 - Do not put an OpenRouter key in browser-delivered JavaScript for shared deployed apps. Keep deployed chat keys on a server, Worker, or equivalent backend.
 - Use the key-info endpoint to inspect usage and configured limit when needed.
 
-## Mapping to `workshop-glossary`
+## Mapping to `workshop-companion`
 
 ### Generator CLI auth
 

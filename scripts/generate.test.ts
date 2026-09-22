@@ -63,7 +63,7 @@ test("validates cross-references", () => {
 });
 
 test("annotates slides for one markdown file", async () => {
-  const dir = await mkdtemp(join(tmpdir(), "workshop-glossary-"));
+  const dir = await mkdtemp(join(tmpdir(), "workshop-companion-"));
   const file = join(dir, "slides.md");
   await writeFile(file, "---\ntitle: Demo\n---\n# One\n---\n# Two\n", "utf8");
   const source = await collectSource(file);
@@ -116,7 +116,7 @@ test("adds the built-in AI basics and rejects generated duplicates", () => {
 });
 
 test("keeps resolved slide numbers when optional materials are included", async () => {
-  const dir = await mkdtemp(join(tmpdir(), "workshop-glossary-materials-"));
+  const dir = await mkdtemp(join(tmpdir(), "workshop-companion-materials-"));
   const slides = join(dir, "slides.md");
   const materials = join(dir, "materials");
   await mkdir(materials);
@@ -135,7 +135,7 @@ test("parses JSON from a fenced Pi response", () => {
 });
 
 test("generates through Pi RPC and repairs invalid JSON", async () => {
-  const dir = await mkdtemp(join(tmpdir(), "workshop-glossary-pi-rpc-"));
+  const dir = await mkdtemp(join(tmpdir(), "workshop-companion-pi-rpc-"));
   const slides = join(dir, "slides.md");
   const output = join(dir, "generated", "glossary.json");
   const promptLog = join(dir, "prompts.log");

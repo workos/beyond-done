@@ -1,0 +1,77 @@
+[tools]
+node = "24"
+pnpm = "12.4.1"
+
+[env]
+_.file = ".env"
+
+[tasks.generate]
+description = "Regenerate the configured workshop glossary"
+shell = "bash -eu -o pipefail -c"
+run = '''
+: "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
+: "${WORKSHOP_SOURCE:?Set WORKSHOP_SOURCE in mise.local.toml}"
+: "${WORKSHOP_SLUG:?Set WORKSHOP_SLUG in mise.local.toml}"
+: "${WORKSHOP_TITLE:?Set WORKSHOP_TITLE in mise.local.toml}"
+pnpm run generate "$WORKSHOP_SOURCE" --out "$WORKSHOP_DIR/generated/glossary.json" --slug "$WORKSHOP_SLUG" --title "$WORKSHOP_TITLE"
+'''
+
+[tasks.deploy]
+description = "Build without slide links and deploy; never creates chat keys"
+shell = "bash -eu -o pipefail -c"
+run = '''
+: "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
+: "${WORKER_NAME:?Set WORKER_NAME in mise.local.toml}"
+pnpm run build:workshop "$WORKSHOP_DIR/generated/glossary.json" --out ./dist --no-slides
+pnpm exec wrangler deploy --name "$WORKER_NAME"
+'''
+
+[tasks."chat:setup"]
+description = "Create a capped, expiring key, install chat secrets, and verify them"
+shell = "bash -eu -o pipefail -c"
+run = '''
+set +x
+: "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
+: "${WORKER_NAME:?Set WORKER_NAME in mise.local.toml}"
+: "${OPENROUTER_MANAGEMENT_KEY:?Set OPENROUTER_MANAGEMENT_KEY in your environment or .env}"
+: "${CHAT_EXPIRES_AT:?Set CHAT_EXPIRES_AT to a future ISO date in mise.local.toml}"
+export OPENROUTER_MODEL="${OPENROUTER_MODEL:-anthropic/claude-haiku-4.5}"
+RECEIPT="$WORKSHOP_DIR/generated/openrouter-chat-key.json"
+# Check access to the deployed Worker before spending or creating a key.
+pnpm exec wrangler secret list --name "$WORKER_NAME" >/dev/null
+if [[ -f "$RECEIPT" ]] && node -e 'const r=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); process.exit(r.revokedAt ? 0 : 1)' "$RECEIPT"; then
+  mv "$RECEIPT" "$RECEIPT.revoked-$(date -u +%Y%m%dT%H%M%SZ)"
+fi
+CHAT_KEY=$(pnpm run --silent chat-key provision --name "$WORKER_NAME-chat" --limit "${CHAT_BUDGET_USD:-15}" --expires-at "$CHAT_EXPIRES_AT" --receipt "$RECEIPT")
+if ! CHAT_KEY="$CHAT_KEY" node -e 'process.stdout.write(JSON.stringify({OPENROUTER_API_KEY:process.env.CHAT_KEY,OPENROUTER_MODEL:process.env.OPENROUTER_MODEL}))' |
+  pnpm exec wrangler secret bulk --name "$WORKER_NAME"; then
+  unset CHAT_KEY
+  echo "Secret installation failed. Revoking the newly created key." >&2
+  pnpm run chat-key revoke --receipt "$RECEIPT" || echo "Revocation failed. Run mise run chat:revoke before retrying." >&2
+  exit 1
+fi
+unset CHAT_KEY
+pnpm exec wrangler secret list --name "$WORKER_NAME" | node -e '
+  let input="";
+  process.stdin.on("data", chunk => input += chunk);
+  process.stdin.on("end", () => {
+    const names = JSON.parse(input).map(secret => secret.name);
+    if (!["OPENROUTER_API_KEY", "OPENROUTER_MODEL"].every(name => names.includes(name))) {
+      console.error("Chat secrets could not be verified. Run mise run chat:revoke before retrying.");
+      process.exitCode = 1;
+    } else console.log("Chat configured and both secrets verified.");
+  });
+'
+'''
+
+[tasks."chat:revoke"]
+description = "Revoke the configured workshop's inference key"
+shell = "bash -eu -o pipefail -c"
+run = '''
+: "${WORKSHOP_DIR:?Set WORKSHOP_DIR in mise.local.toml}"
+pnpm run chat-key revoke --receipt "$WORKSHOP_DIR/generated/openrouter-chat-key.json"
+'''
+
+[tasks.check]
+description = "Run tests and typecheck"
+run = ["pnpm test", "pnpm typecheck"]

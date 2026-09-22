@@ -22,8 +22,8 @@ type Fetcher = typeof fetch;
 
 function usage(): never {
   console.error(`Usage:
-  npm run --silent chat-key -- provision --name <workshop-key-name> --limit <usd> --expires-at <date> --receipt <workshop/generated/chat-key.json>
-  npm run chat-key -- revoke --receipt <workshop/generated/chat-key.json>`);
+  pnpm run --silent chat-key provision --name <workshop-key-name> --limit <usd> --expires-at <date> --receipt <workshop/generated/chat-key.json>
+  pnpm chat-key revoke --receipt <workshop/generated/chat-key.json>`);
   process.exit(2);
 }
 

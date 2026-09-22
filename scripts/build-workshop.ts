@@ -1,10 +1,10 @@
-import { copyFile, mkdir, readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { build } from "vite";
 import { workshopGlossarySchema } from "../src/schema.js";
 
 function usage(): never {
-  console.error("Usage: npm run build:workshop -- <workshop/glossary.json> --out <workshop/dist/glossary>");
+  console.error("Usage: pnpm build:workshop <workshop/glossary.json> --out <workshop/dist/glossary> [--no-slides]");
   process.exit(2);
 }
 
@@ -14,14 +14,21 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
   const out = outIndex >= 0 && argv[outIndex + 1] ? resolve(argv[outIndex + 1]) : usage();
   const projectRoot = resolve(import.meta.dirname, "..");
 
-  workshopGlossarySchema.parse(JSON.parse(await readFile(data, "utf8")));
-  process.env.WORKSHOP_GLOSSARY_DATA = data;
+  const workshop = workshopGlossarySchema.parse(JSON.parse(await readFile(data, "utf8")));
+  if (argv.includes("--no-slides")) {
+    const slidesUrl = workshop.slidesUrl.replace(/\/$/, "");
+    workshop.slidesUrl = "";
+    workshop.resources = workshop.resources.filter((resource) =>
+      resource.url && (!slidesUrl || (resource.url !== slidesUrl && !resource.url.startsWith(`${slidesUrl}/`))),
+    );
+  }
+  process.env.WORKSHOP_COMPANION_DATA = data;
   await build({
     configFile: resolve(projectRoot, "vite.config.ts"),
     build: { outDir: out, emptyOutDir: true },
   });
   await mkdir(dirname(resolve(out, "glossary.json")), { recursive: true });
-  await copyFile(data, resolve(out, "glossary.json"));
+  await writeFile(resolve(out, "glossary.json"), `${JSON.stringify(workshop, null, 2)}\n`);
   console.log(`Built workshop companion at ${out}`);
 }
 

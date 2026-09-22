@@ -239,7 +239,7 @@ choose_chat_model() {
   done
 }
 
-banner "Create a workshop glossary"
+banner "Create a Workshop Companion"
 
 stage "Find the workshop content"
 if [[ -n "$WORKSHOP_ARG" ]]; then
@@ -311,11 +311,11 @@ GENERATE_ARGS=("$DECK_SOURCE" --out "$OUTPUT" --slug "$WORKSHOP_SLUG" --title "$
 [[ -n "$EVENT_LABEL" ]] && GENERATE_ARGS+=(--event "$EVENT_LABEL")
 [[ -n "$CREDIT" ]] && GENERATE_ARGS+=(--credit "$CREDIT")
 [[ -n "$SLIDES_URL" ]] && GENERATE_ARGS+=(--slides-url "$SLIDES_URL")
-npm run generate -- "${GENERATE_ARGS[@]}"
+pnpm run generate "${GENERATE_ARGS[@]}"
 
 stage "Preview the generated companion"
 PREVIEW_LOG=$(mktemp)
-npm run dev -- "$OUTPUT" >"$PREVIEW_LOG" 2>&1 &
+pnpm run dev "$OUTPUT" >"$PREVIEW_LOG" 2>&1 &
 DEV_PID=$!
 READY=false
 for _ in 1 2 3 4 5 6 7 8 9 10; do
@@ -342,7 +342,7 @@ ask QUESTIONS_PER_ATTENDEE "Expected questions per attendee [5]:"
 QUESTIONS_PER_ATTENDEE="${QUESTIONS_PER_ATTENDEE:-5}"
 [[ "$ATTENDEES" =~ ^[1-9][0-9]*$ ]] || { warn "attendees must be a positive integer"; exit 1; }
 [[ "$QUESTIONS_PER_ATTENDEE" =~ ^[1-9][0-9]*$ ]] || { warn "questions must be a positive integer"; exit 1; }
-if ESTIMATE_JSON=$(npm run --silent estimate-chat -- --model "$CHAT_MODEL" --glossary "$OUTPUT" --budget 15 --attendees "$ATTENDEES" --questions "$QUESTIONS_PER_ATTENDEE" --buffer 0.5 --format json); then
+if ESTIMATE_JSON=$(pnpm run --silent estimate-chat --model "$CHAT_MODEL" --glossary "$OUTPUT" --budget 15 --attendees "$ATTENDEES" --questions "$QUESTIONS_PER_ATTENDEE" --buffer 0.5 --format json); then
   node -e 'const e=JSON.parse(process.argv[1]), usd=String.fromCharCode(36); console.log("  Model pricing: "+usd+(e.promptPrice*1e6).toFixed(2)+"/M input, "+usd+(e.completionPrice*1e6).toFixed(2)+"/M output"); console.log("  Estimated tokens per attendee: "+e.tokensPerAttendee.toLocaleString()); console.log("  Estimated cost per attendee: "+usd+e.costPerAttendee.toFixed(4)); console.log("  Calculated cap with 50% buffer: "+usd+e.calculatedBudget.toFixed(2)); console.log("  Recommended hard cap: "+usd+e.recommendedBudget.toFixed(2))' "$ESTIMATE_JSON"
   RECOMMENDED_BUDGET=$(node -e 'console.log(JSON.parse(process.argv[1]).recommendedBudget)' "$ESTIMATE_JSON")
 else
@@ -362,10 +362,10 @@ stage "Optionally deploy"
 if ! confirm "Deploy this companion and configure attendee chat now?"; then
   finish
   say "Generated glossary: $OUTPUT"
-  say "Run npm run create-workshop again when you are ready to deploy."
+  say "Deploy this glossary without regenerating it using the commands in README.md under Deploy an existing companion."
   exit 0
 fi
-DEFAULT_WORKER="${WORKSHOP_SLUG}-glossary"
+DEFAULT_WORKER="${WORKSHOP_SLUG}-companion"
 say "Suggested Worker name: $DEFAULT_WORKER"
 ask WORKER_NAME "Cloudflare Worker name [Enter uses suggested]:"
 WORKER_NAME="${WORKER_NAME:-$DEFAULT_WORKER}"
@@ -381,13 +381,17 @@ if [[ -e "$RECEIPT" ]]; then
     exit 1
   fi
 fi
-if ! npx wrangler whoami >/dev/null 2>&1; then
+if ! pnpm exec wrangler whoami >/dev/null 2>&1; then
   say "Wrangler needs Cloudflare authorization."
-  npx wrangler login
+  pnpm exec wrangler login
+fi
+BUILD_ARGS=("$OUTPUT" --out "$ROOT_DIR/dist")
+if [[ -n "$SLIDES_URL" ]] && ! confirm "Include links to the public slides in this build?"; then
+  BUILD_ARGS+=(--no-slides)
 fi
 confirm "Build and deploy $WORKER_NAME?" || { warn "deployment cancelled"; exit 1; }
-npm run build:workshop -- "$OUTPUT" --out "$ROOT_DIR/dist"
-npx wrangler deploy --name "$WORKER_NAME"
+pnpm run build:workshop "${BUILD_ARGS[@]}"
+pnpm exec wrangler deploy --name "$WORKER_NAME"
 
 stage "Create the limited workshop key"
 if [[ -n "${OPENROUTER_MANAGEMENT_KEY:-}" ]]; then
@@ -404,17 +408,17 @@ say "Model: $CHAT_MODEL"
 say "Lifetime cap: \$$BUDGET_USD"
 say "Expires: $EXPIRES_AT"
 confirm "Create the key and install it on $WORKER_NAME?" || { warn "key creation cancelled"; exit 1; }
-CHAT_KEY=$(OPENROUTER_MANAGEMENT_KEY="$MANAGEMENT_KEY" npm run --silent chat-key -- provision \
+CHAT_KEY=$(OPENROUTER_MANAGEMENT_KEY="$MANAGEMENT_KEY" pnpm run --silent chat-key provision \
   --name "${WORKSHOP_SLUG}-chat" \
   --limit "$BUDGET_USD" \
   --expires-at "$EXPIRES_AT" \
   --receipt "$RECEIPT")
-if ! printf '%s' "$CHAT_KEY" | npx wrangler secret put OPENROUTER_API_KEY --name "$WORKER_NAME" >/dev/null; then
+if ! printf '%s' "$CHAT_KEY" | pnpm exec wrangler secret put OPENROUTER_API_KEY --name "$WORKER_NAME" >/dev/null; then
   warn "the key was created but Cloudflare rejected the secret"
-  say "Revoke it with: npm run chat-key -- revoke --receipt '$RECEIPT'"
+  say "Revoke it with: pnpm run chat-key revoke --receipt '$RECEIPT'"
   exit 1
 fi
-printf '%s' "$CHAT_MODEL" | npx wrangler secret put OPENROUTER_MODEL --name "$WORKER_NAME" >/dev/null
+printf '%s' "$CHAT_MODEL" | pnpm exec wrangler secret put OPENROUTER_MODEL --name "$WORKER_NAME" >/dev/null
 unset CHAT_KEY MANAGEMENT_KEY
 say "The plaintext chat key was sent directly to Cloudflare and discarded."
 
@@ -422,4 +426,4 @@ finish
 say "Glossary: $OUTPUT"
 say "Worker: $WORKER_NAME"
 say "Budget cap: \$$BUDGET_USD"
-say "Revoke after the event: npm run chat-key -- revoke --receipt '$RECEIPT'"
+say "Revoke after the event: pnpm run chat-key revoke --receipt '$RECEIPT'"

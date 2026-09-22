@@ -179,7 +179,7 @@ function TermEntry({ term, workshop, learned, toggleLearned, crossLinks }: {
           {workshop.slidesUrl && term.slide && <a href={slideHref(workshop, term.slide)}>Slide {term.slide} →</a>}
         </div>
       )}
-      {term.sourcePath && <div className="source-path">Source: {term.sourcePath}{term.slide ? ` · slide ${term.slide}` : ""}</div>}
+      {workshop.slidesUrl && term.sourcePath && <div className="source-path">Source: {term.sourcePath}{term.slide ? ` · slide ${term.slide}` : ""}</div>}
     </article>
   );
 }
@@ -189,16 +189,16 @@ function accentContrast(hex: string): "#111111" | "#ffffff" {
   return (red * 299 + green * 587 + blue * 114) / 1_000 > 150 ? "#111111" : "#ffffff";
 }
 
-function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
+export function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
   const [query, setQuery] = useState("");
   const [dark, setDark] = useState(() => {
-    try { return localStorage.getItem("workshop-glossary-theme") === "dark"; } catch { return false; }
+    try { return localStorage.getItem("workshop-companion-theme") === "dark"; } catch { return false; }
   });
   const progress = useReadingProgress();
   const sectionIds = useMemo(() => workshop.sections.map((section) => section.id), [workshop]);
   const activeSection = useActiveSection(sectionIds);
   const crossLinks = useMemo(() => buildCrossLinkIndex(workshop), [workshop]);
-  const { items: learned, toggle: toggleLearned } = useStoredSet(`workshop-glossary-learned:${workshop.slug}`);
+  const { items: learned, toggle: toggleLearned } = useStoredSet(`workshop-companion-learned:${workshop.slug}`);
   const allTerms = workshop.sections.flatMap((section) => section.terms);
   const normalizedQuery = query.trim().toLowerCase();
   const sections = normalizedQuery
@@ -215,7 +215,7 @@ function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
     root.style.setProperty("--accent", workshop.theme.accent);
     root.style.setProperty("--accent-dark", workshop.theme.accent);
     root.style.setProperty("--accent-contrast", accentContrast(workshop.theme.accent));
-    try { localStorage.setItem("workshop-glossary-theme", dark ? "dark" : "light"); } catch { /* continue without persistence */ }
+    try { localStorage.setItem("workshop-companion-theme", dark ? "dark" : "light"); } catch { /* continue without persistence */ }
   }, [dark, workshop.theme]);
 
   return (
@@ -255,7 +255,7 @@ function Glossary({ workshop }: { workshop: WorkshopGlossary }) {
         ))}
 
         {workshop.resources.length > 0 && <section className="resources"><div className="section-kicker">Keep going</div><h2>Workshop resources</h2><div className="resource-grid">{workshop.resources.map((resource) => {
-          const content: ReactNode = <><strong>{resource.title}</strong><span>{resource.description}</span><small>{resource.sourcePath}</small></>;
+          const content: ReactNode = <><strong>{resource.title}</strong><span>{resource.description}</span>{workshop.slidesUrl && <small>{resource.sourcePath}</small>}</>;
           return resource.url ? <a href={resource.url} key={resource.id} rel="noreferrer" target="_blank">{content}</a> : <div key={resource.id}>{content}</div>;
         })}</div></section>}
         <Quiz workshop={workshop} />

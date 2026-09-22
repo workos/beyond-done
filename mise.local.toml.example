@@ -1,0 +1,12 @@
+# Copy to mise.local.toml and edit for your workshop. Paths are relative to this repo.
+[env]
+WORKSHOP_DIR = "../my-workshop"
+WORKSHOP_SOURCE = "../my-workshop/.studio.slides.md"
+WORKSHOP_SLUG = "handoff"
+WORKSHOP_TITLE = "Handoff"
+WORKER_NAME = "handoff-companion"
+OPENROUTER_MODEL = "anthropic/claude-haiku-4.5"
+CHAT_BUDGET_USD = "15"
+# Replace with an actual future date, preferably two days after the workshop.
+CHAT_EXPIRES_AT = "YYYY-MM-DDT23:59:59Z"
+# Keep OPENROUTER_MANAGEMENT_KEY in your existing environment or gitignored .env.

@@ -52,8 +52,8 @@ export async function askOpenRouter(input: {
     headers: {
       Authorization: `Bearer ${input.apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "https://github.com/nicknisi/workshop-glossary",
-      "X-Title": "Workshop Glossary",
+      "HTTP-Referer": "https://github.com/nicknisi/workshop-companion",
+      "X-Title": "Workshop Companion",
     },
     body: JSON.stringify({
       model: input.model ?? "anthropic/claude-haiku-4.5",

@@ -6,7 +6,7 @@ import type { WorkshopGlossary } from "./src/schema.js";
 
 function workshopData(): Plugin {
   return {
-    name: "workshop-glossary-data",
+    name: "workshop-companion-data",
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
         if (request.url?.split("?")[0] !== "/api/chat") return next();
@@ -22,7 +22,7 @@ function workshopData(): Plugin {
             if (raw.length > 50_000) throw new ChatError(413, "Request too large.");
           }
           const body = JSON.parse(raw) as { messages?: unknown };
-          const dataPath = process.env.WORKSHOP_GLOSSARY_DATA;
+          const dataPath = process.env.WORKSHOP_COMPANION_DATA;
           if (!dataPath) throw new ChatError(500, "Workshop data is not configured.");
           const workshop = JSON.parse(await readFile(dataPath, "utf8")) as WorkshopGlossary;
           const message = await askOpenRouter({
@@ -40,10 +40,10 @@ function workshopData(): Plugin {
         }
       });
       server.middlewares.use("/glossary.json", async (_request, response) => {
-        const path = process.env.WORKSHOP_GLOSSARY_DATA;
+        const path = process.env.WORKSHOP_COMPANION_DATA;
         if (!path) {
           response.statusCode = 404;
-          response.end("Set WORKSHOP_GLOSSARY_DATA or run npm run dev -- <glossary.json>.");
+          response.end("Set WORKSHOP_COMPANION_DATA or run pnpm dev <glossary.json>.");
           return;
         }
         try {

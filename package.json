@@ -1,7 +1,8 @@
 {
-  "name": "workshop-glossary",
+  "name": "workshop-companion",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@12.4.1",
   "type": "module",
   "scripts": {
     "dev": "tsx scripts/dev.ts",
@@ -10,7 +11,7 @@
     "build:workshop": "tsx scripts/build-workshop.ts",
     "chat-key": "tsx scripts/chat-key.ts",
     "estimate-chat": "tsx scripts/estimate-chat.ts",
-    "create-workshop": "bash scripts/create-workshop.sh",
+    "create-companion": "bash scripts/create-companion.sh",
     "typecheck": "tsc --noEmit --pretty false",
     "test": "tsx --test scripts/*.test.ts"
   },

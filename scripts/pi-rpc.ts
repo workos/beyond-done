@@ -110,7 +110,7 @@ class RpcSession implements PiRpcSession {
 
   private async command(command: Record<string, unknown>): Promise<RpcResponse> {
     if (this.failure) throw this.failure;
-    const id = `workshop-glossary-${this.nextId++}`;
+    const id = `workshop-companion-${this.nextId++}`;
     const response = new Promise<RpcResponse>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pending.delete(id);
