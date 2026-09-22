@@ -13,7 +13,7 @@ const next = lessons[index + 1];
 ---
 <ClassLayout title={lesson.data.title} description={lesson.data.description}>
   <main id="content" class="measure lesson-page">
-    <nav aria-label="Breadcrumb"><a href="/">All lessons</a> / Lesson {index + 1}</nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">All lessons</a> / Lesson {index + 1}</nav>
     <header class="lesson-heading">
       <div class="section-kicker">Lesson {index + 1} of {lessons.length}{lesson.data.duration ? ` · ${lesson.data.duration}` : ""}</div>
       <h1>{lesson.data.title}</h1>
@@ -22,10 +22,9 @@ const next = lessons[index + 1];
     <article class="prose"><Content /></article>
     {config.features.progress && <button class="pill lesson-complete" data-key={`class-lessons:${config.slug}`} data-lesson={lesson.id} aria-pressed="false">Mark lesson complete</button>}
     <nav class="lesson-pagination" aria-label="Lesson navigation">
-      {previous ? <a href={`/lessons/${previous.id}/`}>← {previous.data.title}</a> : <a href="/">← All lessons</a>}
-      {next ? <a href={`/lessons/${next.id}/`}>{next.data.title} →</a> : <a href="/glossary/">Explore the glossary →</a>}
+      {previous ? <a class="prev" href={`/lessons/${previous.id}/`}><small>Previous</small><span>{previous.data.title}</span></a> : <a class="prev" href="/"><small>Back</small><span>All lessons</span></a>}
+      {next ? <a class="next" href={`/lessons/${next.id}/`}><small>Next</small><span>{next.data.title}</span></a> : <a class="next" href="/glossary/"><small>Keep going</small><span>Explore the glossary</span></a>}
     </nav>
-    <footer><strong>{config.title}</strong><span>{config.credit}</span></footer>
   </main>
   <script>
     const button = document.querySelector<HTMLButtonElement>(".lesson-complete");

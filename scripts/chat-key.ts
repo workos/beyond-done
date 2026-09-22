@@ -1,8 +1,9 @@
 import { access, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { localEnv } from "./local-env.js";
 
-interface ChatKeyReceipt {
+export interface ChatKeyReceipt {
   version: 1;
   name: string;
   hash: string;
@@ -84,7 +85,7 @@ export async function revokeChatKey(managementKey: string, hash: string, fetcher
     method: "DELETE",
     headers: { Authorization: `Bearer ${managementKey}` },
   });
-  if (!response.ok) throw await apiError(response);
+  if (!response.ok && response.status !== 404) throw await apiError(response);
 }
 
 async function assertReceiptAbsent(path: string): Promise<void> {
@@ -96,7 +97,7 @@ async function assertReceiptAbsent(path: string): Promise<void> {
   }
 }
 
-async function writeReceipt(path: string, receipt: ChatKeyReceipt): Promise<void> {
+export async function writeReceipt(path: string, receipt: ChatKeyReceipt): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   const temp = `${path}.${process.pid}.tmp`;
   await writeFile(temp, `${JSON.stringify(receipt, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
@@ -106,8 +107,9 @@ async function writeReceipt(path: string, receipt: ChatKeyReceipt): Promise<void
 async function main(argv = process.argv.slice(2)): Promise<void> {
   const command = argv[0];
   const values = flags(argv.slice(1));
-  const managementKey = process.env.OPENROUTER_MANAGEMENT_KEY;
-  if (!managementKey) throw new Error("OPENROUTER_MANAGEMENT_KEY is required.");
+  const env = await localEnv();
+  const managementKey = env.OPENROUTER_MANAGEMENT_API_KEY || env.OPENROUTER_MANAGEMENT_KEY;
+  if (!managementKey) throw new Error("OPENROUTER_MANAGEMENT_API_KEY is required.");
 
   if (command === "provision") {
     const name = required(values, "--name");

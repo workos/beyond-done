@@ -5,4 +5,4 @@ OPENROUTER_MODEL = "anthropic/claude-haiku-4.5"
 CHAT_BUDGET_USD = "15"
 # Replace with an actual future date, preferably two days after the workshop.
 CHAT_EXPIRES_AT = "YYYY-MM-DDT23:59:59Z"
-# Keep OPENROUTER_MANAGEMENT_KEY in your existing environment or gitignored .env.
+# Keep OPENROUTER_MANAGEMENT_API_KEY in your environment or gitignored .env.

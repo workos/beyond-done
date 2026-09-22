@@ -3,6 +3,7 @@ import type { WorkshopGlossary } from "./schema.js";
 import type { ChatMessage } from "./openrouter.js";
 
 export function ChatDrawer({ workshop }: { workshop: WorkshopGlossary }) {
+  const [available, setAvailable] = useState(false);
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -17,6 +18,17 @@ export function ChatDrawer({ workshop }: { workshop: WorkshopGlossary }) {
     return [`Explain ${first} simply.`, `How do ${first} and ${second} differ?`, `What should I remember from this workshop?`];
   }, [terms]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/chat/status", { signal: controller.signal })
+      .then(async response => {
+        if (!response.ok) return;
+        const status = await response.json() as { enabled?: boolean } | null;
+        setAvailable(status?.enabled === true);
+      })
+      .catch(() => { /* Unavailable chat stays hidden. */ });
+    return () => controller.abort();
+  }, []);
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
@@ -57,6 +69,8 @@ export function ChatDrawer({ workshop }: { workshop: WorkshopGlossary }) {
     event.preventDefault();
     void send(input);
   };
+
+  if (!available) return null;
 
   return (
     <>

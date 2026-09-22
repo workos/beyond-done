@@ -39,13 +39,18 @@ pnpm exec wrangler deploy --name "$WORKER_NAME"
 '''
 
 [tasks."chat:setup"]
-description = "Create a capped, expiring key, install chat secrets, and verify them"
+description = "Configure class chat, reusing the deployed key when present"
+run = "pnpm chat:setup"
+
+[tasks."companion:chat:setup"]
+description = "Create a capped, expiring key for an external companion"
 shell = "bash -eu -o pipefail -c"
 run = '''
 set +x
 WORKSHOP_DIR="${WORKSHOP_DIR:-.}"
 WORKER_NAME="${WORKER_NAME:-$(node -p 'require("./class.config.json").slug')}"
-: "${OPENROUTER_MANAGEMENT_KEY:?Set OPENROUTER_MANAGEMENT_KEY in your environment or .env}"
+export OPENROUTER_MANAGEMENT_KEY="${OPENROUTER_MANAGEMENT_API_KEY:-${OPENROUTER_MANAGEMENT_KEY:-}}"
+: "${OPENROUTER_MANAGEMENT_KEY:?Set OPENROUTER_MANAGEMENT_API_KEY in your environment or .env}"
 : "${CHAT_EXPIRES_AT:?Set CHAT_EXPIRES_AT to a future ISO date in mise.local.toml}"
 export OPENROUTER_MODEL="${OPENROUTER_MODEL:-anthropic/claude-haiku-4.5}"
 RECEIPT="$WORKSHOP_DIR/generated/openrouter-chat-key.json"

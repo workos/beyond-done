@@ -3,6 +3,13 @@ import { getCollection } from "astro:content";
 import ClassLayout from "../layouts/ClassLayout.astro";
 import { classConfig as config } from "../class-config";
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
+// Durations are free text. Only add them up when every lesson states one in minutes or hours.
+const minutes = lessons.map((lesson) => {
+  const match = /(\d+)\s*(min|minute|minutes|h|hr|hrs|hour|hours)\b/i.exec(lesson.data.duration ?? "");
+  return match ? Number(match[1]) * (/^h/i.test(match[2]) ? 60 : 1) : NaN;
+});
+const total = minutes.length && minutes.every(Number.isFinite) ? minutes.reduce((sum, value) => sum + value, 0) : 0;
+const totalTime = total >= 60 ? `${Math.floor(total / 60)} h${total % 60 ? ` ${total % 60} min` : ""}` : total ? `${total} min` : "";
 ---
 <ClassLayout>
   <main id="content">
@@ -11,24 +18,27 @@ const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b
         <div class="topline"><span>{config.event || "Class materials"}</span></div>
         <h1>{config.title}</h1>
         <p class="subtitle">{config.description}</p>
-        <p class="promise">Work through the lessons in order, try the exercises, and use the glossary whenever you need it.</p>
-        <p class="class-credit">{config.credit}</p>
+        {config.audience && <p class="class-audience"><strong>Who it's for:</strong> {config.audience}</p>}
+        <dl class="class-meta">
+          {config.credit && <div><dt>Taught by</dt><dd>{config.credit}</dd></div>}
+          <div><dt>Lessons</dt><dd>{lessons.length}</dd></div>
+          {totalTime && <div><dt>Time</dt><dd>{totalTime}</dd></div>}
+        </dl>
       </div>
     </header>
     <section class="measure main" aria-labelledby="lessons-heading">
-      <div class="section-kicker">Your class materials</div>
+      <div class="section-kicker">Work through these in order</div>
       <h2 id="lessons-heading">Lessons</h2>
       <ol class="lesson-list">
         {lessons.map((lesson, index) => <li>
           <a href={`/lessons/${lesson.id}/`}>
             <span class="lesson-number">{String(index + 1).padStart(2, "0")}</span>
             <div><h3>{lesson.data.title}</h3><p>{lesson.data.description}</p>{lesson.data.duration && <small>{lesson.data.duration}</small>}</div>
-            <span aria-hidden="true">→</span>
+            <span class="arrow" aria-hidden="true">→</span>
           </a>
         </li>)}
       </ol>
       <aside class="class-reference"><strong>Need a definition?</strong><p>The glossary is a reference, not homework. Look things up as you go.</p><a href="/glossary/">Open the glossary →</a></aside>
-      <footer><strong>{config.title}</strong><span>{config.credit}</span></footer>
     </section>
   </main>
 </ClassLayout>

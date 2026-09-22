@@ -68,7 +68,8 @@ test("mise tasks orchestrate scripts without live API calls", { skip: !mise }, a
     try {
       await f.run("generate");
       await f.run("deploy");
-      assert.deepEqual(await f.calls(), [["glossary"], ["deploy"]]);
+      await f.run("chat:setup");
+      assert.deepEqual(await f.calls(), [["glossary"], ["deploy"], ["chat:setup"]]);
     } finally { await f.cleanup(); }
   });
 
@@ -91,12 +92,12 @@ test("mise tasks orchestrate scripts without live API calls", { skip: !mise }, a
   await t.test("setup installs both secrets, blocks duplicates, and allows setup after revocation", async () => {
     const f = await fixture();
     try {
-      const result = await f.run("chat:setup");
+      const result = await f.run("companion:chat:setup");
       assert.match(result.stdout, /both secrets verified/);
       assert.doesNotMatch(result.stdout + result.stderr, /fake-inference-secret|fake-management-secret/);
-      await assert.rejects(f.run("chat:setup"), /Receipt already exists/);
+      await assert.rejects(f.run("companion:chat:setup"), /Receipt already exists/);
       await f.run("chat:revoke");
-      await f.run("chat:setup");
+      await f.run("companion:chat:setup");
       const calls = await f.calls();
       assert.equal(calls.filter(args => args.includes("bulk")).length, 2);
       assert.equal(calls.filter(args => args.includes("revoke")).length, 1);
@@ -107,7 +108,7 @@ test("mise tasks orchestrate scripts without live API calls", { skip: !mise }, a
   await t.test("failed secret installation revokes the new key", async () => {
     const f = await fixture();
     try {
-      await assert.rejects(f.run("chat:setup", { FAIL_INSTALL: "1" }), /Revoking the newly created key/);
+      await assert.rejects(f.run("companion:chat:setup", { FAIL_INSTALL: "1" }), /Revoking the newly created key/);
       assert.equal((await f.calls()).at(-1)?.includes("revoke"), true);
     } finally { await f.cleanup(); }
   });
@@ -115,8 +116,8 @@ test("mise tasks orchestrate scripts without live API calls", { skip: !mise }, a
   await t.test("missing credentials and failed verification cannot report success", async () => {
     const f = await fixture();
     try {
-      await assert.rejects(f.run("chat:setup", { OPENROUTER_MANAGEMENT_KEY: "" }), /Set OPENROUTER_MANAGEMENT_KEY/);
-      await assert.rejects(f.run("chat:setup", { MISSING_SECRETS: "1" }), /Chat secrets could not be verified/);
+      await assert.rejects(f.run("companion:chat:setup", { OPENROUTER_MANAGEMENT_KEY: "" }), /Set OPENROUTER_MANAGEMENT_API_KEY/);
+      await assert.rejects(f.run("companion:chat:setup", { MISSING_SECRETS: "1" }), /Chat secrets could not be verified/);
     } finally { await f.cleanup(); }
   });
 });

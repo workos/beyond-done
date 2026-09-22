@@ -31,11 +31,12 @@ export function starterGlossary(config: ClassConfig): WorkshopGlossary {
 export function prepareClassGlossary(input: WorkshopGlossary, config: ClassConfig): WorkshopGlossary {
   const workshop = structuredClone(input);
   const oldSlidesUrl = workshop.slidesUrl;
+  const linkSlides = config.slides.publish && config.slides.link;
   Object.assign(workshop, {
     slug: config.slug, title: config.title, event: config.event, credit: config.credit,
-    theme: config.theme, slidesUrl: config.slides.publish ? "/slides/#" : "",
+    theme: config.theme, slidesUrl: linkSlides ? "/slides/#" : "",
   });
-  if (!config.slides.publish) {
+  if (!linkSlides) {
     const slideBases = ["/slides", oldSlidesUrl].filter(Boolean).map((url) => new URL(url, `https://${config.hostname}`));
     workshop.resources = workshop.resources.filter((resource) => {
       if (!resource.url) return false;

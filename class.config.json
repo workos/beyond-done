@@ -2,10 +2,12 @@
   "slug": "my-class",
   "title": "Building with AI",
   "description": "Learn the concepts, try the exercises, and keep the materials for your next project.",
+  "audience": "Developers who want practical experience building with AI.",
   "event": "Class materials",
   "credit": "Your name",
+  "links": [],
   "hostname": "my-class.typevoid.com",
-  "theme": { "preset": "paper", "accent": "#b94724" },
-  "slides": { "publish": false },
-  "features": { "quiz": false, "demos": false, "progress": false, "chat": false }
+  "theme": { "preset": "void", "accent": "#724bb7" },
+  "slides": { "publish": true, "link": true },
+  "features": { "quiz": false, "demos": false, "progress": false, "chat": true }
 }

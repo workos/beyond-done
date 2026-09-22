@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const idSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-export const themePresetSchema = z.enum(["paper", "clean", "contrast"]);
+export const themePresetSchema = z.enum(["void", "paper", "clean", "contrast"]);
 export const glossaryThemeSchema = z.object({
   preset: themePresetSchema,
   accent: z.string().regex(/^#[0-9a-fA-F]{6}$/),

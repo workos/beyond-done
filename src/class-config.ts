@@ -6,11 +6,20 @@ export const classConfigSchema = z.object({
   slug: idSchema.max(63),
   title: z.string().min(1),
   description: z.string().min(1),
+  audience: z.string().trim().default(""),
   event: z.string(),
   credit: z.string(),
+  links: z.array(z.object({
+    label: z.string().trim().min(1),
+    url: z.string().trim().pipe(z.union([
+      z.url({ protocol: /^https?$/ }),
+      z.string().regex(/^mailto:\S+$/),
+      z.string().regex(/^(?:\/(?!\/)|#)[^\s\\]*$/),
+    ])),
+  }).strict()).default([]),
   hostname: z.string().regex(/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.typevoid\.com$/, "Use a subdomain of typevoid.com, without https:// or a path."),
   theme: glossaryThemeSchema,
-  slides: z.object({ publish: z.boolean() }).strict(),
+  slides: z.object({ publish: z.boolean(), link: z.boolean().default(true) }).strict(),
   features: z.object({ quiz: z.boolean(), demos: z.boolean(), progress: z.boolean(), chat: z.boolean() }).strict(),
 }).strict();
 

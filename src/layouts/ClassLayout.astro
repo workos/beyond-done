@@ -1,20 +1,27 @@
 ---
 import { classConfig as config } from "../class-config";
+import BrandMark from "../components/BrandMark.astro";
 import "../styles.css";
 import "../class.css";
 interface Props { title?: string; description?: string; }
 const { title, description = config.description } = Astro.props;
 const path = Astro.url.pathname;
+const pageTitle = title ? `${title} · ${config.title}` : config.title;
 const [r, g, b] = [1, 3, 5].map(offset => parseInt(config.theme.accent.slice(offset, offset + 2), 16));
 const contrast = (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#111111" : "#ffffff";
 ---
 <!doctype html>
-<html lang="en" data-palette={config.theme.preset} style={`--accent: ${config.theme.accent}; --accent-dark: ${config.theme.accent}; --accent-contrast: ${contrast}`}>
+<html lang="en" data-palette={config.theme.preset} style={`--accent: ${config.theme.accent}; --accent-contrast: ${contrast}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <title>{title ? `${title} · ${config.title}` : config.title}</title>
+    <title>{pageTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:site_name" content={config.title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
     <script is:inline>
       try { document.documentElement.dataset.theme = localStorage.getItem("workshop-companion-theme") || "light"; } catch {}
     </script>
@@ -23,14 +30,26 @@ const contrast = (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#111111" : "#ffff
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="class-header">
       <nav class="measure class-nav" aria-label="Class navigation">
-        <a class="class-brand" href="/">{config.title}</a>
+        <a class="class-brand" href="/"><BrandMark size={26} label={null} /><span>{config.title}</span></a>
         <a href="/" aria-current={path === "/" || path.startsWith("/lessons/") ? "page" : undefined}>Lessons</a>
         <a href="/glossary/" aria-current={path.startsWith("/glossary/") ? "page" : undefined}>Glossary</a>
-        {config.slides.publish && <a href="/slides/">Slides</a>}
-        <button id="theme-toggle" class="pill" aria-label="Toggle dark mode">Theme</button>
+        {config.slides.publish && config.slides.link && <a href="/slides/">Slides</a>}
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        </button>
       </nav>
     </header>
     <slot />
+    <footer class="class-footer">
+      <div class="measure class-footer-inner">
+        <a class="class-footer-brand" href="https://typedvoid.com" rel="noreferrer"><BrandMark size={22} label={null} /><span>typed void</span></a>
+        <span>{config.title}{config.credit ? ` · ${config.credit}` : ""}</span>
+        {config.links.length > 0 && <nav class="class-links" aria-label="Class links">
+          {config.links.map(link => <a href={link.url}>{link.label}</a>)}
+        </nav>}
+      </div>
+    </footer>
     <script>
       document.querySelector("#theme-toggle")?.addEventListener("click", () => {
         const root = document.documentElement;

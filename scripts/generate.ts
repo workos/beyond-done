@@ -29,11 +29,12 @@ function slugify(value: string): string {
 }
 
 function usage(): never {
-  console.error("Usage: pnpm generate <file-or-folder> --out <workshop/glossary.json> [--include <file-or-folder>] [--slug <id>] [--slides-url <url>] [--title <title>] [--event <label>] [--credit <name>] [--model <pi-model>] [--theme-preset <paper|clean|contrast>] [--accent <#rrggbb>]");
+  console.error("Usage: pnpm generate <file-or-folder> --out <workshop/glossary.json> [--include <file-or-folder>] [--slug <id>] [--slides-url <url>] [--title <title>] [--event <label>] [--credit <name>] [--model <pi-model>] [--theme-preset <void|paper|clean|contrast>] [--accent <#rrggbb>]");
   process.exit(2);
 }
 
 const DEFAULT_ACCENTS: Record<ThemePreset, string> = {
+  void: "#724bb7",
   paper: "#b94724",
   clean: "#315f8c",
   contrast: "#6d28d9",

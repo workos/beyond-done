@@ -1,0 +1,53 @@
+---
+/**
+ * The Typed Void logomark: `:0`, a type annotation whose type is the void.
+ *
+ * A colon, then a heavy zero cut through by the void. The slash of the slashed
+ * zero is not drawn; it is the gap. The counter stays empty. The two crescents
+ * never touch. The mark is one colour and follows currentColor.
+ *
+ * Drawn on a 100-unit square:
+ *   Colon   two dots, r 7, at (13, 38) and (13, 62)
+ *   Ring    ellipse 26 × 34 at (62, 50), stroke 18
+ *   Cut     through (62, 50) along (48, -76), 9 units wide
+ *   Corners the four cut corners are rounded to radius 5
+ *
+ * The ring is two crescents, not a masked ellipse. Each crescent path is the
+ * shape eroded by 5 units; drawing it with fill plus a 10-unit round-joined
+ * stroke dilates it back, which is what rounds the cut corners. The second
+ * crescent is the first rotated 180° about the ring centre.
+ * public/brand/ holds the same geometry as standalone SVG files.
+ */
+interface Props {
+  /** Rendered size in px. */
+  size?: number;
+  /** none (default): one colour. colon: purple colon, for large formats only. */
+  accent?: "none" | "colon";
+  class?: string;
+  /** Accessible name. Pass null when the mark sits beside the wordmark. */
+  label?: string | null;
+}
+const { size = 28, accent = "none", class: className, label = "Typed Void" } = Astro.props;
+const colon = accent === "colon" ? "var(--brand, #724bb7)" : "currentColor";
+const crescent = "M 86.77 28.57 A 30.00 38.00 0 0 1 50.93 85.32 L 55.21 78.54 A 22.00 30.00 0 0 0 81.69 36.62 Z";
+---
+<svg
+  class:list={["brand-mark", className]}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+  width={size}
+  height={size}
+  role={label ? "img" : undefined}
+  aria-label={label ?? undefined}
+  aria-hidden={label ? undefined : "true"}
+>
+  <circle cx="13" cy="38" r="7" fill={colon}></circle>
+  <circle cx="13" cy="62" r="7" fill={colon}></circle>
+  <g fill="currentColor" stroke="currentColor" stroke-width="10" stroke-linejoin="round">
+    <path d={crescent}></path>
+    <path d={crescent} transform="rotate(180 62 50)"></path>
+  </g>
+</svg>
+<style>
+  .brand-mark { display: block; flex: none; }
+</style>

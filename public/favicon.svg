@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>.ink{fill:#221c33;stroke:#221c33}@media (prefers-color-scheme:dark){.ink{fill:#f1eef8;stroke:#f1eef8}}</style>
+  <circle class="ink" cx="13" cy="38" r="7" stroke="none"/>
+  <circle class="ink" cx="13" cy="62" r="7" stroke="none"/>
+  <g class="ink" stroke-width="10" stroke-linejoin="round">
+    <path d="M 86.77 28.57 A 30.00 38.00 0 0 1 50.93 85.32 L 55.21 78.54 A 22.00 30.00 0 0 0 81.69 36.62 Z"/>
+    <path d="M 86.77 28.57 A 30.00 38.00 0 0 1 50.93 85.32 L 55.21 78.54 A 22.00 30.00 0 0 0 81.69 36.62 Z" transform="rotate(180 62 50)"/>
+  </g>
+</svg>
