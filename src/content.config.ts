@@ -9,6 +9,7 @@ const lessons = defineCollection({
     description: z.string(),
     order: z.number().int().positive(),
     duration: z.string().optional(),
+    prework: z.boolean().default(false),
   }),
 });
 

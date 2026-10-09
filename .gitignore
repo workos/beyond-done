@@ -12,3 +12,6 @@ generated/openrouter-chat-key.json*
 mise.local.toml
 mise.*.local.toml
 *.log
+.lab-runs/
+playwright-report/
+test-results/

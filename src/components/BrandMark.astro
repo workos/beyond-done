@@ -1,53 +1,22 @@
 ---
-/**
- * The Typed Void logomark: `:0`, a type annotation whose type is the void.
- *
- * A colon, then a heavy zero cut through by the void. The slash of the slashed
- * zero is not drawn; it is the gap. The counter stays empty. The two crescents
- * never touch. The mark is one colour and follows currentColor.
- *
- * Drawn on a 100-unit square:
- *   Colon   two dots, r 7, at (13, 38) and (13, 62)
- *   Ring    ellipse 26 × 34 at (62, 50), stroke 18
- *   Cut     through (62, 50) along (48, -76), 9 units wide
- *   Corners the four cut corners are rounded to radius 5
- *
- * The ring is two crescents, not a masked ellipse. Each crescent path is the
- * shape eroded by 5 units; drawing it with fill plus a 10-unit round-joined
- * stroke dilates it back, which is what rounds the cut corners. The second
- * crescent is the first rotated 180° about the ring centre.
- * public/brand/ holds the same geometry as standalone SVG files.
- */
-interface Props {
-  /** Rendered size in px. */
-  size?: number;
-  /** none (default): one colour. colon: purple colon, for large formats only. */
-  accent?: "none" | "colon";
-  class?: string;
-  /** Accessible name. Pass null when the mark sits beside the wordmark. */
-  label?: string | null;
-}
-const { size = 28, accent = "none", class: className, label = "Typed Void" } = Astro.props;
-const colon = accent === "colon" ? "var(--brand, #724bb7)" : "currentColor";
-const crescent = "M 86.77 28.57 A 30.00 38.00 0 0 1 50.93 85.32 L 55.21 78.54 A 22.00 30.00 0 0 0 81.69 36.62 Z";
+/** The WorkOS logomark. Keeps its brand indigo in light and dark themes. */
+interface Props { size?: number; label?: string | null; class?: string; }
+const { size = 28, label = "WorkOS", class: className } = Astro.props;
 ---
 <svg
   class:list={["brand-mark", className]}
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 100 100"
+  viewBox="0 0 242 210"
   width={size}
-  height={size}
+  height={Math.round(size * 210 / 242)}
   role={label ? "img" : undefined}
   aria-label={label ?? undefined}
   aria-hidden={label ? undefined : "true"}
 >
-  <circle cx="13" cy="38" r="7" fill={colon}></circle>
-  <circle cx="13" cy="62" r="7" fill={colon}></circle>
-  <g fill="currentColor" stroke="currentColor" stroke-width="10" stroke-linejoin="round">
-    <path d={crescent}></path>
-    <path d={crescent} transform="rotate(180 62 50)"></path>
-  </g>
+  <path d="M1 105C1 109.56 2.2 114.12 4.52 118.04L46.5999 190.92C50.9199 198.36 57.4799 204.44 65.6399 207.16C81.7199 212.52 98.3599 205.64 106.28 191.88L116.44 174.28L76.3599 105L118.68 31.6405L128.84 14.0405C131.88 8.76049 135.96 4.4405 140.76 1.0005H136.36H75.4799C64.0399 1.0005 53.4799 7.0805 47.7999 17.0005L4.52 91.9604C2.2 95.8804 1 100.44 1 105Z" fill="#6363F1"/>
+  <path d="M241 105C241 100.44 239.8 95.8796 237.48 91.9596L194.84 18.1197C186.92 4.43973 170.28 -2.44026 154.2 2.83973C146.04 5.55973 139.48 11.6397 135.16 19.0797L125.56 35.6397L165.64 105L123.32 178.359L113.16 195.959C110.12 201.159 106.04 205.559 101.24 208.999H105.64H166.52C177.96 208.999 188.52 202.919 194.2 192.999L237.48 118.04C239.8 114.12 241 109.56 241 105Z" fill="#6363F1"/>
 </svg>
+
 <style>
   .brand-mark { display: block; flex: none; }
 </style>

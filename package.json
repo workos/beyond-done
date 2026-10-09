@@ -1,5 +1,5 @@
 {
-  "name": "class-materials-template",
+  "name": "beyond-done",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@12.4.1",
@@ -8,6 +8,7 @@
     "dev": "astro dev",
     "dev:companion": "tsx scripts/dev.ts",
     "slides": "slidev slides/slides.md",
+    "slides:check": "tsx scripts/check-deck.ts",
     "glossary": "tsx scripts/class.ts generate",
     "preview": "tsx scripts/class.ts preview",
     "deploy": "tsx scripts/deploy.ts",
@@ -19,7 +20,15 @@
     "estimate-chat": "tsx scripts/estimate-chat.ts",
     "create-companion": "bash scripts/create-companion.sh",
     "typecheck": "astro check && tsc --noEmit --pretty false",
-    "test": "tsx --test scripts/*.test.ts"
+    "test": "tsx --test scripts/*.test.ts",
+    "lab:doctor": "tsx lab/cli.ts doctor",
+    "lab:replay": "tsx lab/cli.ts replay",
+    "lab:app": "tsx lab/cli.ts app",
+    "lab:check": "tsx lab/cli.ts check",
+    "lab:loop": "tsx lab/cli.ts loop",
+    "lab:eval": "tsx lab/cli.ts eval",
+    "lab:exercise": "tsx lab/test-exercise.ts",
+    "lab:test": "tsx --test lab/*.test.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",
@@ -35,12 +44,14 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260915.1",
+    "@playwright/test": "^1.64.0",
     "@slidev/cli": "^53.0.0",
     "@slidev/parser": "^53.0.0",
     "@slidev/theme-default": "^0.25.0",
     "@types/node": "^24.3.1",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
+    "@typesafe-ai/sdk": "^0.6.0",
     "@vitejs/plugin-react": "^6.1.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",

@@ -38,7 +38,8 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
           });
         });
         const home = await (await fetch(`${url}/`)).text();
-        assert.match(home, /Start here/);
+        assert.match(home, /Preflight — before the hour/);
+        assert.match(home, /<dd>1 h<\/dd>/);
         assert.ok(!home.includes('href="/slides/"'));
         const glossary = await (await fetch(`${url}/glossary/`)).text();
         assert.equal(/<button[^>]*class="chat-fab/.test(glossary), false);

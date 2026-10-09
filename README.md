@@ -1,171 +1,177 @@
-# Class materials template
+# Beyond “Done”: Building Verification Loops for AI Agents
 
-An Astro site for teaching a class. Lessons are the main content. A glossary, Slidev deck, and optional interactive tools support them.
+A **60-minute AIE workshop** by **Nick Nisi & Zack Proser**, for JS/TS developers. Built from [nicknisi/template-workshop](https://github.com/nicknisi/template-workshop), with **WorkOS branding**.
 
-## Start a class
+An agent says “done.” Your code decides whether the evidence agrees.
 
-Create a repository from this template, then:
+## One task, three edits
+
+The fictional **Midnight Snack Lab** is sold out. Its browser-local waitlist must preserve the same email/status after reload and explain: **waitlist only, no guaranteed seat, email if a place opens**.
+
+Attendees build the supervisor, not another agent framework:
+
+1. **Observe** with Playwright — `lab/exercises/observe.ts`.
+2. **Judge evidence** with Jev — `lab/exercises/questions.ts`.
+3. **Accept, repair once, or escalate** — `lab/exercises/decide.ts`.
+
+Then play **Bouncer vs. Bluffer**: write a convincing lie, swap roles, and write an unusual truth. Test your own JSON candidates against Jev (or a human peer without a key). Points reward catching bad work **and** letting good work through. Stale evidence is the final boss.
+
+This is a **browser-local prototype**, not real organizer registration, email delivery, or payment. The worker's tool only proposes validated `{storage, confirmation}` JSON. It cannot edit the verifier through that interface. It is not an OS security sandbox.
+
+## Start here
+
+Node 24 and pnpm 12.4.1 are pinned in `mise.toml`. Installation happens **before** the workshop hour.
+
+This repository is private; your GitHub account must have access.
 
 ```bash
+gh repo clone nicknisi/beyond-done
+cd beyond-done
 pnpm install
-pnpm dev
+pnpm exec playwright install chromium
+pnpm lab:doctor
+pnpm lab:loop --solution
 ```
 
-Use Node 24 and pnpm 12.4.1, or run `mise install` for the versions in `mise.toml`. The starter runs without model credentials or a Cloudflare account.
-
-Edit `class.config.json`:
-
-- Set `slug`, `title`, `description`, and `event` for your class. `credit` is your name, shown as “Taught by” on the home page and in the footer.
-- Set `audience` to who the class is for; it appears below the home-page description. Use `""` to hide it.
-- Add `links` as `{ "label": "Instructor website", "url": "https://example.com" }` entries. They appear in the footer on lesson, home, and glossary pages. Use `[]` for no links. URLs can be HTTP(S), `mailto:`, site-relative `/paths`, or `#anchors`.
-- Set `hostname` to your chosen subdomain, such as `agents.typevoid.com`.
-- Adjust `theme.preset` and `theme.accent`. The `void` preset is the Typed Void house look and the default; `paper`, `clean`, and `contrast` are also available. The accent is the class colour; the Typed Void mark keeps its own purple.
-- Set `slides.publish` to include the deck at `/slides/`. It defaults to `true`.
-- Set `slides.link` to show slide navigation and glossary links. Set it to `false` to keep the deck accessible only by URL; this is not access control.
-- Chat is enabled by default. `features.quiz`, `features.demos`, and `features.progress` default to `false`. Each feature can be toggled independently.
-
-For example, update these fields in the existing JSON, keeping the other settings:
-
-```json
-{
-  "title": "Practical TypeScript",
-  "description": "Build confidence working with TypeScript in real projects.",
-  "audience": "JavaScript developers who are new to TypeScript.",
-  "credit": "Your name",
-  "links": [
-    { "label": "Instructor website", "url": "https://example.com" },
-    { "label": "Contact", "url": "mailto:teacher@example.com" }
-  ]
-}
-```
-
-No page-code edits are needed for these details. Existing configurations without `audience` or `links` still work; both default to empty. Configuration is validated when the site starts or builds.
-
-Use a distinct slug and hostname for each class. The slug is also the Cloudflare Worker name. Deployment refuses the starter values `my-class` and `my-class.typevoid.com`.
-
-Quiz questions, demos, and chat appear in the glossary. Progress adds lesson-completion buttons and learned-term tracking, saved in the student's browser without an account.
-
-## Write lessons
-
-Lessons live in `src/content/lessons/`. Both Markdown and MDX work:
-
-```markdown
----
-title: Your lesson
-description: What students will practice.
-order: 3
-duration: 20 minutes
----
-
-## Exercise
-
-Write the instructions here.
-
-## Resources
-
-Add links next to the exercise that uses them.
-```
-
-The filename becomes the URL. `03-your-lesson.md` becomes `/lessons/03-your-lesson/`. Lessons sort by `order`, then filename. Each page has previous and next links. Use MDX when a lesson needs a component; ordinary lessons can stay Markdown.
-
-All files in this collection are published. Keep instructor-only material outside it. Put public downloads in `public/`, never private slides or credentials. Customize the shared layout in `src/layouts/ClassLayout.astro` and the design in `src/styles.css` (tokens, fonts, glossary) and `src/class.css` (header, footer, lessons). Fonts are self-hosted from Fontsource packages so the site loads without third-party requests. The Typed Void mark is `src/components/BrandMark.astro`; standalone SVGs and construction notes are in `public/brand/`.
-
-## Work on slides
-
-Edit `slides/slides.md`, including its title. `pnpm dev` serves the deck at `/slides/` alongside lessons and the glossary, with live updates. To run only the presenter:
+Expect **REPAIR → ACCEPT** and a `.lab-runs/<id>/report.json` path. No key required.
 
 ```bash
-pnpm slides
+pnpm dev                              # lesson site + glossary + slides
+pnpm lab:app --scenario memory-only    # separate, deliberately broken app
+pnpm slides                           # optional presenter view
 ```
 
-The Slidev title and content belong to the deck; changing the class title does not rewrite them.
+Use each printed URL. Linux may need `pnpm exec playwright install --with-deps chromium`.
 
-With `slides.publish: true`, development and the class build include the deck at `/slides/`. Navigation and glossary slide links appear only when `slides.link` is also `true`. Slide links use hash routing so they work on Cloudflare static assets. Public builds omit speaker notes.
+## The hour
 
-With `slides.publish: false`, the build includes no deck output or slide navigation. The published glossary removes slide numbers, source-path metadata, and resources linking to the deck. Glossary generation still reads the slides. This hides the deck, not the concepts derived from it. A public GitHub repository also exposes slide source regardless of this setting.
+| Minutes | Activity | Result |
+| --- | --- | --- |
+| 0–5 | Vote: is this “done”? | A shallow green check fails the user |
+| 5–10 | Smoke test + contract | Know what evidence must show |
+| 10–21 | Playwright collector | One submit/reload observation |
+| 21–33 | Two Jev questions + live comparison | Distinguish support from confident wording |
+| 33–43 | Policy + bounded repair | Witness repair → accept and repair → escalate |
+| 43–55 | Bouncer vs. Bluffer: two authored challenges | Catch lies without rejecting good paraphrases |
+| 55–60 | Transfer exercise | A verification plan for your own project |
 
-`pnpm dev` previews lessons, glossary, slides, and chat on the same site. Use `pnpm preview` to test the assembled site with the Cloudflare Worker.
+[Lessons](src/content/lessons/) · [Facilitator guide](docs/facilitator.md) · [Preflight](docs/preflight.md) · [Take-home](docs/take-home.md)
 
-## Generate the glossary
+## Three sources of scores — do not confuse them
 
-The starter shows the maintained terms in `src/core-glossary.ts`. It needs no AI call to build. Edit that file to change the defaults; keep term IDs unique and update references when removing terms.
+| Mode | What it does | What it cannot establish |
+| --- | --- | --- |
+| Default `--judge fixture` | Uses hand-authored scores to test policy reproducibly | Jev accuracy or your question quality |
+| `--judge live` | Sends the task and observed confirmation text to Jev | General reliability from a handful of examples |
+| `pnpm lab:replay` | Displays actual recorded Jev requests/responses | New feedback on edited questions |
 
-Install Pi and authenticate with your chosen model, then run:
+**Real Jev is part of lesson 4**, using attendees' keys or the facilitator's projected comparison. The fixture path keeps coding exercises runnable without keys. During an outage, use the explicitly labeled recording.
+
+The default **worker is scripted** so everyone sees a repair within the hour. The optional real generative worker is an after-class extension.
+
+## Jev setup
+
+Copy `.env.example` to `.env` and set `TYPESAFE_API_KEY`. The CLI loads it; existing environment variables take precedence. Get a key from [TypeSafe](https://console.typesafe.ai/); event credits are not assumed.
 
 ```bash
-pnpm glossary
-# Optional model override:
-pnpm glossary --model provider/model
+pnpm lab:check --scenario happy --solution --judge live
+pnpm lab:check --scenario overpromise --solution --judge live
+pnpm lab:loop --solution --judge live
 ```
 
-This reads the resolved Slidev deck and all lesson Markdown/MDX, combines generated terms with the defaults, and writes `generated/glossary.json`. Slidev imports, slide frontmatter, and hidden slides are resolved before assigning slide numbers. Imported decks must stay inside `slides/`.
+These make billable external API calls with fictional task/confirmation text. No worker case IDs, human labels, expected actions, or synthetic scores are sent to Jev.
 
-Review and commit the JSON. Run generation again when lessons, slides, or default terms change. Generation replaces the JSON, including manual edits, so commit edits before regenerating. It uses a tool-free Pi RPC session with your existing Pi authentication. Source text is sent to that model provider. One schema-repair attempt is allowed; failed validation leaves the previous file intact.
+The adapter uses `@typesafe-ai/sdk` 0.6.0, `TypeSafeClient`, and two `noul()` questions in one `systemOne()` request. Default model: `jev-latest`; override with `TYPESAFE_MODEL`. Timeout: 15 seconds; SDK retries disabled. Live failure escalates; **never silently falls back**.
 
-Build and deploy never invoke the model or overwrite the reviewed glossary. Until `generated/glossary.json` exists, the site uses the starter defaults and a sample quiz. Invalid generated JSON fails the build instead of silently falling back.
+Real Jev was smoke-tested against happy, overpromise, injection, and the repair loop. [Captured examples](public/materials/jev-recording.json) include exact inputs, questions, model version, and responses. They are examples, **not a benchmark**. Automated tests use fake HTTP transports, not paid model calls.
 
-## Deploy to Cloudflare
-
-The `typevoid.com` zone must be active in the Cloudflare account you use. Authenticate once:
+## Exercise checks and catch-up
 
 ```bash
-pnpm exec wrangler login
+pnpm lab:exercise browser
+pnpm lab:exercise questions
+pnpm lab:exercise policy
 ```
 
-Run the deploy wizard:
+These are **intentionally red** until you implement the corresponding function. The question check only validates construction; use a live call to evaluate meaning.
+
+Add `--solution` to run the reference instead. It switches **all three files**, so omit it when testing your own question changes.
+
+To catch up one file, save your edits first, then:
 
 ```bash
-pnpm deploy
+cp lab/solution/observe.ts lab/exercises/observe.ts
 ```
 
-The wizard asks for a class slug and hostname if they still have starter values, saves them to `class.config.json`, checks types, builds the site, and deploys its Worker and Custom Domain. With chat enabled, it reuses an installed key or provisions and installs one when credentials are available. Rerunning updates the same site without creating another chat key. Cloudflare manages the hostname's DNS record and certificate. Existing conflicting DNS records may need to be removed or migrated first. This command changes Cloudflare resources; use a hostname assigned to this class.
+There is no automatic reset or overwrite.
 
-For CI, configure the class slug and hostname first, then supply `CLOUDFLARE_API_TOKEN` with Workers deployment and zone permissions, plus `CLOUDFLARE_ACCOUNT_ID`. For first-time key provisioning, also set `CHAT_BUDGET_USD` and a future `CHAT_EXPIRES_AT` to avoid interactive prompts. Do not commit credentials.
+## The game: your own candidate
 
-To check the deployment bundle without publishing:
+Edit `lab/challenges/bluff.json` (introduce one plausible false promise), then `lab/challenges/legit.json` (a valid paraphrase). Both start valid. Keep `storage: "local"`; change only confirmation. Label before judging and freeze the verifier for both rounds.
 
 ```bash
-pnpm build
-pnpm exec wrangler deploy --config .class-build/wrangler.json --dry-run
+pnpm lab:check --candidate lab/challenges/bluff.json --solution --judge live
+pnpm lab:check --candidate lab/challenges/legit.json --solution --judge live
+# No-key peer-review version:
+pnpm lab:app --candidate lab/challenges/bluff.json
 ```
 
-`.class-build/wrangler.json` is generated from class configuration. Do not edit or commit it. Use `pnpm deploy` for the class site; the root `wrangler.jsonc` remains for the older standalone companion commands.
-
-## Optional attendee chat
-
-Chat appears only when `features.chat` is `true` **and** the server has an `OPENROUTER_API_KEY`. Without a key, the button stays hidden. Availability is checked at runtime, so installing a secret does not require rebuilding the site.
-
-Set `OPENROUTER_MANAGEMENT_API_KEY` in your shell or gitignored `.env`. The older `OPENROUTER_MANAGEMENT_KEY` name also works. Then run `pnpm deploy`, or configure chat on an already-deployed class:
-
-```bash
-pnpm chat:setup
-```
-
-If the Worker already has a key, the script keeps it. Otherwise it asks for a lifetime budget and expiry (defaults: $15 and seven days), creates a capped OpenRouter key, and pipes it directly into Cloudflare secrets. Set `CHAT_BUDGET_USD` and `CHAT_EXPIRES_AT` to supply these values without prompts. An existing local `OPENROUTER_API_KEY` can be installed instead of creating one. `OPENROUTER_MODEL` is optional.
-
-The key itself is never written to disk or printed. A nonsecret receipt is saved to `generated/openrouter-chat-key.json`, ignored by Git. Failed installation revokes the newly created key; rerunning recovers interrupted setup. Missing management credentials leave chat unconfigured without preventing deployment. Expired keys require explicit revocation before replacement:
-
-```bash
-pnpm chat-key revoke --receipt generated/openrouter-chat-key.json
-pnpm chat:setup
-```
-
-For local chat, copy `.dev.vars.example` to `.dev.vars`, set an inference key, and run `pnpm dev`. Development reads `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` from `.env`, `.dev.vars`, or the shell environment (the shell takes precedence). Restart after changing credentials. Without an inference key, chat stays hidden; a management key alone cannot answer questions. To test the Cloudflare Worker instead, run `pnpm preview --env-file .dev.vars`. Disabling chat and redeploying blocks `/api/chat` even if old secrets remain; revoke the key separately when retiring it.
+[Game rules](src/content/lessons/06-red-team.md) · [Paper scorecard](public/materials/bouncer-scorecard.md). No synthetic scores for novel text, no labels sent to the judge, no leaderboard service required.
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm dev` | Edit lessons, glossary, and slides; use local chat |
-| `pnpm slides` | Present or edit slides locally |
-| `pnpm glossary` | Regenerate the reviewable glossary |
-| `pnpm build` | Check types and build the class site |
-| `pnpm preview` | Build and run the local Cloudflare Worker |
-| `pnpm deploy` | Idempotent site deployment and chat setup wizard |
-| `pnpm chat:setup` | Create/install a chat key, or reuse the deployed one |
-| `pnpm test` | Run unit and enabled/disabled build tests |
-| `pnpm typecheck` | Check Astro and TypeScript |
+| `pnpm lab:doctor` | Check Node, Chromium, local listener; report key presence without testing it |
+| `pnpm lab:app --scenario happy` | Manually explore a candidate in a browser |
+| `pnpm lab:app --candidate FILE` | Preview your own candidate for a human round |
+| `pnpm lab:check --candidate FILE --judge live` | Judge your own validated JSON candidate |
+| `pnpm lab:check --scenario NAME [--solution]` | Evaluate one candidate; print its evidence/report path |
+| `pnpm lab:loop --solution [--stubborn]` | Run the bounded worker → verify → repair loop |
+| `pnpm lab:eval --solution [--accept-at 0.8]` | Evaluate single-candidate decisions, not post-repair outcomes |
+| `pnpm lab:eval --solution --suite heldout` | Reveal after choosing a policy; teaching holdout, not secret data |
+| `pnpm lab:replay` | Inspect the recorded real Jev comparison offline |
+| `pnpm lab:test` | Unit, fake-transport, and real-browser reference tests; no model costs |
+| `pnpm test` | Template regression tests |
+| `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
+| `pnpm slides:check` | Check 26 slides, reveals, portraits, interactive loop, round timer, and reduced motion |
 
-Mise aliases are `mise run dev`, `mise run generate`, `mise run deploy`, and `mise run check`.
+Training scenarios: `happy`, `memory-only`, `overpromise`, `polite-lie`, `missing-next-step`, `injection`, `paraphrase`, `uncertain`, `missing-evidence`, `stale-evidence`, `judge-down`.
 
-The older external-companion workflow is still available through `pnpm create-companion`, `pnpm generate <source> --out <file>`, `pnpm dev:companion <file>`, and `pnpm build:workshop <file> --out <directory>`. Its Mise tasks are `companion:generate`, `companion:deploy`, and `companion:chat:setup`.
+The illustrative defaults are `--repair-below 0.2 --accept-at 0.9`. Enforce `0 <= repairBelow < acceptAt <= 1`. With synthetic fixtures, 0.8 admits the polite lie and exits **1** to flag the false accept. This is an expected teaching result, not a setup error.
+
+`lab:check` reports decisions without treating an intentional repair/escalation as a process failure. Exercise checks and regression tests use nonzero exit on failed assertions. `lab:eval` uses nonzero exit for false accepts or missed required escalations.
+
+## Optional live worker
+
+Set `OPENROUTER_API_KEY` and an explicit `WORKER_MODEL` supporting JSON output:
+
+```bash
+pnpm lab:loop --solution --judge live --worker live
+```
+
+The generative model proposes only the small candidate schema. It receives failures on repair; no arbitrary shell execution is granted. Maximum two worker requests and two Jev requests per loop. Provider token budgets, 20-second worker timeouts, and the attempt cap bound the demo. The real worker adapter has fake-transport tests but has **not** been exercised against a live provider here.
+
+## Keep the claims honest
+
+- Hard checks are gates, not points in an average.
+- Missing evidence and model outages are not known product defects.
+- A Noul is the model's probability of yes, not proof or a separate confidence score.
+- A repaired candidate requires fresh observations and judgment.
+- A source hash provides local provenance checks, not isolation from a shell-capable attacker.
+- More escalation is not automatically better: count unnecessary interruption of valid work.
+- The small teaching suite does not establish production calibration or reliability.
+
+Run reports, screenshots, and human-review packets live under ignored `.lab-runs/`. Only fictional data is used. Do not reuse this reporting path for sensitive production evidence without retention/access controls.
+
+## Instructor and site notes
+
+- [Minute-by-minute run-of-show](docs/facilitator.md)
+- [Deck visual direction](DESIGN.md): shared portrait intro, WorkOS-indigo tickets and stamps, click-driven reveals, a step-through repair loop, and opt-in 90-second timers. All assets/fonts are local.
+- [Setup and failure plans](docs/preflight.md)
+- [Verification results and remaining rehearsal work](docs/verification.md)
+- [Transfer worksheet](public/materials/transfer-worksheet.md)
+- [Implementation contract](docs/lab-contract.md)
+- [Template operations](.agents/skills/workshop/SKILL.md)
+
+The glossary is hand-authored/reviewed in `generated/glossary.json`; no implicit AI generation is needed. Cloudflare chat is off. Source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). No site was deployed and no billable key was provisioned. The placeholder hostname intentionally blocks deployment until an actual destination is agreed.

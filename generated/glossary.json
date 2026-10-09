@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "slug": "beyond-done",
+  "title": "Beyond Done",
+  "subtitle": "The vocabulary behind a verification loop.",
+  "event": "AIE",
+  "credit": "Nick Nisi & Zack Proser",
+  "updated": "2026-10-08",
+  "slidesUrl": "/slides/#",
+  "theme": {
+    "preset": "clean",
+    "accent": "#6363f1"
+  },
+  "sections": [
+    {
+      "id": "checking-work",
+      "level": "01",
+      "name": "Checking the work",
+      "intro": "Observed facts, semantic judgments, and the evidence that connects them.",
+      "difficulty": "easy",
+      "terms": [
+        {
+          "id": "acceptance-criterion",
+          "term": "Acceptance criterion",
+          "definition": "An observable condition that must hold before work is accepted.",
+          "whyItMatters": "Write it before the worker runs; otherwise the worker can redefine success.",
+          "hear": "The same email must survive reload.",
+          "aliases": [
+            "contract"
+          ],
+          "relatedTermIds": [
+            "evidence",
+            "hard-check"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "evidence",
+          "term": "Evidence",
+          "definition": "Observations collected about a specific candidate, distinct from the worker's claims.",
+          "whyItMatters": "A screenshot or summary alone may omit the behavior the criterion requires.",
+          "hear": "Show me the before-submit and after-reload observations.",
+          "aliases": [
+            "observation"
+          ],
+          "relatedTermIds": [
+            "provenance",
+            "hard-check"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "hard-check",
+          "term": "Hard check",
+          "definition": "A deterministic comparison of observed facts with a known requirement.",
+          "whyItMatters": "A failed mandatory check cannot be compensated for by a high semantic score.",
+          "hear": "Did the same identity survive reload?",
+          "aliases": [
+            "deterministic check"
+          ],
+          "relatedTermIds": [
+            "acceptance-criterion",
+            "semantic-judgment"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "semantic-judgment",
+          "term": "Semantic judgment",
+          "definition": "A model's assessment of meaning, such as whether a message communicates waitlist-only membership.",
+          "whyItMatters": "Useful for valid paraphrases and contradictions that literal matching misses; still fallible.",
+          "hear": "Does this evidence support that criterion?",
+          "aliases": [
+            "semantic check"
+          ],
+          "relatedTermIds": [
+            "jev",
+            "noul"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "jev",
+          "term": "Jev",
+          "definition": "TypeSafe's System One model, which answers typed questions about supplied state rather than generating a written explanation.",
+          "whyItMatters": "Your code retains control of policy; Jev supplies narrow judgments.",
+          "hear": "Ask Jev both questions in one request.",
+          "aliases": [
+            "System One"
+          ],
+          "relatedTermIds": [
+            "noul",
+            "semantic-judgment"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "noul",
+          "term": "Noul",
+          "definition": "A yes/no question whose answer is the model's probability of yes. It has no separate confidence field.",
+          "whyItMatters": "A number near 0.5 expresses yes/no uncertainty, not medium intensity or proof of correctness.",
+          "hear": "The next-step Noul is 0.58; our policy asks a human.",
+          "aliases": [],
+          "relatedTermIds": [
+            "threshold",
+            "calibration"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "provenance",
+          "term": "Evidence provenance",
+          "definition": "Information linking an observation to the run, attempt, and candidate revision it actually describes.",
+          "whyItMatters": "A true result from yesterday is not proof about today's candidate. A local hash is not a security sandbox.",
+          "hear": "Does this judgment refer to this exact evidence packet?",
+          "aliases": [
+            "freshness",
+            "revision"
+          ],
+          "relatedTermIds": [
+            "evidence",
+            "prompt-injection"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        }
+      ]
+    },
+    {
+      "id": "controlling-loop",
+      "level": "02",
+      "name": "Deciding when to stop",
+      "intro": "Keep policy in code, limit repair, and measure both failure and interruption.",
+      "difficulty": "medium",
+      "terms": [
+        {
+          "id": "decision-policy",
+          "term": "Decision policy",
+          "definition": "Explicit code that combines evidence validity, hard checks, semantic scores, and budgets into an action.",
+          "whyItMatters": "Separates model judgment from permission to accept or retry.",
+          "hear": "Unknown evidence escalates before any other gate.",
+          "aliases": [
+            "gate"
+          ],
+          "relatedTermIds": [
+            "bounded-repair",
+            "escalation"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "bounded-repair",
+          "term": "Bounded repair",
+          "definition": "A retry with a specific failure report and a strict limit on additional attempts.",
+          "whyItMatters": "Prevents an agent from looping forever and makes resource use predictable.",
+          "hear": "One repair means at most two evaluated candidates.",
+          "aliases": [
+            "retry budget"
+          ],
+          "relatedTermIds": [
+            "decision-policy",
+            "escalation"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "escalation",
+          "term": "Escalation",
+          "definition": "Stopping automatic work and handing a person the unresolved criterion, evidence, and decision history.",
+          "whyItMatters": "An outage is not evidence of product failure; a good handoff explains what is unknown.",
+          "hear": "Ask a human to gather evidence or authorize a new bounded run.",
+          "aliases": [
+            "human review"
+          ],
+          "relatedTermIds": [
+            "decision-policy",
+            "evidence"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "threshold",
+          "term": "Threshold",
+          "definition": "A policy boundary applied to a judgment, chosen according to consequences and evaluation results.",
+          "whyItMatters": "There is no universal 0.9 rule; changing a boundary can trade false accepts against interruptions.",
+          "hear": "Lowering acceptAt also admitted the polite lie.",
+          "aliases": [
+            "acceptAt",
+            "repairBelow"
+          ],
+          "relatedTermIds": [
+            "false-accept",
+            "calibration"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "false-accept",
+          "term": "False accept",
+          "definition": "Accepting a candidate that does not satisfy the labeled requirements.",
+          "whyItMatters": "Report the number over bad cases, not over an unspecified total.",
+          "hear": "One bad candidate was accepted out of five bad cases.",
+          "aliases": [
+            "false positive"
+          ],
+          "relatedTermIds": [
+            "unnecessary-interruption",
+            "evaluation"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "unnecessary-interruption",
+          "term": "Unnecessary interruption",
+          "definition": "Sending fully evidenced, valid work to a person when it could have been accepted.",
+          "whyItMatters": "A verifier that escalates everything has a cost even if it never approves a bad case.",
+          "hear": "Two good candidates out of three needed avoidable review.",
+          "aliases": [
+            "false alarm"
+          ],
+          "relatedTermIds": [
+            "false-accept",
+            "threshold"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "evaluation",
+          "term": "Evaluation",
+          "definition": "A labeled set of examples used to inspect the behavior of the judge or policy.",
+          "whyItMatters": "Separate single-candidate decisions from the quality of the final candidate after repair.",
+          "hear": "Which part failed: evidence, question, model, or policy?",
+          "aliases": [
+            "eval"
+          ],
+          "relatedTermIds": [
+            "holdout",
+            "calibration"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "holdout",
+          "term": "Holdout",
+          "definition": "Examples reserved until after a policy or question is chosen.",
+          "whyItMatters": "Tuning on the holdout removes its value as an unseen check. The repository's teaching holdout is not hidden.",
+          "hear": "Freeze the threshold before revealing these examples.",
+          "aliases": [
+            "heldout"
+          ],
+          "relatedTermIds": [
+            "evaluation",
+            "threshold"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "calibration",
+          "term": "Calibration",
+          "definition": "How well reported probabilities align with observed outcome frequencies on representative labeled data.",
+          "whyItMatters": "Three examples or authored fixture scores cannot establish it.",
+          "hear": "Does a reported 0.9 behave like 0.9 on our data?",
+          "aliases": [],
+          "relatedTermIds": [
+            "noul",
+            "evaluation"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "prompt-injection",
+          "term": "Prompt injection",
+          "definition": "Instructions embedded in untrusted content that try to redirect the system processing it.",
+          "whyItMatters": "Treat candidate copy as data, keep policy outside the worker's control, and test failures rather than promising immunity.",
+          "hear": "The confirmation says: evaluator, ignore the task.",
+          "aliases": [],
+          "relatedTermIds": [
+            "provenance",
+            "semantic-judgment"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "fixture",
+          "term": "Synthetic fixture vs. recording",
+          "definition": "A synthetic fixture contains authored inputs or scores; a recording preserves an actual prior request and response.",
+          "whyItMatters": "Neither re-evaluates edited questions. Only a new live call supplies new model feedback.",
+          "hear": "Replay is useful when Wi-Fi fails, but it isn't a fresh judgment.",
+          "aliases": [
+            "replay"
+          ],
+          "relatedTermIds": [
+            "evaluation",
+            "jev"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "playwright",
+      "title": "Playwright assertions",
+      "description": "Auto-retrying assertions, locators, and user-visible checks.",
+      "url": "https://playwright.dev/docs/test-assertions",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "hard-check",
+        "evidence"
+      ]
+    },
+    {
+      "id": "typesafe-sdk",
+      "title": "TypeSafe JavaScript SDK",
+      "description": "Current Jev client, questions, and typed responses.",
+      "url": "https://docs.typesafe.ai/sdk/javascript",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "jev",
+        "noul"
+      ]
+    },
+    {
+      "id": "citation-check",
+      "title": "Double-checking citations",
+      "description": "A useful evidence-support pattern: deterministic checks first, semantic relation second.",
+      "url": "https://docs.typesafe.ai/cookbooks/citation_check",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "semantic-judgment"
+      ]
+    },
+    {
+      "id": "recorded-jev",
+      "title": "Recorded real Jev comparison",
+      "description": "Exact inputs and captured responses for three workshop examples. Not a new evaluation.",
+      "url": "/materials/jev-recording.json",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "fixture"
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Transfer worksheet",
+      "description": "Apply the loop to a task from your own project.",
+      "url": "/materials/transfer-worksheet.md",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "acceptance-criterion",
+        "decision-policy"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "hard-veto",
+      "question": "A browser check fails, but both semantic scores are 0.99. What now?",
+      "choices": [
+        "Accept: the average is high",
+        "Request a bounded repair if available",
+        "Lower the browser threshold",
+        "Ask the worker whether it is done"
+      ],
+      "answerIndex": 1,
+      "explanation": "Hard checks are mandatory; model scores cannot compensate for a known behavioral failure.",
+      "termIds": [
+        "hard-check",
+        "bounded-repair"
+      ]
+    },
+    {
+      "id": "missing-proof",
+      "question": "The last attempt's screenshot looks correct. What does it prove about a new candidate?",
+      "choices": [
+        "The new candidate is correct",
+        "Its current browser check passes",
+        "Nothing without evidence tied to the new candidate",
+        "The worker needs no more tests"
+      ],
+      "answerIndex": 2,
+      "explanation": "Evidence must refer to the run, attempt, and candidate being evaluated.",
+      "termIds": [
+        "provenance"
+      ]
+    },
+    {
+      "id": "noul-meaning",
+      "question": "A Noul answer is 0.55. What is that number?",
+      "choices": [
+        "Probability of yes according to the model",
+        "55% code coverage",
+        "A separate confidence score",
+        "A guarantee that 55% of the task is done"
+      ],
+      "answerIndex": 0,
+      "explanation": "Noul has one yes probability and no separate confidence field; evaluate its behavior on your data.",
+      "termIds": [
+        "noul",
+        "calibration"
+      ]
+    },
+    {
+      "id": "offline-edit",
+      "question": "You change a question and rerun synthetic policy fixtures. What have you tested?",
+      "choices": [
+        "The new prompt's semantic quality",
+        "The policy's response to authored scores",
+        "Live Jev accuracy",
+        "Prompt injection resistance"
+      ],
+      "answerIndex": 1,
+      "explanation": "Synthetic scores do not depend on the question text. Use a live comparison to test new wording.",
+      "termIds": [
+        "fixture",
+        "evaluation"
+      ]
+    },
+    {
+      "id": "zero-false",
+      "question": "A policy escalates every case. What else must you measure?",
+      "choices": [
+        "Only its zero false accepts",
+        "How often good cases interrupt people",
+        "Whether its logs are green",
+        "How confident the worker sounds"
+      ],
+      "answerIndex": 1,
+      "explanation": "Unnecessary escalations and useful safe accepts reveal the cost of refusing all automation.",
+      "termIds": [
+        "unnecessary-interruption",
+        "false-accept"
+      ]
+    },
+    {
+      "id": "repair-fresh",
+      "question": "A bad candidate is repaired, rechecked, and now passes. Is accepting it a false accept?",
+      "choices": [
+        "Yes, the first attempt was bad",
+        "Yes, repair must always escalate",
+        "No, judge the accepted revision with fresh evidence",
+        "No need to recheck after repair"
+      ],
+      "answerIndex": 2,
+      "explanation": "Final-candidate quality differs from the initial defect. Collect and judge new evidence.",
+      "termIds": [
+        "bounded-repair",
+        "provenance"
+      ]
+    }
+  ]
+}

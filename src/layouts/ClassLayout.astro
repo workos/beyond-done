@@ -3,6 +3,7 @@ import { classConfig as config } from "../class-config";
 import BrandMark from "../components/BrandMark.astro";
 import "../styles.css";
 import "../class.css";
+import "../workos.css";
 interface Props { title?: string; description?: string; }
 const { title, description = config.description } = Astro.props;
 const path = Astro.url.pathname;
@@ -30,7 +31,7 @@ const contrast = (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#111111" : "#ffff
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="class-header">
       <nav class="measure class-nav" aria-label="Class navigation">
-        <a class="class-brand" href="/"><BrandMark size={26} label={null} /><span>{config.title}</span></a>
+        <a class="class-brand" href="/" aria-label="Beyond Done workshop home"><BrandMark size={26} label="WorkOS" /><span>Beyond “Done”</span></a>
         <a href="/" aria-current={path === "/" || path.startsWith("/lessons/") ? "page" : undefined}>Lessons</a>
         <a href="/glossary/" aria-current={path.startsWith("/glossary/") ? "page" : undefined}>Glossary</a>
         {config.slides.publish && config.slides.link && <a href="/slides/">Slides</a>}
@@ -43,7 +44,7 @@ const contrast = (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#111111" : "#ffff
     <slot />
     <footer class="class-footer">
       <div class="measure class-footer-inner">
-        <a class="class-footer-brand" href="https://typedvoid.com" rel="noreferrer"><BrandMark size={22} label={null} /><span>typed void</span></a>
+        <a class="class-footer-brand" href="https://workos.com" rel="noreferrer"><img class="workos-logo-light" src="/brand/workos-logo.svg" alt="WorkOS" width="105" height="20" /><img class="workos-logo-dark" src="/brand/workos-logo-white.svg" alt="WorkOS" width="105" height="20" /></a>
         <span>{config.title}{config.credit ? ` · ${config.credit}` : ""}</span>
         {config.links.length > 0 && <nav class="class-links" aria-label="Class links">
           {config.links.map(link => <a href={link.url}>{link.label}</a>)}

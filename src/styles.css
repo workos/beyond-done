@@ -7,8 +7,8 @@
 
 :root {
   color-scheme: light;
-  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
   /* The house palette ("void"): purple-tinted neutrals. Other presets override below. */
   --canvas: #f6f4fa;
@@ -129,7 +129,7 @@ a { color: inherit; }
 .topline span::before { content: ""; display: inline-block; width: 26px; height: 2px; margin: 0 10px 3px 0; background: var(--accent); }
 .topline button, .term-actions button { border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); cursor: pointer; padding: 7px 11px; font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
 .topline button:hover, .term-actions button:hover { border-color: var(--accent); }
-.hero h1 { max-width: 800px; margin: 28px 0 14px; font-size: clamp(44px, 8.5vw, 84px); font-weight: 800; line-height: .96; letter-spacing: -.045em; }
+.hero h1 { max-width: 800px; margin: 28px 0 14px; font-size: clamp(44px, 8.5vw, 84px); font-weight: 800; line-height: .96; letter-spacing: -.035em; }
 .subtitle { max-width: 640px; margin: 0; color: var(--muted); font-size: clamp(18px, 2.8vw, 22px); line-height: 1.5; }
 .promise { max-width: 620px; margin: 22px 0 0; padding-left: 15px; border-left: 3px solid var(--accent); color: var(--muted); line-height: 1.55; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 40px 0 0; border-block: 1px solid var(--border); }

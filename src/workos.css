@@ -1,0 +1,31 @@
+/* WorkOS indigo identity, using the template's layout and theme toggle. */
+:root[data-palette="clean"] {
+  --canvas: #fafafa; --surface: #fff; --surface-2: #f0eff8;
+  --text: #202026; --muted: #62616e; --border: #dedee7; --brand: #6363f1;
+}
+:root[data-theme="dark"][data-palette="clean"] {
+  --canvas: #16151c; --surface: #1e1d26; --surface-2: #292734;
+  --text: #f4f3f8; --muted: #b3b0c1; --border: #393644; --brand: #8e8cf6;
+}
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+.prose :not(pre) > code { overflow-wrap: anywhere; }
+.search { position: relative; }
+.hero { background: none; padding-top: 56px; }
+.hero h1 { font-size: clamp(34px, 6vw, 62px); line-height: 1.08; font-weight: 700; max-width: 20ch; }
+.class-reference { border-left: 1px solid var(--border); border-radius: 8px; }
+.prose blockquote { border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); }
+.class-nav .class-brand { font-size: 18px; }
+.workos-logo-dark { display: none; }
+:root[data-theme="dark"] .workos-logo-light { display: none; }
+:root[data-theme="dark"] .workos-logo-dark { display: block; }
+@media (max-width: 720px) {
+  .term-entry::before { inset-inline: -8px; }
+  .jumpbar-inner { flex-wrap: wrap; padding-block: 12px; }
+  .search { flex-basis: 100%; margin-left: 0; }
+  .search input, .search input:focus { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

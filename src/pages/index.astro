@@ -4,7 +4,7 @@ import ClassLayout from "../layouts/ClassLayout.astro";
 import { classConfig as config } from "../class-config";
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
 // Durations are free text. Only add them up when every lesson states one in minutes or hours.
-const minutes = lessons.map((lesson) => {
+const minutes = lessons.filter((lesson) => !lesson.data.prework).map((lesson) => {
   const match = /(\d+)\s*(min|minute|minutes|h|hr|hrs|hour|hours)\b/i.exec(lesson.data.duration ?? "");
   return match ? Number(match[1]) * (/^h/i.test(match[2]) ? 60 : 1) : NaN;
 });

@@ -1,13 +1,37 @@
 {
-  "slug": "my-class",
-  "title": "Building with AI",
-  "description": "Learn the concepts, try the exercises, and keep the materials for your next project.",
-  "audience": "Developers who want practical experience building with AI.",
-  "event": "Class materials",
-  "credit": "Your name",
-  "links": [],
+  "slug": "beyond-done",
+  "title": "Beyond “Done”: Building Verification Loops for AI Agents",
+  "description": "Build a loop that checks an agent’s work, catches unsupported claims, and knows when to repair or ask for help. Then try to fool it.",
+  "audience": "JS/TS developers. No Playwright or Jev experience required.",
+  "event": "AIE · 60-minute hands-on workshop",
+  "credit": "Nick Nisi & Zack Proser",
+  "links": [
+    {
+      "label": "WorkOS",
+      "url": "https://workos.com"
+    },
+    {
+      "label": "Nick Nisi",
+      "url": "https://nicknisi.com"
+    },
+    {
+      "label": "Take-home worksheet",
+      "url": "/materials/transfer-worksheet.md"
+    }
+  ],
   "hostname": "my-class.typevoid.com",
-  "theme": { "preset": "void", "accent": "#724bb7" },
-  "slides": { "publish": true, "link": true },
-  "features": { "quiz": false, "demos": false, "progress": false, "chat": true }
+  "theme": {
+    "preset": "clean",
+    "accent": "#6363f1"
+  },
+  "slides": {
+    "publish": true,
+    "link": true
+  },
+  "features": {
+    "quiz": true,
+    "demos": false,
+    "progress": true,
+    "chat": false
+  }
 }
