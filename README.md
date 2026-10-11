@@ -135,10 +135,12 @@ Each start uses a new port. A new port is a new browser origin, so localStorage 
 | `pnpm lab:eval --solution [--accept-at 0.8]` | Evaluate single-candidate decisions, not post-repair outcomes |
 | `pnpm lab:eval --solution --suite heldout` | Reveal after choosing a policy; teaching holdout, not secret data |
 | `pnpm lab:replay` | Inspect the recorded real Jev comparison offline |
-| `pnpm lab:test` | Unit, fake-transport, and real-browser reference tests; no model costs |
-| `pnpm test` | Template regression tests |
+| `pnpm lab:test` | **Required.** Lab tests (`lab/*.test.ts`): unit, fake-transport, and real-browser reference tests; no model costs |
+| `pnpm test` | **Required.** Template and script regression tests (`scripts/*.test.ts`) |
 | `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
 | `pnpm slides:check` | Check 26 slides, reveals, portraits, interactive loop, round timer, and reduced motion |
+
+**Run both `pnpm test` and `pnpm lab:test`.** Each covers only its own folder: `pnpm test` runs the script tests and `pnpm lab:test` runs the lab tests. Passing one says nothing about the other.
 
 Training scenarios: `happy`, `memory-only`, `overpromise`, `polite-lie`, `missing-next-step`, `injection`, `paraphrase`, `uncertain`, `missing-evidence`, `stale-evidence`, `judge-down`.
 
