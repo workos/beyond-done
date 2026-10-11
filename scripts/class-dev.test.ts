@@ -5,6 +5,7 @@ import { cp, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
+import { z } from "zod";
 import { classConfig } from "../src/class-config.js";
 
 test("one dev site serves unlinked slides and the chat API, and respects disabled features", { timeout: 90_000 }, async () => {
@@ -48,6 +49,11 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
         assert.equal(slides.status, enabled ? 200 : 404);
         if (enabled) {
           assert.match(await slides.text(), /@slidev/);
+          const notes = await fetch(`${url}/__slidev/slides/1.json`);
+          assert.equal(notes.status, 200, "Presenter notes endpoint");
+          const slide = z.object({ note: z.string(), noteHTML: z.string() }).parse(await notes.json());
+          assert.match(slide.note, /Teaching expectations:/);
+          assert.match(slide.noteHTML, /<li>/);
           for (const path of ["/slides/@vite/client", "/slides/@slidev/setups/main"]) {
             const response = await fetch(`${url}${path}`);
             assert.equal(response.status, 200, path);
