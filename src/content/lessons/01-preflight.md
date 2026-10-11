@@ -14,10 +14,29 @@ You do not need a coding-agent subscription. The default worker is scripted; a l
 
 ## Install and check
 
+The source is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). It is currently private: confirm your GitHub account has access before class. A 404 while signed in can mean missing access; ask an instructor before spending time on installation.
+
+Clone it with Git and your usual GitHub authentication (or use `gh repo clone nicknisi/beyond-done` if you have GitHub CLI):
+
+```bash
+git clone https://github.com/nicknisi/beyond-done.git
+cd beyond-done
+```
+
+If using mise, review the repository's `mise.toml`, then trust this checkout and install its pinned tools:
+
+```bash
+mise trust
+mise install
+mise exec -- node --version
+mise exec -- pnpm --version
+```
+
+Activate mise in your shell as usual, or prefix the commands below with `mise exec --`. If Node 24 and pnpm 12.4.1 are already installed, skip the mise steps.
+
 From the repository root:
 
 ```bash
-mise install                            # optional: installs pinned Node/pnpm
 pnpm install
 pnpm exec playwright install chromium
 pnpm lab:doctor
@@ -55,7 +74,8 @@ Use the URLs printed by the commands; do not assume a port.
 
 | Symptom | Next action |
 | --- | --- |
-| Wrong Node/pnpm | Run `mise install`, reopen shell, check versions. |
+| mise says the config is not trusted | Review `mise.toml`, then run `mise trust` in this checkout before `mise install`. |
+| Wrong Node/pnpm | Run `mise install` after trusting the config; activate mise in your shell or use `mise exec -- pnpm …`. Check both versions. |
 | Chromium cannot launch on Linux | Install the system dependencies as above. |
 | Download blocked | Use an approved network or pair with someone whose setup works. |
 | `lab:exercise` fails | Expected until that exercise is implemented; use `--solution` to check the reference. |

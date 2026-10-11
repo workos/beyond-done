@@ -4,7 +4,7 @@ This is the build-time coordination reference. The README and lessons are the at
 
 ## Audience, identity, scope
 
-JS/TS developers; no Playwright or Jev experience assumed. AIE, Nick Nisi & Zack Proser. User explicitly requested **WorkOS logo and branding**, not Typed Void. Local repository `beyond-done`, adapted from nicknisi/template-workshop. No remote repo URL, event date, deployment, or public hostname has been agreed. Do not invent them.
+JS/TS developers; no Playwright or Jev experience assumed. AIE, Nick Nisi & Zack Proser. User explicitly requested **WorkOS logo and branding**, not Typed Void. Repository [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done), currently private, adapted from nicknisi/template-workshop. Attendee distribution, deployment, and public hostname still need agreement. Do not invent them.
 
 ## The task
 
