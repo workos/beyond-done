@@ -33,7 +33,7 @@ export default function classDev(): Plugin {
         if (path === "/slides") {
           response.writeHead(302, { Location: "/slides/" });
           response.end();
-        } else if (path?.startsWith("/slides/") || path?.startsWith("/@server-reactive/") || path?.startsWith("/@server-ref/")) {
+        } else if (path?.startsWith("/slides/") || path?.startsWith("/__slidev/") || path?.startsWith("/@server-reactive/") || path?.startsWith("/@server-ref/")) {
           slides.middlewares(request, response, next);
         } else next();
       });
