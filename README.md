@@ -22,6 +22,8 @@ This is a **browser-local prototype**, not real organizer registration, email de
 
 Node 24 and pnpm 12.4.1 are pinned in `mise.toml`. Installation happens **before** the workshop hour.
 
+If using mise in a fresh clone, review `mise.toml`, run `mise trust`, then `mise install`. Activate mise in your shell or use `mise exec -- pnpm …` for the commands below. Check `node --version` and `pnpm --version` before installing dependencies.
+
 This repository is private; your GitHub account must have access.
 
 ```bash

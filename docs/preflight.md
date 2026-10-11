@@ -38,7 +38,7 @@ Nick and Zack share the intro slide. Confirm the supplied existing portraits are
 
 Print or share `public/materials/bouncer-scorecard.md`. Test both `lab/challenges/*.json` starters and the `--candidate` CLI route. Budget no more than two live calls per pair. Without attendee keys, use human peer review for the room and one selected live example on the projector.
 
-Test the slide 4 reload illustration, slide 16 click-driven loop + stubborn toggle, and slides 18/20 timers. Timers start manually, pause on navigation, and require no backend. Arrow keys reveal teaching steps; control buttons do not advance the slide. The staged illustrations are not live model calls.
+Test the slide 4 reload illustration, slide 19 click-driven loop + stubborn toggle, and both Bouncer vs. Bluffer round timers. Timers start manually, pause on navigation, and require no backend. Arrow keys reveal teaching steps; control buttons do not advance the slide. The staged illustrations are not live model calls.
 
 ## Failure plans
 
@@ -53,6 +53,6 @@ Test the slide 4 reload illustration, slide 16 click-driven loop + stubborn togg
 
 ## Before public release
 
-Pick the actual repo URL and distribution path, event details, and deployment destination with Nick. The repository is private at `github.com/nicknisi/beyond-done` and is cloned with `gh repo clone nicknisi/beyond-done` (GitHub access required). Do not publish `.env`, private examples, or `.lab-runs/`. The public Jev recording contains only fictional task text and responses.
+The source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done); clone it with `gh repo clone nicknisi/beyond-done` after confirming GitHub access. Confirm how attendees will receive access or an agreed source bundle, and test that path with an attendee account before class. A working instructor clone does not prove attendee access. Agree the event details and deployment destination with Nick; `class.config.json` still has a placeholder hostname. Do not publish `.env`, private examples, or `.lab-runs/`. The public Jev recording contains only fictional task text and responses.
 
 The shipped tests do not prove every Windows/Linux setup or any production deployment. Rehearse on the same machine/network used on stage and time a full learner pass.

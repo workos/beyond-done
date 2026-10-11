@@ -153,4 +153,4 @@ If thirty minutes disappear, this is no longer the promised hands-on workshop: e
 
 ## Closing handoff
 
-[Transfer worksheet](../public/materials/transfer-worksheet.md), [take-home reference](take-home.md), and the code stay with attendees. Don't announce an uncreated remote repository or deployment. Before publication, agree the actual distribution URL.
+[Transfer worksheet](../public/materials/transfer-worksheet.md), [take-home reference](take-home.md), and the code stay with attendees. The source repository is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done), currently private. Confirm attendee access or an agreed source bundle before sharing it. Announce a hosted materials URL only after it has been deployed and checked.
