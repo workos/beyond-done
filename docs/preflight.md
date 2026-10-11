@@ -53,6 +53,6 @@ Test the slide 4 reload illustration, slide 16 click-driven loop + stubborn togg
 
 ## Before public release
 
-Pick the actual repo URL and distribution path, event details, and deployment destination with Nick. There is no remote created yet. Do not publish `.env`, private examples, or `.lab-runs/`. The public Jev recording contains only fictional task text and responses.
+Pick the actual repo URL and distribution path, event details, and deployment destination with Nick. The repository is private at `github.com/nicknisi/beyond-done` and is cloned with `gh repo clone nicknisi/beyond-done` (GitHub access required). Do not publish `.env`, private examples, or `.lab-runs/`. The public Jev recording contains only fictional task text and responses.
 
 The shipped tests do not prove every Windows/Linux setup or any production deployment. Rehearse on the same machine/network used on stage and time a full learner pass.

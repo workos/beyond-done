@@ -1,12 +1,12 @@
 import { expect, type Page } from "@playwright/test";
-import type { Observation } from "../types.js";
+import { TEST_EMAIL, type Observation } from "../types.js";
 
 export async function observe(page: Page): Promise<Observation> {
   const status = page.getByTestId("status");
   const email = page.getByTestId("email");
   const confirmation = page.getByRole("status");
   const initialStatus = await status.innerText();
-  await page.getByLabel("Email", { exact: true }).fill("ada@example.test");
+  await page.getByLabel("Email", { exact: true }).fill(TEST_EMAIL);
   await page.getByRole("button", { name: "Join waitlist", exact: true }).click();
   // Wait for the interaction to finish, not for a fixed number of milliseconds.
   await expect(status).toHaveText("waitlisted");
