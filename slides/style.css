@@ -76,8 +76,9 @@
 .receipt-list li { display: flex; align-items: center; gap: 14px; font-size: 24px; padding-block: 12px; border-bottom: 1px solid #dcd9ed; }
 .receipt-list .check { border-radius: 50%; background: var(--snack-lime); color: #293622; width: 31px; height: 31px; display: inline-grid; place-items: center; flex: none; font-size: 20px; }
 .vote-options { display: flex; gap: 15px; margin-top: 25px; }
-.vote-options span { font-size: 23px; border: 1px solid currentColor; padding: 12px 21px; border-radius: 6px; }
-.vote-options span:first-child { background: var(--snack-lime); color: #243025; border-color: transparent; transform: rotate(-3deg); }
+.vote-options span { font-size: 23px; padding: 12px 21px; border-radius: 6px; background: var(--deck-ink); color: var(--deck-bg); }
+.vote-options span:first-child { transform: rotate(-2deg); }
+.vote-options span:last-child { transform: rotate(2deg); }
 .reload-demo { width: 100%; }
 .mini-browser { background: #fff; border: 1px solid #cbc8e1; border-radius: 10px; overflow: hidden; color: #242238; }
 .browser-bar { display: flex; gap: 14px; justify-content: space-between; padding: 13px 16px; background: #efedf8; font-size: 11px; color: #625c7a; }
