@@ -27,16 +27,17 @@
 .slidev-layout strong { color: inherit; }
 .slidev-layout code { font-family: "JetBrains Mono Variable", monospace; font-size: .78em; }
 .slidev-layout pre { border-radius: 8px; padding: 16px !important; box-shadow: none !important; }
-.slidev-layout pre code { font-size: 13px; line-height: 1.65; }
+.slidev-layout pre code { font-size: 18px; line-height: 1.5; }
 .slidev-layout table { font-size: 18px; }
 .slidev-layout th { font-weight: 650; }
 .slidev-layout li { margin: .35em 0; }
-.slidev-layout .footnote { position: absolute; bottom: 22px; left: 56px; max-width: 760px; font-size: 12px; color: var(--deck-muted); margin: 0; }
+.slidev-layout .footnote { position: absolute; bottom: 22px; left: 56px; max-width: 790px; font-size: 18px; line-height: 1.35; color: var(--deck-muted); margin: 0; }
 .slidev-layout .lede { font-size: 24px; max-width: 680px; line-height: 1.45; }
 .slidev-layout p.lede, .slidev-layout p.subtitle, .slidev-layout p.build-description { color: var(--deck-ink); opacity: 1; }
-.slidev-layout .aside-note { font-size: 15px; color: var(--deck-muted); }
+.slidev-layout .aside-note { font-size: 17px; color: var(--deck-muted); }
+.slidev-layout .aside-note code, .slidev-layout .comparison p code, .slidev-layout .illustration-label code { font-size: 16px; }
 .slidev-layout .accent { color: #5040c9; }
-.slidev-layout .small-label { font-size: 14px; font-weight: 650; margin-bottom: 15px; }
+.slidev-layout .small-label { font-size: 16px; font-weight: 650; margin-bottom: 15px; }
 .slidev-layout .display { font-size: 82px; font-weight: 750; line-height: .96; letter-spacing: -.035em; }
 .slidev-layout .big-word { font-size: 94px; font-weight: 750; line-height: 1; letter-spacing: -.035em; }
 .slidev-layout.indigo { --deck-bg: #5552dd; --deck-ink: #fff; --deck-muted: #e1e0ff; --deck-logo: url("/brand/workos-logo-white.svg"); }
@@ -55,10 +56,10 @@
 .ticket { position: relative; background: #fff; color: var(--snack-ink); padding: 28px; border-radius: 10px; }
 .ticket::before, .ticket::after { content: ""; position: absolute; width: 24px; height: 24px; border-radius: 50%; background: var(--deck-bg); top: 64%; }
 .ticket::before { left: -12px; } .ticket::after { right: -12px; }
-.ticket .ticket-top { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 650; border-bottom: 1px dashed #c7c3db; padding-bottom: 14px; margin-bottom: 18px; }
+.ticket .ticket-top { display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 650; border-bottom: 1px dashed #c7c3db; padding-bottom: 14px; margin-bottom: 18px; }
 .ticket-title { font-size: 48px; font-weight: 750; letter-spacing: -.03em; line-height: 1; margin-bottom: 18px; }
 .ticket p { font-size: 17px; }
-.ticket .ticket-bottom { margin-top: 30px; padding-top: 18px; border-top: 1px dashed #c7c3db; font-size: 12px; display: flex; justify-content: space-between; }
+.ticket .ticket-bottom { margin-top: 30px; padding-top: 18px; border-top: 1px dashed #c7c3db; font-size: 16px; display: flex; justify-content: space-between; }
 .ticket .ticket-code { font-family: "JetBrains Mono Variable", monospace; letter-spacing: .07em; }
 .stamp { display: inline-block; padding: 7px 15px; font-family: "Bricolage Grotesque Variable", sans-serif; font-size: 28px; line-height: 1; font-weight: 750; text-transform: uppercase; transform: rotate(-9deg); background: var(--snack-coral); color: #302238; }
 .hero-ticket .stamp { position: absolute; z-index: 1; right: 12px; bottom: 72px; font-size: 31px; animation: stamp-in .5s cubic-bezier(.16,1,.3,1) both; }
@@ -70,28 +71,29 @@
 .host:nth-child(2) .host-photo { transform: rotate(3deg); }
 .host h2 { font-size: 33px; margin-bottom: 9px; }
 .host p { font-size: 16px; color: var(--deck-muted); }
-.host .host-label { font-size: 13px; color: var(--deck-ink); padding: 5px 9px; background: var(--snack-lime); display: inline-block; transform: rotate(-3deg); }
+.host .host-label { font-size: 16px; color: var(--deck-ink); padding: 5px 9px; background: var(--snack-lime); display: inline-block; transform: rotate(-3deg); }
 .people-caption { margin-top: 42px !important; font-size: 20px; }
 .slidev-layout .receipt-list { list-style: none; padding: 0; margin: 24px 0; }
 .receipt-list li { display: flex; align-items: center; gap: 14px; font-size: 24px; padding-block: 12px; border-bottom: 1px solid #dcd9ed; }
 .receipt-list .check { border-radius: 50%; background: var(--snack-lime); color: #293622; width: 31px; height: 31px; display: inline-grid; place-items: center; flex: none; font-size: 20px; }
 .vote-options { display: flex; gap: 15px; margin-top: 25px; }
-.vote-options span { font-size: 23px; border: 1px solid currentColor; padding: 12px 21px; border-radius: 6px; }
-.vote-options span:first-child { background: var(--snack-lime); color: #243025; border-color: transparent; transform: rotate(-3deg); }
+.vote-options span { font-size: 23px; padding: 12px 21px; border-radius: 6px; background: var(--deck-ink); color: var(--deck-bg); }
+.vote-options span:first-child { transform: rotate(-2deg); }
+.vote-options span:last-child { transform: rotate(2deg); }
 .reload-demo { width: 100%; }
 .mini-browser { background: #fff; border: 1px solid #cbc8e1; border-radius: 10px; overflow: hidden; color: #242238; }
 .browser-bar { display: flex; gap: 14px; justify-content: space-between; padding: 13px 16px; background: #efedf8; font-size: 11px; color: #625c7a; }
 .browser-lights { letter-spacing: 4px; color: #858099; }
 .browser-content { padding: 24px; }
-.tiny-label { font-size: 12px; color: #6f6885; margin-bottom: 15px; }
+.tiny-label { font-size: 16px; color: #6f6885; margin-bottom: 15px; }
 .request-state { min-height: 132px; }
 .request-state strong { font-size: 24px; display: block; margin-top: 15px; }
-.request-state p { font-size: 14px; margin-top: 8px; }
-.demo-button, .timer-actions button { appearance: none; font: 600 14px/1.2 ui-sans-serif, system-ui, sans-serif; min-height: 38px; padding: 10px 14px; background: #5040c9; color: #fff; border: 0; border-radius: 5px; cursor: pointer; }
+.request-state p { font-size: 16px; margin-top: 8px; }
+.demo-button, .timer-actions button { appearance: none; font: 600 16px/1.2 ui-sans-serif, system-ui, sans-serif; min-height: 38px; padding: 10px 14px; background: #5040c9; color: #fff; border: 0; border-radius: 5px; cursor: pointer; }
 .demo-button:hover, .timer-actions button:hover { background: #3c2baf; }
 button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-offset: 4px; }
-.illustration-label { font-size: 11px !important; margin: 10px 0 0 !important; color: var(--deck-muted); }
-.status-lozenge { display: inline-block; font-size: 13px; font-weight: 700; padding: 5px 11px; border-radius: 4px; background: #e8e5f7; color: #4d406e; }
+.illustration-label { font-size: 16px !important; line-height: 1.4; margin: 10px 0 0 !important; color: var(--deck-muted); }
+.status-lozenge { display: inline-block; font-size: 16px; font-weight: 700; padding: 5px 11px; border-radius: 4px; background: #e8e5f7; color: #4d406e; }
 .status-lozenge.good { background: #d9ff82; color: #283a17; }
 .status-lozenge.bad { background: #ffd0c4; color: #852c1c; }
 .status-lozenge.warn { background: #fff0b3; color: #684c09; }
@@ -103,9 +105,27 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .build-stage .exercise-number { font-size: 17px; font-weight: 650; color: var(--deck-muted); margin-bottom: 16px; }
 .build-stage .build-description { font-size: 22px; line-height: 1.45; }
 .build-stage ul { padding-left: 22px; font-size: 19px; }
-.command { background: #eae7fa; border-radius: 6px; padding: 13px 16px; margin-top: 22px; color: #3b2f64; font: 14px/1.5 "JetBrains Mono Variable", monospace; overflow-wrap: anywhere; }
+.slidev-layout.observe-slide { padding-top: 28px; }
+.slidev-layout.observe-slide pre { padding: 12px 16px !important; }
+.observe-head { display: grid; grid-template-columns: auto auto; justify-content: space-between; gap: 16px; align-items: start; }
+.slidev-layout .observe-head h1 { margin: 0; }
+.observe-head .exercise-number { font-size: 17px; font-weight: 650; color: var(--deck-muted); margin-bottom: 6px; }
+.observe-head .command { margin-top: 0; }
+.slidev-layout .observe-head .aside-note { margin: 6px 0 0; line-height: 1.35; }
+.observe-caption-row { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin: 8px 0 6px; }
+.slidev-layout .observe-caption-row p { margin: 0; }
+.slidev-layout .observe-caption-row .build-description { font-size: 22px; line-height: 1.45; }
+.slidev-layout.observe-slide .footnote { bottom: 14px; }
+.command { background: #eae7fa; border-radius: 6px; padding: 13px 16px; margin-top: 22px; color: #3b2f64; font: 20px/1.4 "JetBrains Mono Variable", monospace; overflow-wrap: anywhere; }
+.slidev-layout:has(.evidence-flow) { padding-top: 24px; }
+.slidev-layout:has(.evidence-flow) .footnote, .slidev-layout:has(.repair-receipt) .footnote { bottom: 14px; }
+.slidev-layout:has(.evidence-flow) h1 { margin-bottom: 16px; }
+.slidev-layout:has(.repair-receipt) { padding-top: 24px; }
+.slidev-layout:has(.repair-receipt) .small-label { margin-bottom: 8px; }
+.slidev-layout:has(.repair-receipt) h1 { margin-bottom: 14px; }
+.slidev-layout:has(.repair-receipt) .command { margin-top: 12px; padding-block: 10px; }
 .night .command, .indigo .command { background: #ffffff14; color: #f2f0ff; }
-.code-caption { font: 12px "JetBrains Mono Variable", monospace; margin-bottom: 12px; color: var(--deck-muted); }
+.code-caption { font: 16px "JetBrains Mono Variable", monospace; margin-bottom: 12px; color: var(--deck-muted); }
 .evidence-strip { display: flex; gap: 12px; margin-block: 30px; align-items: center; }
 .evidence-cell { flex: 1; padding: 22px 17px; border: 1px solid #ccc7e1; border-radius: 7px; font-size: 18px; background: white; color: #29233a; }
 .evidence-cell strong { display: block; font-size: 28px; margin: 8px 0; }
@@ -116,33 +136,40 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .comparison > div:first-child { background: #e5e2ff; }
 .comparison > div:last-child { background: #ffdcd2; }
 .comparison blockquote { border: 0; margin: 0; padding: 0; font-size: 28px; font-family: "Bricolage Grotesque Variable", sans-serif; font-weight: 600; line-height: 1.3; }
-.comparison .comparison-label { margin-top: 20px; font-size: 14px; }
+.comparison .comparison-label { margin-top: 20px; font-size: 18px; }
 .question-pair { display: grid; gap: 20px; margin-top: 26px; }
 .question-pair > div { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 22px; border-bottom: 1px solid #d7d3e7; padding-bottom: 20px; }
 .question-pair .question-key { font: 17px "JetBrains Mono Variable", monospace; color: #5040c9; }
 .question-pair p { font-size: 23px; margin: 0; }
 .probability-scale { display: flex; position: relative; margin: 48px 0 35px; padding: 22px 24px; justify-content: space-between; background: #e8e5fb; border-radius: 6px; color: #3a315d; font: 22px "JetBrains Mono Variable", monospace; }
 .probability-scale .middle { font-weight: 700; }
-.probability-scale .marker { position: absolute; bottom: -15px; left: 49%; color: #e17963; font-size: 40px; }
+.probability-scale .marker { position: absolute; bottom: -15px; left: 55%; transform: translateX(-50%); color: #e17963; font-size: 40px; }
 .policy-row { display: grid; grid-template-columns: 1fr 32px 145px; gap: 12px; align-items: center; font-size: 20px; padding: 15px 0; border-bottom: 1px solid #d5d0e7; }
 .policy-row strong { font-size: 22px; }
-.policy-row code { font-size: 15px; }
+.slidev-layout .policy-row code { font-size: 18px; }
 .slidev-layout .loop-track { display: flex; list-style: none; gap: 8px; padding: 0; margin: 14px 0 !important; }
-.slidev-layout .loop-track li { list-style: none; flex: 1; font-size: 13px; color: #70687f; text-align: center; padding: 8px 0; transition: color .2s; }
+.slidev-layout .loop-track li { list-style: none; flex: 1; font-size: 16px; color: #70687f; text-align: center; padding: 8px 0; transition: color .2s; }
 .loop-track li span { display: block; margin: 0 auto 9px; border-radius: 50%; width: 30px; height: 30px; background: #e6e3ef; line-height: 30px; font-weight: 650; transition: background .2s; }
 .slidev-layout .loop-track .current { color: #5040c9; font-weight: 700; }
 .loop-track .current span { color: white; background: #6363f1; }
 .loop-track .visited span { background: #d9ff82; color: #283a17; }
 .loop-receipt { background: white; border-radius: 7px; padding: 18px 24px; min-height: 165px; border: 1px solid #dad5e9; }
-.loop-receipt .receipt-meta { color: #6d647e; font-size: 13px; margin-bottom: 12px; }
+.loop-receipt .receipt-meta { color: #6d647e; font-size: 16px; margin-bottom: 12px; }
 .loop-receipt h2 { font-size: 31px; margin-bottom: 12px; }
 .loop-receipt p { font-size: 16px; }
-.loop-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 17px; font-size: 13px; color: #6b637e; }
+.loop-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 17px; font-size: 16px; color: #6b637e; }
+.loop-controls small { font-size: 16px; }
 .loop-controls label { color: #382e53; display: flex; gap: 7px; align-items: center; cursor: pointer; }
 .role-match { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; gap: 14px; margin: 30px 0; }
 .role-match .role-name { font-family: "Bricolage Grotesque Variable", sans-serif; font-size: 57px; line-height: 1.05; font-weight: 750; }
 .role-match p { font-size: 19px; margin: 13px 0 0; }
 .role-match .versus { text-align: center; font-size: 24px; color: var(--deck-muted); }
+.trial-brief { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.slidev-layout .trial-brief .lede { margin: 0; }
+.game-rules { border-left: 4px solid var(--snack-coral); padding: 2px 0 2px 18px; margin-top: 18px; }
+.trial-brief .game-rules { margin-top: 4px; }
+.slidev-layout .game-rules p { font-size: 20px; font-weight: 650; line-height: 1.35; margin: 0 0 10px; }
+.slidev-layout .game-rules p:last-child { margin-bottom: 0; }
 .challenge-goal { display: flex; gap: 14px; align-items: center; margin-top: 24px; font-size: 18px; }
 .challenge-goal span { font-size: 35px; }
 .round-timer { text-align: center; }
@@ -151,7 +178,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .timer-face.finished { color: #a9432d; }
 .timer-actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
 .timer-actions .quiet-button { background: transparent; color: #5040c9; border: 1px solid #aaa1c9; }
-.round-timer p { font-size: 15px; margin-top: 18px; color: var(--deck-muted); }
+.round-timer p { font-size: 18px; margin-top: 18px; color: var(--deck-muted); }
 .score-receipt { background: white; color: #282337; padding: 24px 28px; transform: rotate(2deg); }
 .score-line { display: flex; justify-content: space-between; gap: 25px; align-items: center; padding: 12px 0; border-bottom: 1px dashed #c5bed6; font-size: 19px; }
 .score-line strong { font: 650 35px "Bricolage Grotesque Variable", sans-serif; }
@@ -175,7 +202,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .architecture-lanes > div:last-child { background: #e6f3d4; }
 .architecture-lanes h2 { font-size: 26px; margin: 14px 0; }
 .architecture-lanes p { font-size: 19px; margin: 0; }
-.lane-label { font: 12px "JetBrains Mono Variable", monospace; color: #635878; }
+.lane-label { font: 16px "JetBrains Mono Variable", monospace; color: #635878; }
 .closing-resources { display: grid; grid-template-columns: 1fr 200px; gap: 28px; align-items: center; }
 .receipt-enter-active, .receipt-leave-active { transition: opacity .18s, transform .18s; }
 .receipt-enter-from { opacity: 0; transform: translateY(10px); }
@@ -187,5 +214,12 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
   .slidev-vclick-hidden { transform: none; }
 }
 
-.repo-setup.command { font-size: 12px; }
+.repo-setup.command { font-size: 18px; }
 .slidev-layout.indigo p code, .slidev-layout.night p code { color: inherit; background: #ffffff14; }
+
+/* Size-only overrides for text inside shared components (ResourceQr, IncidentOpener, EvidenceFlow, RepairReceipt, LoopMachine). Drop this block to restore the components' own sizes. */
+.slidev-layout div.resource-qr p, .slidev-layout div.resource-qr.compact p { font-size: 16px; }
+.slidev-layout .incident-opener .incident-kicker, .slidev-layout .incident-opener .incident-quote a, .slidev-layout .incident-opener .incident-context, .slidev-layout .incident-opener .incident-request, .slidev-layout .incident-opener .volume-heading { font-size: 16px; }
+.slidev-layout .evidence-flow .proof-facts small, .slidev-layout .evidence-flow .proof-identity, .slidev-layout .evidence-flow .proof-failure, .slidev-layout .evidence-flow .proof-identity code { font-size: 16px; }
+.slidev-layout .repair-receipt dt, .slidev-layout .repair-receipt .repair-attempt h2 span { font-size: 16px; }
+.slidev-layout .loop-machine .revision-trail, .slidev-layout .loop-machine .revision-trail code { font-size: 16px; }

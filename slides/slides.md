@@ -232,31 +232,27 @@ No hidden security claim: a worker with arbitrary shell access would need real i
 -->
 
 ---
+class: observe-slide
 ---
 
-<div class="build-stage">
-<div><div class="exercise-number">Build 1 · 10–21 minutes</div><h1>Catch the<br>vanishing act.</h1><p class="build-description">Fresh browser → submit → read → reload → read again.</p><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
-<div><p class="code-caption">lab/exercises/observe.ts</p>
+<div class="observe-head">
+<div><div class="exercise-number">Build 1 · 10–21 minutes</div><h1>Catch the vanishing act.</h1></div>
+<div><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
+</div>
+<div class="observe-caption-row"><p class="build-description">Fresh browser → submit → read → reload → read again.</p><p class="code-caption">lab/exercises/observe.ts</p></div>
 
 ```ts
 const status = page.getByTestId("status");
-const message = page.getByRole("status");
-
-// Observe before and after submission.
-await page.getByLabel("Email").fill(
-  "ada@example.test"
-);
-await page.getByRole("button", {
-  name: "Join waitlist",
-}).click();
-
-// Capture the submitted state.
+const email = page.getByTestId("email");
+const confirmation = page.getByRole("status");
+await page.getByLabel("Email").fill("ada@example.test");
+await page.getByRole("button", { name: "Join waitlist" }).click();
+await expect(status).toHaveText("waitlisted");
+const submitted = await status.innerText();
 await page.reload();
-// Capture the reloaded state. Compare.
+// Your turn: read status, email and confirmation again.
+// An empty value is a finding, not an error.
 ```
-
-</div>
-</div>
 <p class="footnote">Lesson 03 · lab/exercises/observe.ts · Check: browser exercise: PASS · Inspect observations in report.json.</p>
 
 <!--
@@ -338,7 +334,7 @@ Anthropic's planner/generator/evaluator harness is one broader example. Our clas
 
 <div class="exercise-number small-label">Build 2 · 23–33 minutes</div>
 
-# Two questions.<br>No vibes check.
+# Two questions. No vibes check.
 
 <div class="question-pair">
 <div><span class="question-key">honest</span><p>Waitlist membership, no guaranteed seat,<br>and no contradictory promise?</p></div>
@@ -369,7 +365,7 @@ class: night
 <div class="probability-scale"><span>0.0</span><span class="middle">0.5</span><span>1.0</span><span class="marker">▴</span></div>
 <p class="lede">The model reports a probability of “yes.”</p>
 <p class="lede" v-click>Useful signal.<br><span class="accent">Not proof. Not permission.</span></p>
-<p class="footnote">No separate confidence field. Check calibration on representative data—not on these few teaching cases.</p>
+<p class="footnote">No separate confidence field.</p>
 
 <!--
 Teaching expectations:
@@ -379,6 +375,7 @@ Teaching expectations:
 
 During the questions build, give this 30-second explanation while people think.
 Near .5 means yes/no uncertainty, not medium-quality copy.
+Moved from footnote: Check calibration on representative data—not on these few teaching cases.
 -->
 
 ---
@@ -397,7 +394,7 @@ pnpm lab:check --scenario overpromise --judge live
 <div><h2>Your questions</h2><p>No <code>--solution</code> flag.<br>Inspect raw scores—not the unfinished policy.</p></div>
 <div><h2>No key / no Wi-Fi?</h2><p>Watch the co-host’s live run.<br>Or <code>pnpm lab:replay</code>, clearly labeled.</p></div>
 </div>
-<p class="footnote">Recorded ≠ newly evaluated. Synthetic fixtures ignore your question wording entirely.</p>
+<p class="footnote">Recorded ≠ newly evaluated.</p>
 
 <!--
 Teaching expectations:
@@ -409,6 +406,7 @@ Teaching expectations:
 28:00–33:00. One host drives, the other asks the room to predict which criterion drops.
 Instructor uses --solution for the reference. Learners' still-unfinished policy escalates; focus on probabilities.
 15-second request cap; then explicit replay fallback. Do not waste the room waiting on Wi-Fi.
+Moved from footnote: Synthetic fixtures ignore your question wording entirely.
 -->
 
 ---
@@ -532,11 +530,13 @@ pnpm lab:check --candidate lab/challenges/bluff.json \
   --solution --judge live
 ```
 
+<div class="trial-brief">
 <p class="lede">Inspect the criterion, evidence, scores, and decision.<br><strong>Then reveal your label.</strong></p>
+<div class="game-rules"><p>At most two live calls per pair.</p><p>No changing prompts, labels, or thresholds after seeing the answer.</p></div>
+</div>
 
 <div class="command">No key? pnpm lab:app --candidate lab/challenges/bluff.json</div>
 <p class="aside-note">The partner judges the visible message against the same contract.<br>Human round ≠ a measurement of Jev.</p>
-<p class="footnote">At most two live calls per pair for the game. No changing prompts, labels, or thresholds after seeing the answer.</p>
 
 <!--
 Teaching expectations:
@@ -576,7 +576,7 @@ A valid but rejected paraphrase exposes unnecessary interruption. Switching role
 ---
 
 <div class="split">
-<div><h1>Score the<br>bouncer.<br><span class="accent">Not the bravado.</span></h1><p class="lede">Who found a useful<br>counterexample?</p><p class="aside-note">Prizes: bragging rights for the<br>best polite lie and most unfair rejection.</p></div>
+<div><h1>Score the<br>bouncer.<br><span class="accent">Not the bravado.</span></h1><p class="lede">Who found a useful<br>counterexample?</p><p class="aside-note">Prizes: bragging rights for the<br>best polite lie and most unfair rejection.</p><div class="game-rules"><p>Outage or disputed label: no contest.</p></div></div>
 <div class="score-receipt">
 <div class="small-label">Two-round paper scorecard</div>
 <div class="score-line"><span>Bad work → repair</span><strong>+2</strong></div>
@@ -586,7 +586,7 @@ A valid but rejected paraphrase exposes unnecessary interruption. Switching role
 <div class="score-line"><span>Bad work → escalate</span><strong>0</strong></div>
 </div>
 </div>
-<p class="footnote">Outage or disputed label: no contest. Human-reviewed rounds and live-model rounds use separate scoreboards.</p>
+<p class="footnote">Human-reviewed rounds and live-model rounds use separate scoreboards.</p>
 
 <!--
 Teaching expectations:
