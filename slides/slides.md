@@ -30,21 +30,24 @@ Sources and the five-minute script: docs/opening.md. Both hosts introduce themse
 
 ---
 class: hosts-stage
+clicks: 2
 ---
 
 # Two humans.<br>One suspicious “done.”
 
+<FriendsReveal v-slot="{ friends }">
 <div class="people">
 <div class="host">
 <img class="host-photo" src="/people/nick-nisi.webp" alt="Nick Nisi speaking at a conference">
-<div><h2>Nick<br>Nisi</h2><p>Engineering Manager,<br>DX/AI</p><p>WorkOS</p><span class="host-label">Co-instructor</span></div>
+<div><h2>Nick<br>Nisi</h2><p>Engineering Manager,<br>DX/AI</p><p>WorkOS</p><span class="host-label">{{ friends ? "Friends" : "Co-instructor" }}</span></div>
 </div>
 <div class="host">
 <img class="host-photo" src="/people/zack-proser.jpg" alt="Zack Proser">
-<div><h2>Zack<br>Proser</h2><p>AI Engineer,<br>Applied AI</p><p>WorkOS</p><span class="host-label">Co-instructor</span></div>
+<div><h2>Zack<br>Proser</h2><p>AI Engineer,<br>Applied AI</p><p>WorkOS</p><span class="host-label">{{ friends ? "Friends" : "Co-instructor" }}</span></div>
 </div>
 </div>
 <p class="people-caption">We’ll build the loop. You’ll try to fool it.</p>
+</FriendsReveal>
 
 <!--
 Teaching expectations:
