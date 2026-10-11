@@ -25,7 +25,20 @@ restate the claims it does and does not support, in your own project's terms.
 
 Do this now, in two minutes, for something you actually ship. The printable
 version is at [`/materials/transfer-worksheet.md`](/materials/transfer-worksheet.md),
-and the same prompts are in `docs/take-home.md` (repository).
+with more follow-up in `docs/take-home.md` (repository). Start with the small feature map below; complete the longer questions after class.
+
+### Start with one feature map
+
+Lauren Tan's [pstack Part 1](https://x.com/poteto/status/2094457600259842065) argues for reusable verification tools and a map of the features an agent can exercise. Make one row for your app:
+
+| Feature | Launch / reach it | User path | Tool + proof | Stop / ask for help |
+| --- | --- | --- | --- | --- |
+| Our waitlist | `pnpm lab:app --scenario memory-only` → printed URL | Submit email → reload | Playwright observations + revision-bound report | Missing/stale proof: escalate; known failure: one repair |
+| Your feature | … | … | … | … |
+
+A useful check is runnable again after the next change. Give it a clear command, prerequisites, and expected evidence. Start with deterministic assertions; add a semantic question only where meaning requires one. See the [pstack verification skill source](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md) for a fuller approach.
+
+### Finish the verification plan
 
 1. **The "done" that lies:** what shallow green do people trust in your system?
 2. **Independent evidence:** what would you observe, from the outside, to check

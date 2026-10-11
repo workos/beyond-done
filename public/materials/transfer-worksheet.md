@@ -11,6 +11,18 @@ The loop:  **observe → ask → decide → bounded repair**
 
 ---
 
+### Start here in class: one feature map (two minutes)
+
+Inspired by [Lauren Tan's pstack verification workflow](https://x.com/poteto/status/2094457600259842065). Give an agent a repeatable way to launch the app, exercise one real user path, and show proof.
+
+| Feature + user path | Launch command / URL | Verification tool + evidence | Stop / ask for help |
+| --- | --- | --- | --- |
+| | | | |
+
+Which command can you rerun after a repair? _____________________________
+
+Finish the more detailed plan below after class.
+
 ### 1. The "done" that lies
 What shallow "green" do people trust that doesn't mean what they think?
 

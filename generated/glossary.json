@@ -5,7 +5,7 @@
   "subtitle": "The vocabulary behind a verification loop.",
   "event": "AIE",
   "credit": "Nick Nisi & Zack Proser",
-  "updated": "2026-10-08",
+  "updated": "2026-10-11",
   "slidesUrl": "/slides/#",
   "theme": {
     "preset": "clean",
@@ -93,12 +93,11 @@
           "definition": "TypeSafe's System One model, which answers typed questions about supplied state rather than generating a written explanation.",
           "whyItMatters": "Your code retains control of policy; Jev supplies narrow judgments.",
           "hear": "Ask Jev both questions in one request.",
-          "aliases": [
-            "System One"
-          ],
+          "aliases": [],
           "relatedTermIds": [
             "noul",
-            "semantic-judgment"
+            "semantic-judgment",
+            "system-1"
           ],
           "demo": "none",
           "sourcePath": "class-materials",
@@ -132,6 +131,80 @@
           "relatedTermIds": [
             "evidence",
             "prompt-injection"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "system-1",
+          "term": "System 1",
+          "definition": "A fast-thinking analogy used here for narrow, structured model judgments. TypeSafe calls Jev a System One model.",
+          "whyItMatters": "Fast and schema-valid does not mean semantically correct; check behavior on representative evidence.",
+          "hear": "Use the fast judge for a narrow claim, then let code decide.",
+          "aliases": [
+            "System One",
+            "fast judgment"
+          ],
+          "relatedTermIds": [
+            "jev",
+            "system-2",
+            "semantic-judgment"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "system-2",
+          "term": "System 2",
+          "definition": "A deliberate-thinking analogy used here for a worker that plans, reasons, uses tools, and repairs a proposal.",
+          "whyItMatters": "Separate generation from evaluation. Our default workshop worker is scripted, not a live reasoning model.",
+          "hear": "A reasoning worker proposes a repair; the browser still has to check it.",
+          "aliases": [
+            "System Two",
+            "deliberate reasoning"
+          ],
+          "relatedTermIds": [
+            "system-1",
+            "agent-harness"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "agent-harness",
+          "term": "Agent harness",
+          "definition": "The surrounding code and tools that coordinate a worker, observations, judgments, repair attempts, and stopping rules.",
+          "whyItMatters": "A model response alone cannot launch the app, collect independent evidence, or enforce an attempt budget.",
+          "hear": "The harness gathers proof and owns the acceptance decision.",
+          "aliases": [
+            "harness",
+            "verification loop"
+          ],
+          "relatedTermIds": [
+            "evidence",
+            "bounded-repair",
+            "decision-policy"
+          ],
+          "demo": "none",
+          "sourcePath": "class-materials",
+          "slide": null
+        },
+        {
+          "id": "feature-map",
+          "term": "Feature map",
+          "definition": "A record of a user-visible feature, how to reach and exercise it, and what evidence would establish success.",
+          "whyItMatters": "It gives an agent a repeatable verification path instead of a vague instruction to test everything.",
+          "hear": "Launch the app, submit the form, reload, and retain the observations.",
+          "aliases": [
+            "verification map"
+          ],
+          "relatedTermIds": [
+            "evidence",
+            "acceptance-criterion",
+            "agent-harness"
           ],
           "demo": "none",
           "sourcePath": "class-materials",
@@ -385,6 +458,53 @@
       "termIds": [
         "acceptance-criterion",
         "decision-policy"
+      ]
+    },
+    {
+      "id": "pstack-verification",
+      "title": "Lauren Tan: The Complete Guide to pstack, Part 1",
+      "description": "Reusable verification tools and maps of actual user-visible features.",
+      "url": "https://x.com/poteto/status/2094457600259842065",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "feature-map",
+        "agent-harness",
+        "evidence"
+      ]
+    },
+    {
+      "id": "pstack-part-two",
+      "title": "Lauren Tan: The Complete Guide to pstack, Part 2",
+      "description": "The verification-first thesis behind the workshop opener.",
+      "url": "https://x.com/poteto/status/2097732320606507506",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "agent-harness",
+        "evidence"
+      ]
+    },
+    {
+      "id": "fast-slow-models",
+      "title": "TypeSafe: System One models and Jev",
+      "description": "The fast/slow design analogy and narrow structured judgments.",
+      "url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "system-1",
+        "system-2",
+        "jev"
+      ]
+    },
+    {
+      "id": "generator-evaluator-harness",
+      "title": "Anthropic: Harness design for long-running application development",
+      "description": "A planner/generator/evaluator architecture with app-driven evaluation.",
+      "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+      "sourcePath": "class-materials",
+      "termIds": [
+        "agent-harness",
+        "system-2",
+        "evidence"
       ]
     }
   ],

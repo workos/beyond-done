@@ -15,36 +15,37 @@ Prepare with [preflight.md](preflight.md). Keep the lesson site and demo app in 
 
 ## Co-host rhythm
 
-The shared intro is slide 2. Each instructor gets about 20 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
+The shared intro is slide 2. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
 
-The deck is a 26-slide visual story: admission tickets, DONE/ALLEGEDLY stamps, a staged reload illustration, click-driven rules, a six-stage loop, and two opt-in round timers. Detailed instructions stay in the lesson site, not on the projector. Slide 4 is explicitly an illustration; the CLI is the real browser-backed verification.
+The deck has 30 slides within the same 60-minute schedule. The new slides replace lecture time with an incident animation, repo/glossary QR handoff, actual saved evidence, and a short architecture bridge. The primary opening demo is the real memory-only app; slide 4 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 1. Do not imply our exercise would have prevented that incident.
 
 ## Timing and stage cues
 
 | Clock | Mode | Your cue / visible checkpoint |
 | --- | --- | --- |
-| 0–1 | Shared intro | Nick + Zack, one short sentence each. Establish the invitation: build it, then fool it. |
-| 1–3 | Vote | “Ship it or hold it?” Take hands before the reload reveal. |
-| 3–5 | Reveal | Use the staged reload button, or reload the real memory-only app. “Briefly done” is not done. |
-| 5–7 | Smoke test | `pnpm lab:doctor`; pair anyone stuck rather than debug installs on stage. |
+| 0–0:45 | Real incident | PocketOS founder excerpt, deletion animation, Railway recovery. Keep attribution visible. |
+| 0:45–2 | Intro + vote | Nick + Zack, then “Ship it or hold it?” Vote on the staged worker claim. |
+| 2–4 | Live failure | Submit and reload the actual memory-only app. Show the lost record. |
+| 4–5 | Thesis | Credit Lauren Tan: verification tools and evidence make completion checkable. |
+| 5–7 | Resources + smoke test | Repo QR on slide 6; glossary on 7. README → lessons → exercises. `pnpm lab:doctor`; pair anyone stuck. |
 | 7–10 | Contract | Same identity after reload; honest waitlist/no seat; conditional email. Explain browser-local boundary and three editable files. |
 | 10–13 | Explain | Role/label locators, fresh context, explicit transition, observation versus assumption. |
 | 13–19 | Build | Attendees write `observe()`. Offer hints, not the whole solution first. |
 | 19–21 | Checkpoint | `pnpm lab:exercise browser`. Copy one reference file if needed. |
-| 21–23 | Contrast | A browser-pass does not settle whether copy invents a seat. Introduce Noul. |
+| 21–23 | Contrast | Browser evidence and semantic judgment answer different questions. Give the System 1/2 analogy, then name Jev and its yes/no primitive. |
 | 23–28 | Build | Two independent questions: honest status; conditional next step. Run construction check. |
 | 28–32 | Real Jev | Happy/overpromise with attendee questions or your reference. Predict scores, then inspect actual inputs/results. |
 | 32–33 | Checkpoint | “What did this number NOT prove?” Move on. |
 | 33–36 | Policy | Walk the ordered table. Missing evidence first; no averaging hard gates. |
 | 36–40 | Build | Implement `decide()`; run focused policy check. |
-| 40–43 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes. |
+| 40–43 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 20. |
 | 43–44 | Pair up | Bouncer vs. Bluffer. Freeze the verifier; keep human labels out of JSON. |
 | 44–47 | Round 1 | 90 seconds to write the polite lie; 90 seconds to judge and inspect. |
 | 47–50 | Round 2 | Swap roles. 90 seconds to write a valid paraphrase; 90 seconds to judge. |
 | 50–52 | Score + share | Reward caught defects AND accepted good work. Spotlight one useful counterexample. |
 | 52–54 | Trade-off | Project the 0.9/0.8 fixture table. Do not mix synthetic counts with live game results. |
 | 54–55 | Final boss | Stale-evidence shared check; explain why perfect but old proof cannot approve this revision. |
-| 55–58 | Transfer | Everyone fills one real task into the worksheet. Pair-share the evidence and stop condition. |
+| 55–58 | Transfer | Map one feature to launch command, user path, evidence, and stop condition. Pair-share; finish the longer worksheet after class. |
 | 58–60 | Close | One or two examples. Repeat the three closing questions. |
 
 Hard stops: **21, 33, 43, 55**. Preflight is not charged against the hour. Participant-authored bluff + valid-paraphrase rounds take priority over repeated fixture runs. Holdout evaluation is now take-home so the game fits. Do not sacrifice the transfer exercise.
@@ -60,7 +61,7 @@ pnpm lab:app --scenario overpromise
 
 The “agent says done” report is a staged teaching claim, not a transcript of a production incident. Don't assert fabricated test results or invent a personal anecdote. The app's visible behaviors are real.
 
-**Story prompt, if useful:** supply one incident from your own supervision work where a plausible completion report hid absent evidence. Name the check you added and its limitation. Keep it under 60 seconds.
+The sourced production incident is already in the opening. Keep the room moving into the reproducible toy app. The saved opening report on slide 12 is a real local browser observation with synthetic judge scores, not a live response.
 
 ## Jev segment: real by default, honest fallback
 
@@ -107,7 +108,7 @@ Without keys, use `pnpm lab:app --candidate FILE` and a human peer. For a less l
 
 Bouncer points: bad→repair **+2**; good→accept **+2**; bad→accept **−3**; good→repair/escalate **−1**; bad→escalate **0**. Outage, invalid JSON, or disputed label is no contest. Escalate-everything scores −1. A fully correct two-case defense scores 4.
 
-Timers on slides 18/20 start only on a button press. Pause/reset is available; leaving a slide pauses it. No automatic music or sound. The six-stage illustration on slide 16 uses arrow-key reveals; its stubborn-worker checkbox demonstrates the alternate ending.
+Timers on slides 22/24 start only on a button press. Pause/reset is available; leaving a slide pauses it. No automatic music or sound. The six-stage illustration on slide 19 uses arrow-key reveals; its stubborn-worker checkbox demonstrates the alternate ending.
 
 Celebrate one useful discovery: Best Polite Lie or Most Unfairly Rejected, with bragging rights only. Do not promise physical prizes. If nobody fools the model, compare which wording was hardest to label—the absence of an exploit is not a failed activity. Make it playful without turning another attendee into the joke.
 

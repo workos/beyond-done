@@ -1,3 +1,4 @@
+import { generateSlidesQr } from "./slides-qr.js";
 import { createServer, resolveOptions, parser } from "@slidev/cli";
 import type { Plugin } from "vite";
 import { localEnv } from "./local-env.js";
@@ -14,6 +15,7 @@ export default function classDev(): Plugin {
       server.middlewares.use(chatMiddleware(loadClassGlossary, env, classConfig.features.chat));
 
       if (!classConfig.slides.publish) return;
+      await generateSlidesQr();
       const options = await resolveOptions({ entry: "slides/slides.md", base: "/slides/", routerMode: "hash" }, "dev");
       const slides = await createServer(options, {
         base: "/slides/",

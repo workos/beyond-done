@@ -2,7 +2,7 @@
   "slug": "beyond-done",
   "title": "Beyond “Done”: Building Verification Loops for AI Agents",
   "description": "Build a loop that checks an agent’s work, catches unsupported claims, and knows when to repair or ask for help. Then try to fool it.",
-  "audience": "JS/TS developers. No Playwright or Jev experience required.",
+  "audience": "JS/TS developers. No browser automation or model-judging experience required.",
   "event": "AIE · 60-minute hands-on workshop",
   "credit": "Nick Nisi & Zack Proser",
   "links": [

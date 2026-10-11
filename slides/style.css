@@ -127,13 +127,13 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .policy-row { display: grid; grid-template-columns: 1fr 32px 145px; gap: 12px; align-items: center; font-size: 20px; padding: 15px 0; border-bottom: 1px solid #d5d0e7; }
 .policy-row strong { font-size: 22px; }
 .policy-row code { font-size: 15px; }
-.slidev-layout .loop-track { display: flex; list-style: none; gap: 8px; padding: 0; margin: 20px 0 !important; }
+.slidev-layout .loop-track { display: flex; list-style: none; gap: 8px; padding: 0; margin: 14px 0 !important; }
 .slidev-layout .loop-track li { list-style: none; flex: 1; font-size: 13px; color: #70687f; text-align: center; padding: 8px 0; transition: color .2s; }
 .loop-track li span { display: block; margin: 0 auto 9px; border-radius: 50%; width: 30px; height: 30px; background: #e6e3ef; line-height: 30px; font-weight: 650; transition: background .2s; }
 .slidev-layout .loop-track .current { color: #5040c9; font-weight: 700; }
 .loop-track .current span { color: white; background: #6363f1; }
 .loop-track .visited span { background: #d9ff82; color: #283a17; }
-.loop-receipt { background: white; border-radius: 7px; padding: 22px 28px; min-height: 202px; border: 1px solid #dad5e9; }
+.loop-receipt { background: white; border-radius: 7px; padding: 18px 24px; min-height: 165px; border: 1px solid #dad5e9; }
 .loop-receipt .receipt-meta { color: #6d647e; font-size: 13px; margin-bottom: 12px; }
 .loop-receipt h2 { font-size: 31px; margin-bottom: 12px; }
 .loop-receipt p { font-size: 16px; }
@@ -168,6 +168,15 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .source-lines span { font-size: 19px; }
 .close-questions { margin-top: 35px; }
 .close-questions p { font: 650 43px/1.15 "Bricolage Grotesque Variable", sans-serif; margin: 20px 0; }
+.slidev-layout .quote-thesis { font-size: 53px; line-height: 1.15; margin-bottom: 30px; }
+.follow-steps p { font-size: 19px; margin-bottom: 12px; }
+.architecture-lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+.architecture-lanes > div { background: #eeebfb; padding: 22px; border-radius: 8px; }
+.architecture-lanes > div:last-child { background: #e6f3d4; }
+.architecture-lanes h2 { font-size: 26px; margin: 14px 0; }
+.architecture-lanes p { font-size: 19px; margin: 0; }
+.lane-label { font: 12px "JetBrains Mono Variable", monospace; color: #635878; }
+.closing-resources { display: grid; grid-template-columns: 1fr 200px; gap: 28px; align-items: center; }
 .receipt-enter-active, .receipt-leave-active { transition: opacity .18s, transform .18s; }
 .receipt-enter-from { opacity: 0; transform: translateY(10px); }
 .receipt-leave-to { opacity: 0; transform: translateY(-7px); }
@@ -177,3 +186,6 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .slidev-vclick-hidden { transform: none; }
 }
+
+.repo-setup.command { font-size: 12px; }
+.slidev-layout.indigo p code, .slidev-layout.night p code { color: inherit; background: #ffffff14; }
