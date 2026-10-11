@@ -144,6 +144,12 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .role-match .role-name { font-family: "Bricolage Grotesque Variable", sans-serif; font-size: 57px; line-height: 1.05; font-weight: 750; }
 .role-match p { font-size: 19px; margin: 13px 0 0; }
 .role-match .versus { text-align: center; font-size: 24px; color: var(--deck-muted); }
+.trial-brief { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.slidev-layout .trial-brief .lede { margin: 0; }
+.game-rules { border-left: 4px solid var(--snack-coral); padding: 2px 0 2px 18px; margin-top: 18px; }
+.trial-brief .game-rules { margin-top: 4px; }
+.slidev-layout .game-rules p { font-size: 20px; font-weight: 650; line-height: 1.35; margin: 0 0 10px; }
+.slidev-layout .game-rules p:last-child { margin-bottom: 0; }
 .challenge-goal { display: flex; gap: 14px; align-items: center; margin-top: 24px; font-size: 18px; }
 .challenge-goal span { font-size: 35px; }
 .round-timer { text-align: center; }

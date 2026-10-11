@@ -532,11 +532,13 @@ pnpm lab:check --candidate lab/challenges/bluff.json \
   --solution --judge live
 ```
 
+<div class="trial-brief">
 <p class="lede">Inspect the criterion, evidence, scores, and decision.<br><strong>Then reveal your label.</strong></p>
+<div class="game-rules"><p>At most two live calls per pair.</p><p>No changing prompts, labels, or thresholds after seeing the answer.</p></div>
+</div>
 
 <div class="command">No key? pnpm lab:app --candidate lab/challenges/bluff.json</div>
 <p class="aside-note">The partner judges the visible message against the same contract.<br>Human round ≠ a measurement of Jev.</p>
-<p class="footnote">At most two live calls per pair for the game. No changing prompts, labels, or thresholds after seeing the answer.</p>
 
 <!--
 Teaching expectations:
@@ -576,7 +578,7 @@ A valid but rejected paraphrase exposes unnecessary interruption. Switching role
 ---
 
 <div class="split">
-<div><h1>Score the<br>bouncer.<br><span class="accent">Not the bravado.</span></h1><p class="lede">Who found a useful<br>counterexample?</p><p class="aside-note">Prizes: bragging rights for the<br>best polite lie and most unfair rejection.</p></div>
+<div><h1>Score the<br>bouncer.<br><span class="accent">Not the bravado.</span></h1><p class="lede">Who found a useful<br>counterexample?</p><p class="aside-note">Prizes: bragging rights for the<br>best polite lie and most unfair rejection.</p><div class="game-rules"><p>Outage or disputed label: no contest.</p></div></div>
 <div class="score-receipt">
 <div class="small-label">Two-round paper scorecard</div>
 <div class="score-line"><span>Bad work → repair</span><strong>+2</strong></div>
@@ -586,7 +588,7 @@ A valid but rejected paraphrase exposes unnecessary interruption. Switching role
 <div class="score-line"><span>Bad work → escalate</span><strong>0</strong></div>
 </div>
 </div>
-<p class="footnote">Outage or disputed label: no contest. Human-reviewed rounds and live-model rounds use separate scoreboards.</p>
+<p class="footnote">Human-reviewed rounds and live-model rounds use separate scoreboards.</p>
 
 <!--
 Teaching expectations:
