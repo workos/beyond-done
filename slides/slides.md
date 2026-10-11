@@ -122,8 +122,23 @@ Teaching expectations:
 - Introduce the three ingredients of a useful verifier: observed facts, explicit acceptance criteria, and a stopping rule.
 - Explain why this enables delegation: code can accept supported work, request a bounded repair, or hand uncertainty to a human.
 
-4:00–5:00. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
+4:00–4:20. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
 Self-verification means exercising the real product against criteria, not asking the model whether it feels finished. Our implementation combines deterministic checks, a fallible semantic judge, and code-owned policy.
+-->
+
+---
+class: night contrast-slide
+clicks: 3
+---
+
+<VerificationContrast />
+
+<!--
+4:20–5:00. Same opening time budget. Three advances: (1) guesses vs. a specific failure; (2) more retries vs. a repaired, rechecked result; (3) wasted elapsed time vs. a stopped clock.
+These are invented, compressed elapsed times, not measurements, an agent transcript, or a claimed speedup. A usable verifier can narrow the search; it does not guarantee a fast or successful repair.
+The waitlist example connects to our actual custom CLI: pnpm lab:check --scenario memory-only --solution. It drives a real browser through submit/reload and writes observations, checks, and a report. --solution uses the reference collector/questions/policy; default semantic scores are synthetic. Here we are illustrating the persistence check, not full semantic acceptance.
+The optional Slow UI button transfers the idea to Chrome DevTools: record the interaction, inspect the main-thread flame chart, identify expensive repeated work, then re-record with the same conditions and check the original performance budget. The trace is a schematic; the repo does not contain this performance task or a DevTools agent integration. Source: https://developer.chrome.com/docs/devtools/performance/overview
+Return to Waitlist before continuing. Arrow back resets each reveal; motion is finite and reduced-motion shows the same states without animation. The real loop later enforces a retry budget and escalates when the evidence is insufficient.
 -->
 
 ---

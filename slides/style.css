@@ -42,6 +42,7 @@
 .slidev-layout .big-word { font-size: 94px; font-weight: 750; line-height: 1; letter-spacing: -.035em; }
 .slidev-layout.indigo { --deck-bg: #5552dd; --deck-ink: #fff; --deck-muted: #e1e0ff; --deck-logo: url("/brand/workos-logo-white.svg"); }
 .slidev-layout.night { --deck-bg: #242238; --deck-ink: #f8f8ff; --deck-muted: #c3bfd9; --deck-logo: url("/brand/workos-logo-white.svg"); }
+.slidev-layout.contrast-slide { padding: 28px 40px 38px; }
 .slidev-layout.lime { --deck-bg: #d9ff82; --deck-ink: #262b20; --deck-muted: #505a3e; }
 .slidev-layout.coral { --deck-bg: #ffb6a5; --deck-ink: #342438; --deck-muted: #684955; }
 .slidev-layout.indigo .accent, .slidev-layout.night .accent { color: var(--snack-lime); }

@@ -66,6 +66,7 @@ The deck, lessons, and CLI all follow the Midnight Snack Lab waitlist. Open the 
 | Deck checkpoint | Lesson | Edit / run | Evidence of progress |
 | --- | --- | --- | --- |
 | Now break our app | 02 · Misleading success | `pnpm lab:app --scenario memory-only` | Submit survives until reload; then the record is gone |
+| Same task. Very different afternoon. | 02 · Misleading success | `pnpm lab:check --scenario memory-only --solution` | Real browser observations expose the reload failure; slide clocks are illustrative |
 | Catch the vanishing act | 03 · Observe evidence | `lab/exercises/observe.ts` · `pnpm lab:exercise browser` | `browser exercise: PASS`; inspect the saved observations |
 | Two questions | 04 · Honest questions | `lab/exercises/questions.ts` · `pnpm lab:exercise questions` | Construction passes; compare live scores to assess meaning |
 | The bouncer's rulebook | 05 · Policy and repair | `lab/exercises/decide.ts` · `pnpm lab:exercise policy` | Policy passes; `pnpm lab:loop` repairs then accepts with fresh evidence |
@@ -159,7 +160,7 @@ Each start uses a new port. A new port is a new browser origin, so localStorage 
 | `pnpm lab:test` | **Required.** Lab tests (`lab/*.test.ts`): unit, fake-transport, and real-browser reference tests; no model costs |
 | `pnpm test` | **Required.** Template and script regression tests (`scripts/*.test.ts`) |
 | `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
-| `pnpm slides:check` | Check 30 slides, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
+| `pnpm slides:check` | Check 31 slides, verification comparison, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
 
 **Run both `pnpm test` and `pnpm lab:test`.** Each covers only its own folder: `pnpm test` runs the script tests and `pnpm lab:test` runs the lab tests. Passing one says nothing about the other.
 

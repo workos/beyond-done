@@ -17,6 +17,7 @@ const reloadSlide = slideFor('<ReloadReveal');
 const loopSlide = slideFor('<LoopMachine');
 const roundSlide = slideFor('Round 1 · The polite lie');
 const evidenceSlide = slideFor('<EvidenceFlow');
+const contrastSlide = slideFor('<VerificationContrast');
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
 const base = process.env.DECK_URL ?? `http://127.0.0.1:${site!.address.port}/`;
@@ -43,7 +44,7 @@ try {
   await mkdir(".lab-runs/deck-review", { recursive: true });
   const overflow: unknown[] = [];
   for (let slide = 1; slide <= slideCount; slide++) {
-    for (const clicks of slide === loopSlide ? [0, 1, 2, 3, 4, 5] : [0, 99]) {
+    for (const clicks of slide === loopSlide ? [0, 1, 2, 3, 4, 5] : slide === contrastSlide ? [0, 1, 2, 3] : [0, 99]) {
       const root = await go(slide, clicks);
       const outside = await root.locator(".slidev-layout").evaluate(layout => {
         const bounds = layout.getBoundingClientRect();
@@ -63,6 +64,29 @@ try {
     }
   }
   assert.deepEqual(overflow, [], "Slide content must fit at initial and fully revealed states");
+  const contrast = await go(contrastSlide, 3);
+  await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('36:00');
+  await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
+  await contrast.getByRole('button', { name: 'Slow UI', exact: true }).click();
+  await expect(contrast.locator('.verification-contrast')).toHaveAttribute('data-mode', 'performance');
+  await expect(contrast.locator('.trace-view')).toHaveClass(/optimized/);
+  await page.keyboard.press('ArrowLeft');
+  await expect(contrast.locator('.verification-contrast')).toHaveAttribute('data-step', '2');
+  await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('12:00');
+  await page.keyboard.press('ArrowLeft');
+  await expect(contrast.locator('.trace-view')).not.toHaveClass(/optimized/);
+  await page.keyboard.press('ArrowRight');
+  await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
+  await page.keyboard.press('ArrowRight');
+  await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('36:00');
+  await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
+  await expect.poll(() => page.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length)).toBe(0);
+  await page.screenshot({ path: '.lab-runs/deck-review/verification-performance.png' });
+  await contrast.getByRole('button', { name: 'Waitlist', exact: true }).click();
+  await expect(contrast.locator('.verification-contrast')).toHaveAttribute('data-step', '3');
+  await expect(contrast.locator('.contrast-resource')).toContainText('pnpm lab:check --scenario memory-only --solution');
+  await expect.poll(() => page.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length)).toBe(0);
+  await page.screenshot({ path: '.lab-runs/deck-review/verification-waitlist.png' });
   const intro = await go(hostSlide);
   for (const name of ["Nick Nisi", "Zack Proser"]) {
     await expect(intro.getByRole("heading", { name: new RegExp(name.replace(" ", "\\s*")) })).toBeVisible();
@@ -83,6 +107,11 @@ try {
   await expect(loop.getByRole("heading", { name: "A human takes it from here." })).toBeVisible();
 
   await page.emulateMedia({ reducedMotion: "reduce" });
+  const reducedContrast = await go(contrastSlide);
+  await page.getByRole('button', { name: 'Go to next slide', exact: true }).click();
+  await expect(reducedContrast.locator('.verification-contrast')).toHaveAttribute('data-step', '1');
+  await expect(reducedContrast.getByLabel('Illustrative time without verification')).toHaveText('04:00');
+  assert.equal(await reducedContrast.locator('.retry-token').evaluate(e => getComputedStyle(e).animationName), 'none');
   const cover = await go(1);
   assert.equal(await cover.locator(".incident-record").first().evaluate(e => getComputedStyle(e).transitionDuration), "0s");
   await go(1, 1);
@@ -116,7 +145,7 @@ try {
   await expect(round.getByRole("status")).toHaveText("Pens down. Swap roles.");
   await expect(round.getByRole("timer")).toHaveText("0:00");
   assert.deepEqual(errors, [], "No deck runtime errors");
-  console.log(`PASS: ${slideCount} slides × two reveal states; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
+  console.log(`PASS: ${slideCount} slides × reveal states; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
   console.log("Visual samples: .lab-runs/deck-review/");
 } finally {
   await browser.close();
