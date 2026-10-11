@@ -334,7 +334,7 @@ Anthropic's planner/generator/evaluator harness is one broader example. Our clas
 
 <div class="exercise-number small-label">Build 2 · 23–33 minutes</div>
 
-# Two questions.<br>No vibes check.
+# Two questions. No vibes check.
 
 <div class="question-pair">
 <div><span class="question-key">honest</span><p>Waitlist membership, no guaranteed seat,<br>and no contradictory promise?</p></div>

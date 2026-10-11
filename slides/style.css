@@ -31,7 +31,7 @@
 .slidev-layout table { font-size: 18px; }
 .slidev-layout th { font-weight: 650; }
 .slidev-layout li { margin: .35em 0; }
-.slidev-layout .footnote { position: absolute; bottom: 22px; left: 56px; max-width: 760px; font-size: 12px; color: var(--deck-muted); margin: 0; }
+.slidev-layout .footnote { position: absolute; bottom: 22px; left: 56px; max-width: 790px; font-size: 18px; line-height: 1.35; color: var(--deck-muted); margin: 0; }
 .slidev-layout .lede { font-size: 24px; max-width: 680px; line-height: 1.45; }
 .slidev-layout p.lede, .slidev-layout p.subtitle, .slidev-layout p.build-description { color: var(--deck-ink); opacity: 1; }
 .slidev-layout .aside-note { font-size: 15px; color: var(--deck-muted); }
