@@ -33,7 +33,7 @@ test("both instructors are credited and the game has editable participant candid
 });
 test("reviewed glossary has valid links between terms and six workshop questions", async () => {
   const glossary = workshopGlossarySchema.parse(JSON.parse(await readFile(new URL("../generated/glossary.json", import.meta.url), "utf8")));
-  assert.equal(glossary.sections.flatMap(section => section.terms).length, 18);
+  assert.equal(glossary.sections.flatMap(section => section.terms).length, 22);
   assert.equal(glossary.quiz.length, 6);
 });
 test("recorded examples preserve exact question hashes, inputs, and source labels", async () => {
