@@ -86,6 +86,7 @@ try {
       ? "SYNTHETIC POLICY FIXTURES — no model called. Editing questions does NOT change these scores."
       : "LIVE JEV — paid external API; fictional confirmation text + task sent to TypeSafe. No silent fallback.");
     console.log(values.solution ? "Using reference solution." : "Using YOUR exercise files.");
+    if (command === "loop") console.log("worker: " + workerMode);
     if (command === "check") summarize(values.candidate
       ? await checkCandidate(await readCandidate(values.candidate), options)
       : await checkScenario(scenarioById(values.scenario), options));
