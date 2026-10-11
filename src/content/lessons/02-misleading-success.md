@@ -12,17 +12,21 @@ duration: "10 minutes (live 0:00–10:00)"
 You can say, out loud, why "the agent said it was done" is not evidence, and
 you know exactly which three files you will edit and which commands grade them.
 
-## The hook: vote first (0:00–5:00)
+## The hook: incident → live failure (0:00–5:00)
 
-An AI agent was asked to build a waitlist form. It reports **done**: the form
-renders, it typechecks, the happy-path test is green.
+The hosts open with PocketOS founder Jer Crane's [account of an agent deleting production data](https://x.com/lifeofjer/status/2048103471019434248). [Railway's follow-up](https://blog.railway.com/p/your-ai-wants-to-nuke-your-database) says the database was recovered and deletion safeguards changed. Production permissions and recovery are part of that story; this class's browser prototype does not reproduce it or claim to prevent it.
 
-Before you look at anything, **vote**: is this feature actually done?
+Now inspect a smaller claim we can check together. The deck's **staged worker report** says the waitlist form renders, submits, and displays a success message. This is a teaching prop, not a real agent transcript or test run. **Vote:** is the feature done?
 
-Then the facilitator shows the catch — a feature that passes a shallow check
-but fails the thing a user actually needs. "Green" measured the wrong thing.
-The lesson of the hour: *a claim of done is not evidence; independently
-observed behaviour is.*
+Watch the facilitator run:
+
+```bash
+pnpm lab:app --scenario memory-only
+```
+
+In the actual app, submit `ada@example.test`, then reload. The record vanishes. A submit check did not establish persistence. The slide illustration is a labelled fallback if the demo cannot start.
+
+Lauren Tan's [pstack Part 2](https://x.com/poteto/status/2097732320606507506) makes verification central to agent work. [Part 1](https://x.com/poteto/status/2094457600259842065) describes reusable tools that exercise actual features and retain evidence. Our CLI and three exercises implement a small version of that pattern.
 
 ## The fictional task
 
@@ -39,9 +43,13 @@ You are prototyping the **Midnight Snack Lab** waitlist — a sold-out
 > We do **not** register anyone with real organizers, send real email, charge
 > money, or run a real service. Never describe it as real enrollment.
 
-## The smoke test + the contract (5:00–10:00)
+## Repo, glossary, and contract (5:00–10:00)
 
-Start the app and look at it:
+The repo QR opens [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). It is currently private; ask a host if your GitHub account cannot access it. README has installation and command instructions. Run `pnpm lab:doctor`, then `pnpm dev` for the lesson site and [interactive glossary](/glossary/). The hosts will share the public glossary URL once it is ready.
+
+Follow this rhythm: **read the lesson → edit the named file → run its check → inspect the evidence**. Predict results before running. If setup blocks you, pair with someone; observing and explaining the evidence is useful participation too.
+
+To reproduce the opening:
 
 ```bash
 pnpm lab:app --scenario memory-only

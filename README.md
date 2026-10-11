@@ -11,7 +11,7 @@ The fictional **Midnight Snack Lab** is sold out. Its browser-local waitlist mus
 Attendees build the supervisor, not another agent framework:
 
 1. **Observe** with Playwright — `lab/exercises/observe.ts`.
-2. **Judge evidence** with Jev — `lab/exercises/questions.ts`.
+2. **Judge evidence** with a semantic model (Jev) — `lab/exercises/questions.ts`.
 3. **Accept, repair once, or escalate** — `lab/exercises/decide.ts`.
 
 Then play **Bouncer vs. Bluffer**: write a convincing lie, swap roles, and write an unusual truth. Test your own JSON candidates against Jev (or a human peer without a key). Points reward catching bad work **and** letting good work through. Stale evidence is the final boss.
@@ -47,15 +47,34 @@ Use each printed URL. Linux may need `pnpm exec playwright install --with-deps c
 
 | Minutes | Activity | Result |
 | --- | --- | --- |
-| 0–5 | Vote: is this “done”? | A shallow green check fails the user |
-| 5–10 | Smoke test + contract | Know what evidence must show |
+| 0–5 | Real incident → vote → live app failure | A completion claim needs independent evidence |
+| 5–10 | Repo + glossary QR, smoke test, contract | Know where to work and what evidence must show |
 | 10–21 | Playwright collector | One submit/reload observation |
-| 21–33 | Two Jev questions + live comparison | Distinguish support from confident wording |
+| 21–33 | Fast/slow architecture, two questions + live comparison | Distinguish support from confident wording |
 | 33–43 | Policy + bounded repair | Witness repair → accept and repair → escalate |
 | 43–55 | Bouncer vs. Bluffer: two authored challenges | Catch lies without rejecting good paraphrases |
 | 55–60 | Transfer exercise | A verification plan for your own project |
 
 [Lessons](src/content/lessons/) · [Facilitator guide](docs/facilitator.md) · [Preflight](docs/preflight.md) · [Take-home](docs/take-home.md)
+
+## Follow the same feature across the materials
+
+The deck, lessons, and CLI all follow the Midnight Snack Lab waitlist. Open the printed `pnpm dev` URL for lessons and `/glossary/` for searchable terms; `lab:app` is the separate prototype you inspect.
+
+| Deck checkpoint | Lesson | Edit / run | Evidence of progress |
+| --- | --- | --- | --- |
+| Now break our app | 02 · Misleading success | `pnpm lab:app --scenario memory-only` | Submit survives until reload; then the record is gone |
+| Catch the vanishing act | 03 · Observe evidence | `lab/exercises/observe.ts` · `pnpm lab:exercise browser` | `browser exercise: PASS`; inspect the saved observations |
+| Two questions | 04 · Honest questions | `lab/exercises/questions.ts` · `pnpm lab:exercise questions` | Construction passes; compare live scores to assess meaning |
+| The bouncer's rulebook | 05 · Policy and repair | `lab/exercises/decide.ts` · `pnpm lab:exercise policy` | Policy passes; `pnpm lab:loop` repairs then accepts with fresh evidence |
+| Bouncer vs. Bluffer | 06 · Red team | `lab/challenges/*.json` | Compare your label with a live judge or human peer |
+| Build a verifier for your app | 07 · Transfer | `public/materials/transfer-worksheet.md` | One feature, its user path, a repeatable check, and a stop condition |
+
+Setup is prework. During class, predict the result, edit the named file, run its check, and inspect the evidence. If blocked, pair with someone or save your work and copy one file from `lab/solution/`. `--solution` switches all three files to the reference.
+
+The opening repo QR links here. The glossary QR uses `class.config.json`'s hostname; the placeholder deliberately shows **link pending**. `pnpm slides:qr`, `pnpm slides`, `pnpm dev`, and class builds refresh the local SVGs without an external QR service. Agree, deploy, and check the public glossary URL before sharing that code. The repo is currently private: attendee access must be arranged.
+
+[Opening script and primary sources](docs/opening.md) connect the PocketOS incident, Lauren Tan's pstack verification advice, and our exercise. Saved browser reports live in `public/materials/opening-report.json` and `repair-report.json`; their semantic scores are explicitly synthetic.
 
 ## Three sources of scores — do not confuse them
 
@@ -134,7 +153,7 @@ pnpm lab:app --candidate lab/challenges/bluff.json
 | `pnpm lab:test` | Unit, fake-transport, and real-browser reference tests; no model costs |
 | `pnpm test` | Template regression tests |
 | `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
-| `pnpm slides:check` | Check 26 slides, reveals, portraits, interactive loop, round timer, and reduced motion |
+| `pnpm slides:check` | Check 30 slides, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
 
 Training scenarios: `happy`, `memory-only`, `overpromise`, `polite-lie`, `missing-next-step`, `injection`, `paraphrase`, `uncertain`, `missing-evidence`, `stale-evidence`, `judge-down`.
 

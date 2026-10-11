@@ -1,3 +1,4 @@
+import { generateSlidesQr } from "./slides-qr.js";
 import { spawn } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -27,6 +28,7 @@ export function generationArgs(config: ClassConfig): string[] {
 }
 
 export async function buildClass(): Promise<void> {
+  if (classConfig.slides.publish) await generateSlidesQr();
   await run(["astro", "build"]);
   if (classConfig.slides.publish) {
     await run(["slidev", "build", "slides/slides.md", "--base", "/slides/", "--router-mode", "hash", "--without-notes", "--out", resolve("dist/slides")]);

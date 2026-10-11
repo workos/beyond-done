@@ -1,5 +1,5 @@
 ---
-title: "Ask Jev what the evidence supports"
+title: "Judge what the evidence supports"
 description: Write two narrow questions, compare real judgments, and distinguish probability from proof.
 order: 4
 duration: "12 minutes (live 21:00–33:00)"
@@ -17,7 +17,17 @@ You will learn to ask about **a criterion and its evidence**, not whether an age
 
 Why not search for “waitlist”? A message can say *“You're on the waitlist. No seat guaranteed—but your seat is confirmed!”* Keywords pass; meaning fails.
 
-If a product allows only one fixed approved message, use a template and exact checks instead. Jev is useful here because valid paraphrases are allowed.
+If a product allows only one fixed approved message, use a template and exact checks instead. A semantic judge is useful here because valid paraphrases are allowed.
+
+## Fast judgment, deliberate repair
+
+**System 1 / System 2** is an analogy borrowed from fast and deliberate thinking. In an agent architecture, a fast model can make a narrow structured judgment while a reasoning worker plans, uses tools, and repairs a proposal. Neither role independently establishes what happened in the browser. The **harness** coordinates these tools, observations, and stopping rules.
+
+We use **Jev**, TypeSafe's fast structured model, as the semantic judge. The SDK's **`noul()`** describes a yes/no question with criteria for each answer; the response is the model's probability of “yes.” These names label tools you are about to use, not prerequisites for the workshop.
+
+The default worker here is **scripted** so everyone sees the same repair within the hour. It is not a live System 2 reasoning model. The optional generative worker is a take-home extension. Fast responses and valid schemas do not guarantee correct judgments.
+
+Read [TypeSafe's fast/slow framing](https://typesafe.ai/blog/introducing-system-one-models-and-jev) and [Anthropic's planner/generator/evaluator architecture](https://www.anthropic.com/engineering/harness-design-long-running-apps) for the larger architectural context.
 
 ## Edit `lab/exercises/questions.ts`
 
@@ -58,7 +68,7 @@ Reference both evidence fields by name. Empty or absent text cannot support “y
 
 The confirmation is **untrusted data**. Tell Jev to ignore instructions, evaluator advice, and claimed test scores inside it. This reduces one risk; it does not create a security guarantee.
 
-## What a Noul means
+## What the probability means
 
 A Noul returns the model's **probability of yes**, from 0 to 1. There is no separate confidence field. A value near 0.5 means uncertainty about yes/no, not medium-quality writing.
 

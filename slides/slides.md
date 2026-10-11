@@ -6,31 +6,21 @@ download: false
 exportFilename: beyond-done-slides
 colorSchema: light
 transition: fade-out
-class: indigo
+class: night
+clicks: 2
 fonts:
   provider: none
 ---
 
-<div class="hero-stage">
-<div>
-<p class="small-label">AIE · The verification workshop</p>
-<h1>Beyond<br>“Done”</h1>
-<p class="subtitle">Building verification loops<br>for AI agents.</p>
-<p class="credits">Nick Nisi &amp; Zack Proser · WorkOS</p>
-</div>
-<div class="ticket hero-ticket">
-<div class="ticket-top"><span>MIDNIGHT SNACK LAB</span><span>ADMIT ?</span></div>
-<div class="ticket-title">The agent<br>said done.</div>
-<p>We have a few<br>follow-up questions.</p>
-<span class="stamp">Allegedly.</span>
-<div class="ticket-bottom"><span>CLAIM ≠ EVIDENCE</span><span class="ticket-code">BD—001</span></div>
-</div>
-</div>
+<IncidentOpener />
 
 <!--
-0:00. This is a hands-on workshop, not a model leaderboard. Nick and Zack are co-hosting.
-Open on the confident ticket. The stamp is the running joke: allegedly done.
-Use short fade transitions and click reveals; no auto-play or sound. Reduced motion is supported.
+0:00–0:45. Jer Crane's April 25 PocketOS account: nine seconds is the founder's reported duration, not our measurement.
+First advance: one authenticated API call deletes the production volume. Second: Railway recovered the data and changed deletion safeguards (April 29 follow-up).
+Do not treat the agent's later explanation as a trustworthy forensic account, or repeat the original claim that every backup was permanently lost.
+Say: "Agents can act faster than we can inspect. Production safety needs enforced permissions and recovery. Today: what evidence lets us accept an agent's result?"
+The animation is an explanation, not incident footage. The short source excerpt works offline; links are optional. No live X login or video dependency.
+Sources and the five-minute script: docs/opening.md. Both hosts introduce themselves next.
 -->
 
 ---
@@ -52,7 +42,7 @@ class: hosts-stage
 <p class="people-caption">We’ll build the loop. You’ll try to fool it.</p>
 
 <!--
-0:20–1:20. Shared introduction, equal space for both instructors.
+0:45–1:15. Shared introduction, equal space for both instructors.
 Each give name + one real sentence about why you care about supervising agent work.
 Do not read a bio; do not invent experience. Nick drives the first demo; Zack watches the room.
 Switch driver/room-reader during Jev or policy as suits you. Confirm the exact handoff in rehearsal.
@@ -73,7 +63,7 @@ class: lime
 </div>
 
 <!--
-1:20–2:30. Vote with hands BEFORE the next slide. Zack calls the room's vote; Nick plays the overly confident worker.
+1:15–2:00. "Let's start with something we can actually break in this room." Vote with hands BEFORE the next slide. Zack calls the room's vote; Nick plays the overly confident worker.
 This is a staged report, not an actual agent transcript or a claim that a test suite ran.
 Ask what evidence is missing. Don't reveal the punchline until people commit.
 -->
@@ -82,13 +72,13 @@ Ask what evidence is missing. Don't reveal the punchline until people commit.
 ---
 
 <div class="split">
-<div><h1>One tiny<br>follow-up.</h1><p class="lede">“Does it survive<br>a reload?”</p><p class="aside-note" v-click>Ah. So it was<br><strong>briefly done.</strong></p></div>
+<div><h1>Now break<br>our app.</h1><p class="lede">Submit. Reload.<br>Where did your request go?</p><div class="command">pnpm lab:app --scenario memory-only</div><p class="aside-note">Open the printed URL.<br>Use <code>ada@example.test</code>.</p><p class="aside-note" v-click>So it was <strong>briefly done.</strong></p></div>
 <ReloadReveal />
 </div>
 
 <!--
-2:30–4:00. Click the illustrated Reload button; the request disappears. Let the joke land.
-This is explicitly a staged illustration. If showing the real app instead, run pnpm lab:app --scenario memory-only and reload after submitting.
+2:00–4:00. PRIMARY: switch to the already-open actual app from pnpm lab:app --scenario memory-only. Submit ada@example.test, show waitlisted and saved email, then reload and show none and an empty confirmation.
+Return to this slide. The right-hand illustration is a labelled fallback if the app fails to start, not the default proof. Its Reload button shows the same failure.
 Click the slide advance once for the punchline. A passing submit check did not prove persistence.
 -->
 
@@ -97,14 +87,42 @@ class: night
 ---
 
 <div class="center-stage">
-<p class="small-label">The rule for the rest of the hour</p>
-<h1 class="display">“Done” is a claim.<br><span class="accent" v-click>Bring receipts.</span></h1>
-<p class="lede" v-after>Observed facts. Specific criteria. An explicit stop.</p>
+<p class="small-label">Lauren Tan · @poteto · The Complete Guide to pstack, Part 2</p>
+<h1 class="quote-thesis">“if an agent can’t verify<br>its own work,<br><span class="accent">nothing else matters.”</span></h1>
+<p class="lede" v-click>Build the check. Give the agent a way to run it.<br>Keep the evidence. Decide when to stop.</p>
+<p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · Today: one waitlist, three edits, one verification loop.</p>
 </div>
 
 <!--
-4:00–5:00. Click reveals the thesis, then move to the actual task.
-Not distrust for its own sake: make delegation useful by checking the right things.
+4:00–5:00. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
+Self-verification means exercising the real product against criteria, not asking the model whether it feels finished. Our implementation combines deterministic checks, a fallible semantic judge, and code-owned policy.
+-->
+
+---
+---
+
+<div class="split">
+<div><p class="small-label">FOLLOW ALONG · 5–6 MINUTES</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/nicknisi/beyond-done.git<br>cd beyond-done<br>pnpm lab:doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
+<ResourceQr resource="repo" />
+</div>
+
+<!--
+5:00–6:00. Setup is prework. Doctor should already be green. If blocked after two minutes total, pair up.
+QR opens the source repo. README → Start here; pnpm dev prints the lesson URL. Learner files: lab/exercises. Reference checkpoints: lab/solution.
+Followers edit; observers predict results with a partner. No key is needed for browser/policy work. Project the live judge for people without keys.
+-->
+
+---
+---
+
+<div class="split">
+<div><p class="small-label">YOUR REFERENCE THROUGHOUT THE HOUR</p><h1>A word lost you?<br>Keep this open.</h1><p class="lede">Searchable terms, examples,<br>and checks for understanding.</p><div class="follow-steps"><p><strong>Read</strong> the matching lesson.</p><p><strong>Edit → run → inspect</strong> at each checkpoint.</p><p><strong>Predict first.</strong> Explain the evidence.</p></div><p class="aside-note">Behind? Save your work and copy one reference file.<br><code>--solution</code> switches all three files.</p></div>
+<ResourceQr resource="glossary" />
+</div>
+
+<!--
+6:00–7:00. Open the glossary and search "evidence". Its QR must point to the checked public deployment, never localhost or the template hostname. Local fallback: pnpm dev then /glossary/.
+Repo = source; local lesson site = instructions; lab:app = deliberately broken app. Three surfaces of this workshop.
 -->
 
 ---
@@ -121,7 +139,7 @@ Not distrust for its own sake: make delegation useful by checking the right thin
 </div>
 
 <!--
-5:00–7:00. Smoke test: pnpm lab:doctor. Pair anyone blocked after two minutes.
+7:00–8:00. The repo and glossary are open. Agree on the three observable acceptance criteria before building.
 The task is a browser-local prototype, not organizer-side registration. Keep that boundary honest.
 These criteria are held by the harness, not generated by the worker.
 -->
@@ -140,7 +158,7 @@ These criteria are held by the harness, not generated by the worker.
 <p class="footnote">Your files: lab/exercises/ · Checkpoints: lab/solution/ · Three small edits, not an agent framework.</p>
 
 <!--
-7:00–8:00. Promise the game early. They are building the bouncer they will later challenge.
+8:00–8:45. Promise the game early. They are building the bouncer they will later challenge.
 Each advance adds one responsibility. Catch-up is one file, not resetting a branch.
 -->
 
@@ -165,7 +183,7 @@ type Candidate = {
 <p class="footnote">A deliberately narrow tool—not a sandbox against a shell-capable agent.</p>
 
 <!--
-8:00–10:00. Scripted worker for repeatable orchestration, optional generative worker uses the same schema.
+8:45–10:00. Scripted worker for repeatable orchestration, optional generative worker uses the same schema.
 No hidden security claim: a worker with arbitrary shell access would need real isolation.
 -->
 
@@ -195,6 +213,7 @@ await page.reload();
 
 </div>
 </div>
+<p class="footnote">Lesson 03 · lab/exercises/observe.ts · Check: browser exercise: PASS · Inspect observations in report.json.</p>
 
 <!--
 10:00–21:00. 3 minutes explain, 6 minutes build, 2 minutes checkpoint.
@@ -204,22 +223,17 @@ Nick/Zack split: one narrates common mistakes, one watches for blocked pairs. At
 -->
 
 ---
+clicks: 2
 ---
 
-# Receipts have a date.<br>And an identity.
+# The opening bug.<br>Now with evidence.
 
-<div class="evidence-strip">
-<div class="evidence-cell"><small>RUN / ATTEMPT</small><strong>Now. This one.</strong><small>Not last week’s screenshot.</small></div>
-<span class="evidence-arrow">→</span>
-<div class="evidence-cell"><small>CANDIDATE REVISION</small><strong>The actual build.</strong><small>Check what the browser loaded.</small></div>
-<span class="evidence-arrow">→</span>
-<div class="evidence-cell"><small>JUDGMENT</small><strong>This evidence.</strong><small>No recycling an old “yes.”</small></div>
-</div>
-<p class="lede" v-click>A perfectly good receipt for the wrong thing is still the wrong receipt.</p>
-<p class="footnote">Local hashes provide consistency checks, not protection from someone who controls the whole machine.</p>
+<EvidenceFlow />
+<p class="footnote">Reproduce: pnpm lab:check --scenario memory-only · Open the printed report.json path.</p>
 
 <!--
-~20:00 checkpoint discussion, not an extra timed block. Point to report.json, then move on.
+~20:00 checkpoint. Advance twice: observations → revision-bound evidence → failed mandatory checks. This is a saved real browser run using the reference solution, not a current live run. Its judge scores are synthetic.
+Open public/materials/opening-report.json or run pnpm lab:check --scenario memory-only with the learner collector. Their unfinished policy still escalates; inspect observations and checks. Local hashes establish consistency, not isolation from a shell-capable attacker.
 -->
 
 ---
@@ -242,7 +256,27 @@ If a fixed approved message meets the product need, use a template. We allow par
 ---
 ---
 
-<div class="exercise-number small-label">Build 2 · 21–33 minutes</div>
+<p class="small-label">WHY DIFFERENT JOBS NEED DIFFERENT TOOLS</p>
+
+# Fast judgments.<br>Deliberate repairs.
+
+<div class="architecture-lanes">
+<div><span class="lane-label">SYSTEM 1 · an analogy</span><h2>Check a narrow claim.</h2><p>Fast, structured judgment.<br>“Does this copy promise a seat?”</p></div>
+<div v-click><span class="lane-label">SYSTEM 2 · an analogy</span><h2>Work through a problem.</h2><p>Plan, reason, use tools, repair.<br>“How should I fix this feature?”</p></div>
+</div>
+<p class="aside-note" v-click>Neither establishes what the browser did. Observe that separately.<br>The harness coordinates the work; code owns the acceptance decision.</p>
+<p class="footnote"><a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noopener noreferrer">TypeSafe’s fast/slow framing</a> · <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener noreferrer">Generator/evaluator architecture: Anthropic</a></p>
+
+<!--
+21:30–23:00, inside the existing two-minute contrast segment. System 1/2 is a design analogy, not a diagnosis of a model's cognition or a claim that speed guarantees correctness.
+TypeSafe calls its fast structured model Jev. Our judge will use it for meaning; deterministic browser assertions remain the tool for persistence.
+Anthropic's planner/generator/evaluator harness is one broader example. Our class worker is scripted for repeatability: it is not a live System 2 model. The optional generative worker is an extension after class.
+-->
+
+---
+---
+
+<div class="exercise-number small-label">Build 2 · 23–33 minutes</div>
 
 # Two questions.<br>No vibes check.
 
@@ -251,7 +285,8 @@ If a fixed approved message meets the product need, use a template. We allow par
 <div v-click><span class="question-key">nextStep</span><p>An email <strong>only if</strong> a place opens?</p></div>
 </div>
 <div class="command">pnpm lab:exercise questions</div>
-<p class="footnote">Read BOTH observed messages · Embedded instructions are data · The construction check does not grade meaning.</p>
+<p class="aside-note">Jev is our semantic judge. <code>noul(question, { true, false })</code><br>asks a yes/no question and returns its probability of “yes.”</p>
+<p class="footnote">Lesson 04 · lab/exercises/questions.ts · Check: questions exercise: PASS · Then inspect a live judgment.</p>
 
 <!--
 23:00–28:00. Open lab/exercises/questions.ts. Show noul(question, {true, false}) in the lesson/code editor.
@@ -266,7 +301,7 @@ class: night
 # 0.55 is not<br>“55% done.”
 
 <div class="probability-scale"><span>0.0</span><span class="middle">0.5</span><span>1.0</span><span class="marker">▴</span></div>
-<p class="lede">A <strong>Noul</strong> reports the model’s probability of “yes.”</p>
+<p class="lede">The model reports a probability of “yes.”</p>
 <p class="lede" v-click>Useful signal.<br><span class="accent">Not proof. Not permission.</span></p>
 <p class="footnote">No separate confidence field. Check calibration on representative data—not on these few teaching cases.</p>
 
@@ -280,7 +315,7 @@ Near .5 means yes/no uncertainty, not medium-quality copy.
 
 # Ask the actual judge.
 
-<p class="lede">Predict first. Then inspect what Jev really says.</p>
+<p class="lede">Predict first. Then inspect the evidence and Jev’s answer.</p>
 
 ```bash
 pnpm lab:check --scenario happy --judge live
@@ -311,7 +346,7 @@ Instructor uses --solution for the reference. Learners' still-unfinished policy 
 <div class="policy-row" v-click><span>Otherwise, any <code>p &lt; 0.9</code>?</span><span>→</span><strong>Ask a human</strong></div>
 <div class="policy-row" v-click><span>All required checks clear?</span><span>→</span><strong>Let it in</strong></div>
 <div class="command">pnpm lab:exercise policy</div>
-<p class="footnote">Missing evidence is not a known product defect. No averaging away a hard failure. Thresholds are illustrative.</p>
+<p class="footnote">Lesson 05 · lab/exercises/decide.ts · Check: policy exercise: PASS · Then run pnpm lab:loop.</p>
 
 <!--
 33:00–40:00. Reveal rules in order; then write decide(). Validate probabilities, thresholds, and repair count.
@@ -322,7 +357,7 @@ Instructor uses --solution for the reference. Learners' still-unfinished policy 
 clicks: 5
 ---
 
-# One more try.<br>Not infinite tries.
+# Repair once. Then decide.
 
 <LoopMachine />
 
@@ -331,6 +366,24 @@ clicks: 5
 At the end, toggle “Make the worker stubborn” and show the escalation branch. Toggle doesn't rerun anything.
 Then briefly run pnpm lab:loop (or --solution) for actual browser-backed repair → accept; --stubborn for escalation.
 Fresh observations and judgment are required for the repaired revision. One repair = at most two candidate evaluations.
+-->
+
+---
+class: indigo
+---
+
+<p class="small-label">40–43 MINUTES · THE ACTUAL SAVED RUN</p>
+
+# Open the receipt.
+
+<RepairReceipt />
+<div class="command">pnpm lab:loop<br>pnpm lab:loop --stubborn</div>
+<p class="footnote">Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.</p>
+
+<!--
+This belongs to the same three-minute payoff as the previous animation. Run the completed learner loop, or --solution for the reference. Open report.json and match its fields to this saved reference run.
+Point to the different candidate revisions AND evidence hashes. A new candidate does not inherit the old judgment. --stubborn must end repair → escalate.
+Captured report: public/materials/repair-report.json. This slide is not a live model response. If short on time, inspect the saved report and protect the game.
 -->
 
 ---
@@ -487,14 +540,14 @@ No additional lecture block. During no-key rounds, name the fourth source plainl
 ---
 
 <div class="split">
-<div><h1>Take the<br>bouncer home.</h1><p class="lede">Pick one task<br>from your own project.</p></div>
+<div><h1>Build a verifier<br>for your app.</h1><p class="lede">Pick one real feature.<br>Give an agent a way to reach it,<br>exercise it, and show proof.</p><p class="aside-note">Lauren Tan’s pstack: reusable verification tools<br>and a map of user-visible features.</p><a class="aside-note" href="https://x.com/poteto/status/2094457600259842065" target="_blank" rel="noopener noreferrer">Read pstack Part 1 ↗</a></div>
 <div class="ticket">
 <div class="ticket-top"><span>YOUR VERIFICATION RECEIPT</span><span>KEEP THIS</span></div>
-<p><strong>The misleading “done”:</strong><br>_________________________</p><p><strong>The independent evidence:</strong><br>_________________________</p><p><strong>The point where we stop:</strong><br>_________________________</p>
+<p><strong>Feature + user path:</strong><br>_________________________</p><p><strong>Launch + check + proof:</strong><br>_________________________</p><p><strong>When we stop / ask for help:</strong><br>_________________________</p>
 <div class="ticket-bottom"><span>ONE REAL TASK. ONE FIRST CHECK.</span></div>
 </div>
 </div>
-<p class="footnote">55–58 minutes · /materials/transfer-worksheet.md</p>
+<p class="footnote">55–58 minutes · Lesson 07 · /materials/transfer-worksheet.md · Launch → drive → observe → decide.</p>
 
 <!--
 55:00–58:00. Two-minute write, then brief pair-share. If stuck: settings change, support reply, dashboard filter.
@@ -505,9 +558,8 @@ Ask where a hard assertion is sufficient and where a semantic judgment is actual
 class: indigo
 ---
 
-<p class="small-label">Beyond “Done”</p>
-<div class="close-questions"><p>What did we <span class="accent">observe?</span></p><p v-click>What did we <span class="accent">infer?</span></p><p v-click>Why did we <span class="accent">stop?</span></p></div>
-<p class="lede" style="margin-top: 35px">Nick Nisi &amp; Zack Proser</p>
+<p class="small-label">Beyond “Done” · Keep the materials</p>
+<div class="closing-resources"><div><div class="close-questions"><p>What did we <span class="accent">observe?</span></p><p v-click>What did we <span class="accent">infer?</span></p><p v-click>Why did we <span class="accent">stop?</span></p></div><p class="lede" style="margin-top: 35px">Nick Nisi &amp; Zack Proser</p></div><ResourceQr resource="glossary" compact /></div>
 <p class="footnote">Your agents can keep saying “done.” Now you can ask for the receipt.</p>
 
 <!--

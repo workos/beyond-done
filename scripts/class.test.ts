@@ -159,7 +159,7 @@ test("class builds publish slides only when enabled and never overwrite the glos
       await exec(process.execPath, ["--import", "tsx", "scripts/class.ts", "build"], { cwd: directory, maxBuffer: 4_000_000 });
       const home = await readFile(join(directory, "dist/index.html"), "utf8");
       assert.match(home, /Preflight — before the hour/);
-      assert.match(home, /Ask Jev what the evidence supports/);
+      assert.match(home, /Judge what the evidence supports/);
       assert.match(home, /<dd>1 h<\/dd>/);
       assert.match(home, /<h1>Configured class<\/h1>/);
       assert.match(home, /Workshop instructor/);
