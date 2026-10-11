@@ -123,7 +123,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .question-pair p { font-size: 23px; margin: 0; }
 .probability-scale { display: flex; position: relative; margin: 48px 0 35px; padding: 22px 24px; justify-content: space-between; background: #e8e5fb; border-radius: 6px; color: #3a315d; font: 22px "JetBrains Mono Variable", monospace; }
 .probability-scale .middle { font-weight: 700; }
-.probability-scale .marker { position: absolute; bottom: -15px; left: 49%; color: #e17963; font-size: 40px; }
+.probability-scale .marker { position: absolute; bottom: -15px; left: 55%; transform: translateX(-50%); color: #e17963; font-size: 40px; }
 .policy-row { display: grid; grid-template-columns: 1fr 32px 145px; gap: 12px; align-items: center; font-size: 20px; padding: 15px 0; border-bottom: 1px solid #d5d0e7; }
 .policy-row strong { font-size: 22px; }
 .policy-row code { font-size: 15px; }
