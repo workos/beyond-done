@@ -369,7 +369,7 @@ class: night
 <div class="probability-scale"><span>0.0</span><span class="middle">0.5</span><span>1.0</span><span class="marker">▴</span></div>
 <p class="lede">The model reports a probability of “yes.”</p>
 <p class="lede" v-click>Useful signal.<br><span class="accent">Not proof. Not permission.</span></p>
-<p class="footnote">No separate confidence field. Check calibration on representative data—not on these few teaching cases.</p>
+<p class="footnote">No separate confidence field.</p>
 
 <!--
 Teaching expectations:
@@ -379,6 +379,7 @@ Teaching expectations:
 
 During the questions build, give this 30-second explanation while people think.
 Near .5 means yes/no uncertainty, not medium-quality copy.
+Moved from footnote: Check calibration on representative data—not on these few teaching cases.
 -->
 
 ---
@@ -397,7 +398,7 @@ pnpm lab:check --scenario overpromise --judge live
 <div><h2>Your questions</h2><p>No <code>--solution</code> flag.<br>Inspect raw scores—not the unfinished policy.</p></div>
 <div><h2>No key / no Wi-Fi?</h2><p>Watch the co-host’s live run.<br>Or <code>pnpm lab:replay</code>, clearly labeled.</p></div>
 </div>
-<p class="footnote">Recorded ≠ newly evaluated. Synthetic fixtures ignore your question wording entirely.</p>
+<p class="footnote">Recorded ≠ newly evaluated.</p>
 
 <!--
 Teaching expectations:
@@ -409,6 +410,7 @@ Teaching expectations:
 28:00–33:00. One host drives, the other asks the room to predict which criterion drops.
 Instructor uses --solution for the reference. Learners' still-unfinished policy escalates; focus on probabilities.
 15-second request cap; then explicit replay fallback. Do not waste the room waiting on Wi-Fi.
+Moved from footnote: Synthetic fixtures ignore your question wording entirely.
 -->
 
 ---
