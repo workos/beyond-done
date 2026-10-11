@@ -104,6 +104,16 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .build-stage .exercise-number { font-size: 17px; font-weight: 650; color: var(--deck-muted); margin-bottom: 16px; }
 .build-stage .build-description { font-size: 22px; line-height: 1.45; }
 .build-stage ul { padding-left: 22px; font-size: 19px; }
+.slidev-layout.observe-slide { padding-top: 32px; }
+.observe-head { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: start; }
+.slidev-layout .observe-head h1 { margin: 0; }
+.observe-head .exercise-number { font-size: 17px; font-weight: 650; color: var(--deck-muted); margin-bottom: 8px; }
+.observe-head .command { margin-top: 0; }
+.slidev-layout .observe-head .aside-note { margin: 8px 0 0; line-height: 1.35; }
+.observe-caption-row { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin: 12px 0 8px; }
+.slidev-layout .observe-caption-row p { margin: 0; }
+.slidev-layout .observe-caption-row .build-description { font-size: 22px; line-height: 1.45; }
+.slidev-layout.observe-slide .footnote { bottom: 14px; }
 .command { background: #eae7fa; border-radius: 6px; padding: 13px 16px; margin-top: 22px; color: #3b2f64; font: 14px/1.5 "JetBrains Mono Variable", monospace; overflow-wrap: anywhere; }
 .night .command, .indigo .command { background: #ffffff14; color: #f2f0ff; }
 .code-caption { font: 12px "JetBrains Mono Variable", monospace; margin-bottom: 12px; color: var(--deck-muted); }

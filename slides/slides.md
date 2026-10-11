@@ -232,31 +232,27 @@ No hidden security claim: a worker with arbitrary shell access would need real i
 -->
 
 ---
+class: observe-slide
 ---
 
-<div class="build-stage">
-<div><div class="exercise-number">Build 1 · 10–21 minutes</div><h1>Catch the<br>vanishing act.</h1><p class="build-description">Fresh browser → submit → read → reload → read again.</p><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
-<div><p class="code-caption">lab/exercises/observe.ts</p>
+<div class="observe-head">
+<div><div class="exercise-number">Build 1 · 10–21 minutes</div><h1>Catch the vanishing act.</h1></div>
+<div><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
+</div>
+<div class="observe-caption-row"><p class="build-description">Fresh browser → submit → read → reload → read again.</p><p class="code-caption">lab/exercises/observe.ts</p></div>
 
 ```ts
 const status = page.getByTestId("status");
-const message = page.getByRole("status");
-
-// Observe before and after submission.
-await page.getByLabel("Email").fill(
-  "ada@example.test"
-);
-await page.getByRole("button", {
-  name: "Join waitlist",
-}).click();
-
-// Capture the submitted state.
+const email = page.getByTestId("email");
+const confirmation = page.getByRole("status");
+await page.getByLabel("Email").fill("ada@example.test");
+await page.getByRole("button", { name: "Join waitlist" }).click();
+await expect(status).toHaveText("waitlisted");
+const submitted = await status.innerText();
 await page.reload();
-// Capture the reloaded state. Compare.
+// Your turn: read status, email and confirmation again.
+// An empty value is a finding, not an error.
 ```
-
-</div>
-</div>
 <p class="footnote">Lesson 03 · lab/exercises/observe.ts · Check: browser exercise: PASS · Inspect observations in report.json.</p>
 
 <!--
