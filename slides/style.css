@@ -117,9 +117,10 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .slidev-layout .observe-caption-row .build-description { font-size: 22px; line-height: 1.45; }
 .slidev-layout.observe-slide .footnote { bottom: 14px; }
 .command { background: #eae7fa; border-radius: 6px; padding: 13px 16px; margin-top: 22px; color: #3b2f64; font: 20px/1.4 "JetBrains Mono Variable", monospace; overflow-wrap: anywhere; }
-.slidev-layout:has(.evidence-flow) { padding-top: 30px; }
+.slidev-layout:has(.evidence-flow) { padding-top: 24px; }
+.slidev-layout:has(.evidence-flow) .footnote, .slidev-layout:has(.repair-receipt) .footnote { bottom: 14px; }
 .slidev-layout:has(.evidence-flow) h1 { margin-bottom: 16px; }
-.slidev-layout:has(.repair-receipt) { padding-top: 30px; }
+.slidev-layout:has(.repair-receipt) { padding-top: 24px; }
 .slidev-layout:has(.repair-receipt) .small-label { margin-bottom: 8px; }
 .slidev-layout:has(.repair-receipt) h1 { margin-bottom: 14px; }
 .slidev-layout:has(.repair-receipt) .command { margin-top: 12px; padding-block: 10px; }
@@ -215,3 +216,10 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 
 .repo-setup.command { font-size: 18px; }
 .slidev-layout.indigo p code, .slidev-layout.night p code { color: inherit; background: #ffffff14; }
+
+/* Size-only overrides for text inside shared components (ResourceQr, IncidentOpener, EvidenceFlow, RepairReceipt, LoopMachine). Drop this block to restore the components' own sizes. */
+.slidev-layout div.resource-qr p, .slidev-layout div.resource-qr.compact p { font-size: 16px; }
+.slidev-layout .incident-opener .incident-kicker, .slidev-layout .incident-opener .incident-quote a, .slidev-layout .incident-opener .incident-context, .slidev-layout .incident-opener .incident-request, .slidev-layout .incident-opener .volume-heading { font-size: 16px; }
+.slidev-layout .evidence-flow .proof-facts small, .slidev-layout .evidence-flow .proof-identity, .slidev-layout .evidence-flow .proof-failure, .slidev-layout .evidence-flow .proof-identity code { font-size: 16px; }
+.slidev-layout .repair-receipt dt, .slidev-layout .repair-receipt .repair-attempt h2 span { font-size: 16px; }
+.slidev-layout .loop-machine .revision-trail, .slidev-layout .loop-machine .revision-trail code { font-size: 16px; }
