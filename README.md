@@ -116,6 +116,10 @@ pnpm lab:check --candidate lab/challenges/legit.json --solution --judge live
 pnpm lab:app --candidate lab/challenges/bluff.json
 ```
 
+`lab:app` validates and renders the candidate **once, at startup**. After you edit a challenge JSON, stop the server (Ctrl+C), start it again, and open the **newly printed URL**.
+
+Each start uses a new port. A new port is a new browser origin, so localStorage does not carry over from the previous run. To test that the waitlist entry survives reload, reload the **same running URL**.
+
 [Game rules](src/content/lessons/06-red-team.md) · [Paper scorecard](public/materials/bouncer-scorecard.md). No synthetic scores for novel text, no labels sent to the judge, no leaderboard service required.
 
 ## Commands
@@ -124,7 +128,7 @@ pnpm lab:app --candidate lab/challenges/bluff.json
 | --- | --- |
 | `pnpm lab:doctor` | Check Node, Chromium, local listener; report key presence without testing it |
 | `pnpm lab:app --scenario happy` | Manually explore a candidate in a browser |
-| `pnpm lab:app --candidate FILE` | Preview your own candidate for a human round |
+| `pnpm lab:app --candidate FILE` | Preview your own candidate for a human round; reads FILE once, so restart after edits and use the new URL |
 | `pnpm lab:check --candidate FILE --judge live` | Judge your own validated JSON candidate |
 | `pnpm lab:check --scenario NAME [--solution]` | Evaluate one candidate; print its evidence/report path |
 | `pnpm lab:loop --solution [--stubborn]` | Run the bounded worker → verify → repair loop |
