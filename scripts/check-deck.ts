@@ -27,7 +27,7 @@ const historySlide = slideFor('<ReceiptHistory');
 const examplesSlide = slideFor('<VerifierExamples');
 const ctxSlide = slideFor('<CtxWalkthrough');
 const rikerSlide = slideFor('<RikerWalkthrough');
-assert.equal(rikerSlide, ctxSlide - 1, 'Riker walkthrough comes right before CTX');
+assert.equal(rikerSlide, ctxSlide + 1, 'Riker walkthrough comes right after the hosts’ tools slide');
 const appendixSlides = ['roles', 'example', 'models', 'loop', 'evaluate'].map(topic => ({
   topic, slide: slideFor(`<DecisionAppendix topic="${topic}"`), clicks: topic === 'loop' ? 3 : 2,
 }));
@@ -38,7 +38,7 @@ const clickStates = new Map([
   [browserProofSlide, [0, 1, 2]], [historySlide, [0, 1, 2, 3]],
   [examplesSlide, [0, 1, 2]],
   [ctxSlide, [0, 1, 2, 3]],
-  [rikerSlide, [0, 1, 2, 3, 4, 5, 6, 7]],
+  [rikerSlide, [0, 1, 2, 3, 4, 5]],
   ...appendixSlides.map(({ slide, clicks }) => [slide, Array.from({ length: clicks + 1 }, (_, i) => i)] as [number, number[]]),
 ]);
 assert.ok(slideCount, "The presentation must contain slides");
@@ -152,10 +152,6 @@ try {
   await page.keyboard.press('ArrowRight');
   await expect(riker.getByLabel('Check duration')).toHaveText('2:21');
   await expect(riker.locator('.rk-exit')).toHaveText('exit 0');
-  for (const step of [6, 7]) {
-    const shot = (await go(rikerSlide, step)).locator('.rk-shot img');
-    await expect.poll(() => shot.evaluate(img => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-  }
   for (const { topic, slide, clicks } of appendixSlides) {
     const root = await go(slide);
     const appendix = root.locator('.decision-appendix');
@@ -221,7 +217,7 @@ try {
     [receiptSlide, '.receipt-paper', 3], [workbenchSlide, '.proof-result', 2],
     [browserProofSlide, '.hotspot', 2], [historySlide, '.history-focus', 3],
     [examplesSlide, '.example-prompt', 2],
-    [ctxSlide, '.ctx-overlay', 3], [rikerSlide, '.riker-overlay', 7],
+    [ctxSlide, '.ctx-overlay', 3], [rikerSlide, '.rk-look', 5],
   ] as const) {
     const root = await go(slide, clicks);
     assert.equal(await root.locator(selector).evaluate(e => getComputedStyle(e).animationName), 'none');
@@ -262,7 +258,7 @@ try {
   await expect(round.getByRole("status")).toHaveText("Pens down. Swap roles.");
   await expect(round.getByRole("timer")).toHaveText("0:00");
   assert.deepEqual(errors, [], "No deck runtime errors");
-  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; Riker check clock and screenshots; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; reload reveal; agent-run fallback reveals; game reveal; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
+  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; Riker check clock; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; reload reveal; agent-run fallback reveals; game reveal; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
   console.log("Visual samples: .lab-runs/deck-review/");
 } finally {
   await browser.close();

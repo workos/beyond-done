@@ -300,34 +300,6 @@ clicks: 3
 -->
 
 ---
-title: The worker said “ready.” Riker checked.
-class: riker-slide night
-clicks: 7
----
-
-<RikerWalkthrough />
-
-<!--
-**ACT 1 · THE CLAIM** · 6:30–7:30 · Nick · seven quick clicks
-
-**Why this slide:** Credibility, not a pitch. The loop from the quote slide, running in a tool Nick uses every day, on a real job: job 140, the PR that deployed this workshop site. Every value on screen is Riker’s own record of that job.
-
-**Say** (one line per click, keep moving):
-- **(0)** “This is Riker. It runs coding agents for me. Here’s the worker’s hand-back on the job that deployed this site: ‘ready for Nick to run.’ Riker keeps that as the story. It never sets the status.”
-- **(1)** “The check was part of the job at 07:34, before the worker wrote any code. Nineteen steps: tests, build, this deck’s checker, a deploy dry run.” Point at the highlight: “And the worker admits it didn’t rerun the full suite.”
-- **(2)** “So Riker runs it itself, in the job’s worktree. Two minutes twenty-one. Exit zero.” The clock replays the real duration in about a second and a half.
-- **(3)** “The proof comes from the check’s own process: command, exit code, commit, tree, and a hash of the log. Read it back later and the hash still has to match.”
-- **(4)** “Signing rewrote the commits, but the tree didn’t change, so the proof still holds. Now it says proven. No check would mean ‘done, unverified.’ A failed check means nothing ships.”
-- **(5)** “Some things no command can judge. Riker names the look a person still owes.”
-- **(6)** Screenshot: “Every line in the app is read from a record. ‘Proven’ only appears when Riker’s own check passed.”
-- **(7)** Screenshot: “Ember only ever means a person is needed. Mint only ever means proven. Nothing else uses either color.”
-
-**Next →** “Zack got to the same rule from a different direction.”
-
-**Careful:** Riker is private; don’t promise access. The job view replays job 140’s stored record. The two screenshots are Riker’s app on a demo repo, not job 140. Left arrow retraces every state. Short on time? Stop after click 5 and skip the screenshots.
--->
-
----
 title: We hold our own tools to this.
 class: ctx-slide
 clicks: 3
@@ -336,12 +308,12 @@ clicks: 3
 <CtxWalkthrough />
 
 <!--
-**ACT 1 · THE CLAIM** · 7:30–8:00 · Zack
+**ACT 1 · THE CLAIM** · 6:30–7:00 · one sentence each, then Zack
 
 **Why this slide:** Credibility, not a pitch. The thesis comes from our day jobs. Both tools refuse to treat a worker’s “done” as proof. Today’s build is a small version of both.
 
 **Say:**
-- **Nick:** The Riker card recaps the last slide. Hand off in one line: “That’s mine. Zack?”
+- **Nick:** “Riker runs coding agents for me. It never believes the agent’s status. It runs the job’s check itself. I’ll show you a real one in a second.”
 - **Zack:** “CTX models work as a graph of observable end states. A worker can claim whatever it likes; the claim is logged and ignored. Verifiers write receipts tied to the exact revision, and only CTX’s evaluators close a node.”
 
 **Click walkthrough · Zack:** Use the images as a quick visual example in the hour; expand these prompts during rehearsal or questions. No additional slide advances are needed between images. Left arrow retraces every state.
@@ -350,9 +322,35 @@ clicks: 3
 2. **Architecture overlay:** Start at the agent session, then trace work → verifier → gate → outcome. A **run** is one execution attempt, including its inputs, actions and artifacts; it is not the task’s completion status. **Inputs** bind the work to the things in scope. A **verification** is the required condition, such as all scoped PRs being merged. A **verifier** is the connector that queries the real system and returns an observation/receipt. A worker’s prose cannot satisfy the gate. On failure the task stays open; on success the evaluator can close it. Keep the ledger over time for evaluation and improvement; a training corpus is a possible curated use, not automatic learning.
 3. **App overlay:** Walk left to right: “Pull requests in scope” is the input set; “All pull requests merged” is the verification; “Re-check with GitHub” invokes the verifier; the scoped PR and observed merged state support the satisfied gate. Point out **Latest run: No run attached**: this screenshot shows the task’s verification state, not a run-detail view. Do not imply that the captured check has an attached run. The recording of a run and the requirement for completion are different concepts.
 
-**Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. Here’s the app you’re going to make trustworthy.”
+**Next →** **Nick:** “Here’s what that looks like on a real job of mine.”
 
 **Careful:** The implementations are private. The CTX links are public writing: the original context-engine blueprint and the later retrospective about verification gates. Nick and Zack arrived at receipts independently. Return to that shared idea on the receipt and run-history slides; don’t imply either article exposes the private implementation.
+-->
+
+---
+title: The worker said “ready.” Riker checked.
+class: riker-slide night
+clicks: 5
+---
+
+<RikerWalkthrough />
+
+<!--
+**ACT 1 · THE CLAIM** · 7:00–8:00 · Nick · five quick clicks
+
+**Why this slide:** The Riker card on the last slide, shown on a real job: job 140, the PR that deployed this workshop site. It is the quote slide’s loop running in a tool Nick uses every day. Every value on screen is Riker’s own record of that job.
+
+**Say** (one line per click, keep moving):
+- **(0)** “Here’s Riker on the job that deployed this site. The worker said ‘ready for Nick to run.’ Riker keeps that as the story. It never sets the status.”
+- **(1)** “The check was part of the job before the worker wrote any code. Nineteen steps.” Point at the highlight: “And the worker admits it didn’t rerun the full suite.”
+- **(2)** “So Riker runs it itself. Two minutes twenty-one. Exit zero.” The clock replays the real duration in about a second and a half.
+- **(3)** “The proof comes from the check’s own process: command, exit code, commit, tree, and a hash of the log.”
+- **(4)** “Signing rewrote the commits, but the tree didn’t change, so the proof still holds. Now it says proven. No check would mean ‘done, unverified.’”
+- **(5)** “Some things no command can judge. Riker asks a person to look.”
+
+**Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. Here’s the app you’re going to make trustworthy.”
+
+**Careful:** Riker is private; don’t promise access. The slide replays job 140’s stored record; the worker quote is trimmed with ellipses, not reworded. Left arrow retraces every state.
 -->
 
 ---
