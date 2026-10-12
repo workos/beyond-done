@@ -18,7 +18,7 @@ const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 2)));
     <div class="browser-stage">
       <ol class="trace-recipe">
         <li :class="{ current: step === 0 }"><b>01</b><div><strong>Record the real action.</strong><code>performance_start_trace</code><span>Click the slow filter. Stop recording.</span></div></li>
-        <li :class="{ current: step === 1 }"><b>02</b><div><strong>Find the expensive work.</strong><code>performance_analyze_insight</code><span>Inspect the trace and call stacks.</span></div></li>
+        <li :class="{ current: step === 1 }"><b>02</b><div><strong>Inspect expensive call stacks.</strong><code>performance_analyze_insight</code></div></li>
         <li :class="{ current: step === 2 }"><b>03</b><div><strong>Repair. Record again.</strong><span>Same data, device and throttling.<br>Recheck behavior + time budget.</span></div></li>
       </ol>
       <div class="trace-panel" :class="{ inspected: step >= 1, repaired: step >= 2 }">
@@ -42,16 +42,16 @@ const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 2)));
 </template>
 
 <style scoped>
-.browser-proof { font-size: 18px; line-height: 1.35; }
+.browser-proof { font-size: 18px; line-height: 1.35; height: 100%; display: flex; flex-direction: column; }
 .browser-proof code { background: transparent; padding: 0; line-height: 1.45; }
-.browser-proof .eyebrow { color: #5b4cd0; font-size: 15px; letter-spacing: .08em; margin: 0 0 10px; }
-.browser-proof h1 { font-size: 44px; margin: 0 0 16px; }
-.browser-tools { display: grid; grid-template-columns: .85fr 1fr 1.25fr; border: 1px solid #d7d1ec; border-radius: 9px; overflow: hidden; margin-bottom: 18px; }
-.browser-tools > div { padding: 12px 17px; display: flex; flex-direction: column; gap: 4px; background: #efedf8; }
+.browser-proof .eyebrow { color: #5b4cd0; font-size: 15px; letter-spacing: .08em; margin: 0 0 6px; }
+.browser-proof h1 { font-size: 44px; margin: 0 0 12px; }
+.browser-tools { display: grid; flex-shrink: 0; grid-template-columns: .85fr 1fr 1.25fr; border: 1px solid #d7d1ec; border-radius: 9px; overflow: hidden; margin-bottom: 14px; }
+.browser-tools > div { padding: 8px 17px; display: flex; flex-direction: column; gap: 4px; background: #efedf8; }
 .browser-tools b { font-size: 21px; line-height: 1.25; }
 .browser-tools span { font-size: 15px; line-height: 1.3; color: #65627d; }
 .browser-tools .selected { background: #ded6ff; }
-.browser-stage { display: grid; grid-template-columns: 1fr 1.05fr; gap: 22px; height: 270px; }
+.browser-stage { display: grid; grid-template-columns: 1fr 1.05fr; gap: 22px; height: 250px; flex: 0 0 250px; }
 .trace-recipe { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .trace-recipe li { line-height: 1.2; display: flex; align-items: flex-start; gap: 12px; margin: 0; padding: 6px 12px; border-left: 3px solid #e5e0f3; transition: background .3s, border-color .3s; }
 .trace-recipe li.current { border-color: #6752d9; background: #ece7fe; border-radius: 0 7px 7px 0; }
@@ -80,7 +80,7 @@ const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 2)));
 .budget-line { position: absolute; top: 7px; bottom: -3px; left: 68%; border-left: 1px dashed #c9c1e4; }
 .budget-line span { position: absolute; top: -13px; left: -20px; font-size: 10px; color: #c9c1e4; }
 .trace-verdict { border-top: 1px solid #655d85; margin-top: 11px; padding-top: 8px; font-size: 16px; line-height: 1.25; color: #d9ff82; animation: trace-highlight .5s ease-out both; }
-.browser-proof .source-note { font-size: 14px; color: #65627d; line-height: 1.5; margin: 12px 0 0; }
+.browser-proof .source-note { font-size: 14px; color: #65627d; line-height: 1.5; margin: auto 0 0; padding-top: 18px; flex-shrink: 0; }
 .source-note a { text-decoration: underline; text-underline-offset: 3px; }
 @keyframes trace-highlight { from { opacity: .3; } to { opacity: 1; } }
 </style>
