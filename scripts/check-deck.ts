@@ -16,9 +16,9 @@ function slideFor(marker: string) {
 const incidentSlide = slideFor('<IncidentOpener');
 const hostSlide = slideFor('class="people"');
 const reloadSlide = slideFor('<ReloadReveal');
-const loopSlide = slideFor('<LoopMachine');
-const roundSlide = slideFor('Round 1 · The polite lie');
-const evidenceSlide = slideFor('<EvidenceFlow');
+const agentSlide = slideFor('agent session · fallback recording');
+const roundSlide = slideFor('Round 1 · then swap');
+const missSlide = slideFor('Every miss is a new line');
 const contrastSlide = slideFor('<VerificationContrast');
 const receiptSlide = slideFor('<RepairReceipt');
 const workbenchSlide = slideFor('<VerificationWorkbench');
@@ -26,12 +26,17 @@ const browserProofSlide = slideFor('<BrowserProof');
 const historySlide = slideFor('<ReceiptHistory');
 const examplesSlide = slideFor('<VerifierExamples');
 const ctxSlide = slideFor('<CtxWalkthrough');
+const appendixSlides = ['roles', 'example', 'models', 'loop', 'evaluate'].map(topic => ({
+  topic, slide: slideFor(`<DecisionAppendix topic="${topic}"`), clicks: topic === 'loop' ? 3 : 2,
+}));
+assert.ok(appendixSlides[0].slide > slideFor('class="split booth-close"'), 'Optional appendix follows the workshop ending');
 const clickStates = new Map([
-  [loopSlide, [0, 1, 2, 3, 4, 5]], [contrastSlide, [0, 1, 2, 3]],
+  [contrastSlide, [0, 1, 2, 3]],
   [receiptSlide, [0, 1, 2, 3]], [workbenchSlide, [0, 1, 2]],
   [browserProofSlide, [0, 1, 2]], [historySlide, [0, 1, 2, 3]],
   [examplesSlide, [0, 1, 2]],
   [ctxSlide, [0, 1, 2, 3]],
+  ...appendixSlides.map(({ slide, clicks }) => [slide, Array.from({ length: clicks + 1 }, (_, i) => i)] as [number, number[]]),
 ]);
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
@@ -65,7 +70,7 @@ try {
       const outside = await root.locator(".slidev-layout").evaluate(layout => {
         const bounds = layout.getBoundingClientRect();
         const footnote = layout.querySelector(".footnote")?.getBoundingClientRect();
-        return [...layout.querySelectorAll("h1,h2,p,pre,table,li,img,button,label,.loop-controls,.command,.ticket,.score-receipt")]
+        return [...layout.querySelectorAll("h1,h2,p,pre,table,li,img,button,label,.command,.ticket,.score-receipt,.command-surface,.miss-list > div")]
           .filter(element => {
             if (element.closest(".slidev-vclick-hidden")) return false;
             const rect = element.getBoundingClientRect();
@@ -90,12 +95,12 @@ try {
   const firstRevision = await receipt.locator('.receipt-section').first().innerText();
   await page.keyboard.press('ArrowRight');
   await expect(receipt.locator('.receipt-top')).toContainText('ATTEMPT 2');
-  await expect(receipt.locator('.receipt-decision')).toContainText('ACCEPT');
+  await expect(receipt.locator('.receipt-decision')).toContainText('PASS');
   assert.notEqual(await receipt.locator('.receipt-section').first().innerText(), firstRevision);
-  await expect(receipt.locator('.attempt-history')).toContainText('1 · REPAIR');
+  await expect(receipt.locator('.attempt-history')).toContainText('1 · FAIL');
   await page.keyboard.press('ArrowLeft');
   await expect(receipt.locator('.receipt-top')).toContainText('ATTEMPT 1');
-  await expect(receipt.locator('.receipt-decision')).toContainText('REPAIR');
+  await expect(receipt.locator('.receipt-decision')).toContainText('FAIL');
   const workbench = await go(workbenchSlide, 1);
   await page.keyboard.press('ArrowRight');
   await expect(workbench.locator('.proof-result')).toContainText('none');
@@ -140,6 +145,24 @@ try {
   await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
   await page.keyboard.press('ArrowLeft');
   await expect(hostsTools.locator('.ctx-comparison')).not.toHaveClass(/focused/);
+  for (const { topic, slide, clicks } of appendixSlides) {
+    const root = await go(slide);
+    const appendix = root.locator('.decision-appendix');
+    await expect(appendix).toHaveAttribute('data-topic', topic);
+    for (let click = 1; click <= clicks; click++) {
+      await page.keyboard.press('ArrowRight');
+      await expect(appendix).toHaveAttribute('data-step', String(click));
+    }
+    if (topic === 'example') {
+      await expect(root.locator('.meaning-verdicts')).toContainText('0.01');
+      await expect(root.locator('.meaning-verdicts')).toContainText('0.02');
+      await expect(root.locator('.meaning-action')).toHaveCSS('opacity', '1');
+    }
+    for (let click = clicks - 1; click >= 0; click--) {
+      await page.keyboard.press('ArrowLeft');
+      await expect(appendix).toHaveAttribute('data-step', String(click));
+    }
+  }
   const contrast = await go(contrastSlide, 3);
   await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('36:00');
   await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
@@ -160,7 +183,7 @@ try {
   await page.screenshot({ path: '.lab-runs/deck-review/verification-performance.png' });
   await contrast.getByRole('button', { name: 'Waitlist', exact: true }).click();
   await expect(contrast.locator('.verification-contrast')).toHaveAttribute('data-step', '3');
-  await expect(contrast.locator('.contrast-resource')).toContainText('pnpm lab:check --scenario memory-only --solution');
+  await expect(contrast.locator('.contrast-resource')).toContainText('pnpm snack prove');
   await expect.poll(() => page.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length)).toBe(0);
   await page.screenshot({ path: '.lab-runs/deck-review/verification-waitlist.png' });
   const intro = await go(hostSlide);
@@ -173,16 +196,16 @@ try {
   await expect(reveal.getByText("Nobody here.", { exact: true })).toBeVisible();
   await reveal.getByRole("button", { name: "Reset illustration" }).click();
   await expect(reveal.getByText("ada@example.test", { exact: true })).toBeVisible();
-  for (let click = 0; click <= 5; click++) {
-    const loop = await go(loopSlide, click);
-    await expect(loop.locator(".loop-track .current")).toHaveText(new RegExp(["Proposal", "Browser", "Judge", "Repair", "Re-check", "Decision"][click]));
-  }
-  const loop = page.locator(`.slidev-page-${loopSlide}`);
-  await expect(loop.getByRole("heading", { name: "Now you can call it done." })).toBeVisible();
-  await loop.getByRole("checkbox", { name: "Make the worker stubborn" }).check();
-  await expect(loop.getByRole("heading", { name: "A human takes it from here." })).toBeVisible();
+  const agentRun = await go(agentSlide, 0);
+  await expect(agentRun.locator(".agent-run p.slidev-vclick-hidden")).toHaveCount(7);
+  await go(agentSlide, 7);
+  await expect(page.locator(`.slidev-page-${agentSlide} .agent-run p.slidev-vclick-hidden`)).toHaveCount(0);
+  await go(missSlide, 3);
+  await expect(page.locator(`.slidev-page-${missSlide} .miss-list`)).toContainText("It was in the receipt all along.");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
+  const reducedAppendix = await go(appendixSlides[0].slide, 1);
+  assert.equal(await reducedAppendix.locator('.quick .thought-path').evaluate(e => getComputedStyle(e).animationName), 'none');
   for (const [slide, selector, clicks] of [
     [receiptSlide, '.receipt-paper', 3], [workbenchSlide, '.proof-result', 2],
     [browserProofSlide, '.hotspot', 2], [historySlide, '.history-focus', 3],
@@ -203,34 +226,32 @@ try {
   await expect(page.locator('.incident-opener[data-phase="1"]')).toBeVisible();
   await go(incidentSlide, 2);
   await expect(page.getByText("Data later recovered.", { exact: true })).toBeVisible();
-  await go(evidenceSlide, 2);
-  await expect(page.locator('.evidence-flow .proof-failure')).toContainText("Waitlist survives reload");
   const repoSlide = await go(slideFor('resource="repo"'));
   const repoLink = repoSlide.getByRole('link', { name: 'Open workshop repository' });
-  await expect(repoLink).toHaveAttribute('href', 'https://github.com/nicknisi/beyond-done');
+  await expect(repoLink).toHaveAttribute('href', 'https://github.com/workos/beyond-done');
   assert.ok(await repoLink.locator('img').evaluate(img => (img as HTMLImageElement).naturalWidth > 0), 'Repo QR loads');
   const round = await go(roundSlide);
   await page.clock.install();
-  await round.getByRole("button", { name: "Start 90-second round" }).click();
+  await round.getByRole("button", { name: "Start 120-second round" }).click();
   await page.clock.fastForward(2100);
-  await expect(round.getByRole("timer")).toHaveText("1:28");
+  await expect(round.getByRole("timer")).toHaveText("1:58");
   await round.getByRole("button", { name: "Pause timer" }).click();
   await page.clock.fastForward(5000);
-  await expect(round.getByRole("timer")).toHaveText("1:28");
+  await expect(round.getByRole("timer")).toHaveText("1:58");
   await round.getByRole("button", { name: "Resume timer" }).click();
   await go(roundSlide + 1);
   await page.clock.fastForward(5000);
   await go(roundSlide);
   await expect(round.getByRole("button", { name: "Resume timer" })).toBeVisible();
-  await expect(round.getByRole("timer")).toHaveText("1:28");
+  await expect(round.getByRole("timer")).toHaveText("1:58");
   await round.getByRole("button", { name: "Reset timer" }).click();
-  await expect(round.getByRole("timer")).toHaveText("1:30");
-  await round.getByRole("button", { name: "Start 90-second round" }).click();
-  await page.clock.fastForward(91_000);
+  await expect(round.getByRole("timer")).toHaveText("2:00");
+  await round.getByRole("button", { name: "Start 120-second round" }).click();
+  await page.clock.fastForward(121_000);
   await expect(round.getByRole("status")).toHaveText("Pens down. Swap roles.");
   await expect(round.getByRole("timer")).toHaveText("0:00");
   assert.deepEqual(errors, [], "No deck runtime errors");
-  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
+  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; reload reveal; agent-run fallback reveals; game reveal; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
   console.log("Visual samples: .lab-runs/deck-review/");
 } finally {
   await browser.close();

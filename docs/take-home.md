@@ -2,7 +2,7 @@
 
 You built a loop that stops trusting "done" and starts checking it:
 
-> **observe → ask → decide → bounded repair**
+> **observe → fix → prove**
 
 Keep this. Everything below is portable to your real projects.
 
@@ -18,14 +18,14 @@ Nick’s Riker and Zack’s CTX independently converged on receipts: evidence fo
 
 ## The pattern
 
-1. **Observe** real behaviour independently — don't trust the agent's claim.
-   Collect evidence from the outside, bound to the exact revision you ran.
-2. **Ask** precise yes/no questions whose answers are **probabilities** (Nouls).
-   One question per criterion; make missing/empty evidence unable to score a yes.
-3. **Decide** with **hard checks that can't be averaged away**, and **fail
-   closed** on missing evidence or a judge outage (escalate, don't accept).
-4. **Repair once**, then re-observe and re-judge. Still short? Escalate to a
-   human. Accept-after-repair (on fresh evidence) is *not* a false accept.
+1. **Give the agent a lever** — a small CLI that drives the real app and reports
+   what happened as JSON. Errors say what to do next; `doctor` comes first.
+2. **Define done in a proof** — exercise the user path, check side effects, and
+   write a receipt bound to the exact revision you ran.
+3. **Read what assertions can't see** — the screenshot, a narrow yes/no judge
+   (a Noul is a probability of yes), or a human.
+4. **Stop on evidence** — PASS on the current revision. “Can't tell” is never a
+   pass. The same failure after two fixes goes to a human, with the receipt.
 
 ## Transfer worksheet
 
@@ -34,57 +34,55 @@ Fill this in for a system you actually ship. (Printable copy:
 
 1. **The "done" that lies** — what shallow green do people trust?
 2. **Independent evidence** — what would you observe from the outside?
-3. **Two honest questions** — yes/no, answerable from the evidence alone.
-4. **Hard checks** — what must be true regardless of any probability?
-5. **Fail-closed path** — what happens when you *can't* judge?
-6. **Repair budget** — how many auto-repairs before a human?
-7. **Thresholds + holdout** — acceptance bar, and cases held out to check it.
+3. **Meaning checks** — yes/no questions a model or a human could answer.
+4. **Hard checks** — the assertions (including side effects) in your proof.
+5. **Can't-tell path** — what happens when evidence is missing or stale?
+6. **Repair budget** — how many fixes before a human?
+7. **Eval cases + holdout** — which misses you keep, and what you hold out.
 
 > Start with one task: a settings change, a support reply, or a dashboard filter. Choose the smallest independent observation that would expose a plausible failure.
 
 ## Precise claims (don't overstate what you built)
 
 - A **Noul** is the probability of yes — not a separate confidence, not a proof.
-- **Synthetic probabilities are fixtures**, hand-authored for reproducibility —
-  not live Jev measurements and not a measure of model accuracy.
+- A **receipt belongs to one revision**; after any edit it proves nothing.
 - The workshop app is **browser-local**: no real enrollment, email, or payment.
-- **Process separation is not a security sandbox**; prompt-injection guidance is
-  **not** a security guarantee.
-- A **small hand-authored suite is not production reliability**.
+- A **revision hash is not isolation** from an agent with a shell.
+- **One app and five bugs are not production reliability**.
 - **Missing evidence ≠ product failure**; a **model outage ≠ product failure**.
 
 ## Commands worth remembering
 
 | Command | What it does |
 | --- | --- |
-| `pnpm lab:doctor` | Verify your environment |
-| `pnpm lab:exercise browser\|questions\|policy` | Grade one file (add `--solution` for the reference) |
-| `pnpm lab:loop --solution` | Scripted worker + synthetic judge: repair → accept |
-| `pnpm lab:loop --solution --stubborn` | Repair → escalate (repair didn't help) |
-| `pnpm lab:check --scenario <name> --solution` | Run one scenario |
-| `pnpm lab:eval --solution` | Single-candidate metrics (no repair performed) |
-| `pnpm lab:eval --solution --accept-at 0.8` | Threshold experiment, same cases |
-| `pnpm lab:eval --solution --suite heldout` | Freeze policy first, then reveal holdout |
-| `pnpm lab:test` | Reference/unit/browser regression — no keys, no cost |
+| `pnpm snack help` | Every command, grouped |
+| `pnpm snack up` / `doctor` / `down` | Start the app and a Chrome you can drive; check it's worth driving; stop it |
+| `pnpm snack join` / `reload` / `storage` / `snapshot` / `console` | Drive and look, like an agent would |
+| `pnpm snack prove [--solution]` | Fresh visitor → proof → receipt (exit 0 PASS, 1 FAIL, 2 can't tell) |
+| `pnpm snack judge` | Ask Jev whether the copy is honest (needs `TYPESAFE_API_KEY`; one billable call) |
+| `pnpm snack up --bug random` | Play the game solo; stopping `up` reveals the bug |
+| `pnpm lab:exercise [--solution]` | Your proof vs. a correct app and three broken ones |
+| `pnpm lab:test` | Lab regression tests — no keys, no cost |
 
-Real Jev (`--judge live`) is part of lesson 4 via your key or the facilitator’s demonstration. The generative worker (`--worker live --judge live`) is optional after class. Automated tests use fake API transports; live Jev examples and a repair loop were smoke-tested, but results may change. `pnpm lab:replay` displays actual recorded responses, not feedback on edited questions. The `--accept-at 0.8` fixture eval intentionally exits 1 when it admits a false accept.
+Automated tests use a fake Jev transport; the live calls were smoke-tested, and results may change. The agent handoff is `lab/verify/SKILL.md` plus `lab/verify/features/waitlist.md`.
 
 ## Preserve the run, not just the final green
 
-Keep failed attempts, repairs, escalation and accepted work under distinct run/attempt IDs. Include the task, exact artifact revision, observations, verifier version, outcome and reasons. Add model/tool versions, environment, wall time and cost in your own system; the lab does not yet record all of those. Hashes bind records to bytes, not to truth.
+Keep failed attempts, repairs, escalation and accepted work under distinct run/attempt IDs. Include the task, exact artifact revision, observations, verifier version, outcome and reasons. Add model/tool versions, environment, wall time and cost in your own system; snack doesn't record those. Hashes bind records to bytes, not to truth.
 
-The lab writes `.lab-runs/<id>/report.json` and eval summaries to `.lab-runs/<id>/evaluation.json`. That directory is gitignored local scratch. Archive the records and underlying artifacts you want to keep; don't assume they are uploaded or durable elsewhere.
+snack writes the latest receipt to `.lab-runs/snack/receipt.json`, appends every receipt to `.lab-runs/snack/receipts/`, and saves one `proof-<revision>-<time>.png` per run. That directory is gitignored local scratch. Archive the records and underlying artifacts you want to keep; don't assume they are uploaded or durable elsewhere.
 
 A curated archive can support regression cases, tool/prompt comparisons and eventually fine-tuning. Labels must come from independent evaluation; split by task family, remove sensitive data, and preserve a separate evaluation set. Failed traces can be useful cases without being good training targets. The [lesson’s improvement-loop recipe](../src/content/lessons/07-transfer-debrief.md#turn-the-history-into-an-improvement-loop) includes budgets, promotion and rollback. No training is implemented in this workshop.
 
 ## Keep your game discoveries
 
-Save your labeled `bluff.json` and `legit.json` examples as future regression cases. The scorecard is in `public/materials/bouncer-scorecard.md`. Candidate JSON contains only `storage` and `confirmation`; labels belong in your evaluation data, not in the judge’s input. `--candidate FILE --judge live` tests novel text; `lab:app --candidate FILE` supports explicit human review.
+The bugs that got past `prove` (`overpromise`, `console-error`) are your first regression cases: add a check or a gotcha, then rerun `pnpm lab:exercise` and `pnpm snack up --bug <name>` + `pnpm snack prove` to confirm the miss now fails while the correct app still passes. The scorecard is in `public/materials/game-scorecard.md`.
 
 ## Source references
 
 - Lessons: `src/content/lessons/`
-- Reference implementations: `lab/solution/{observe,questions,decide}.ts`
-- Your files: `lab/exercises/{observe,questions,decide}.ts`
-- Run artifacts: `.lab-runs/<id>/report.json` (gitignored)
+- The lever: `lab/snack.ts` (CLI), `lab/proof.ts` (receipt harness), `lab/server.ts` (app server and game bugs)
+- Your proof: `lab/exercises/prove.ts`; reference: `lab/solution/prove.ts`
+- The agent skill and feature map: `lab/verify/`
+- Run artifacts: `.lab-runs/snack/` (gitignored); saved examples: `public/materials/snack-receipts/`
 - Live judge SDK: `@typesafe-ai/sdk` 0.6.0 (`TypeSafeClient`, `noul`, `systemOne`)

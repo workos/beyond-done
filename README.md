@@ -2,209 +2,145 @@
 
 A **60-minute AIE workshop** by **Nick Nisi & Zack Proser**, for JS/TS developers. Built from [nicknisi/template-workshop](https://github.com/nicknisi/template-workshop), with **WorkOS branding**.
 
-An agent says “done.” Your code decides whether the evidence agrees.
+An agent says “done.” Give it a way to show you the receipt.
 
-## One task, three edits
+## One app, one lever, one proof
 
-The fictional **Midnight Snack Lab** is sold out. Its browser-local waitlist must preserve the same email/status after reload and explain: **waitlist only, no guaranteed seat, email if a place opens**.
+The fictional **Midnight Snack Lab** is sold out. Its browser-local waitlist (`lab/app/index.html`) must keep the same email and status after a reload, and say: **waitlist only, no guaranteed seat, email if a place opens**. The copy in the repo does neither.
 
-Attendees build the supervisor, not another agent framework:
+Attendees don't build an agent framework. They use and extend a **lever**: `pnpm snack`, a small CLI that drives this one app in a real Chrome over the Chrome DevTools Protocol. It prints JSON, and every error says what to do next.
 
-1. **Observe** with Playwright — `lab/exercises/observe.ts`.
-2. **Judge evidence** with a semantic model (Jev) — `lab/exercises/questions.ts`.
-3. **Accept, repair once, or escalate** — `lab/exercises/decide.ts`.
+1. **Drive it** like an agent would: `join`, `reload`, `storage`, `snapshot`, `console`.
+2. **Write the proof**: `lab/exercises/prove.ts`, the one coding exercise. `pnpm snack prove` runs it on a fresh visitor and writes a receipt bound to the exact code revision.
+3. **Hand it to your agent**: add gotchas to the feature map, then give your own coding agent [`lab/verify/SKILL.md`](lab/verify/SKILL.md) and one prompt: “repro it, fix it, show me proof.” `pnpm snack judge` asks Jev whether the copy is honest.
+4. **Break it quietly**: a saboteur starts the app with a hidden `--bug`; a detective finds it with snack alone. Every miss becomes a new check. A stale receipt is the final boss.
 
-Then play **Bouncer vs. Bluffer**: write a convincing lie, swap roles, and write an unusual truth. Test your own JSON candidates against Jev (or a human peer without a key). Points reward catching bad work **and** letting good work through. Stale evidence is the final boss.
-
-This is a **browser-local prototype**, not real organizer registration, email delivery, or payment. The worker's tool only proposes validated `{storage, confirmation}` JSON. It cannot edit the verifier through that interface. It is not an OS security sandbox.
+This is a **browser-local prototype**, not real organizer registration, email delivery, or payment.
 
 ## Start here
 
 Node 24 and pnpm 12.4.1 are pinned in `mise.toml`. Installation happens **before** the workshop hour.
 
-If using mise in a fresh clone, review `mise.toml`, run `mise trust`, then `mise install`. Activate mise in your shell or use `mise exec -- pnpm …` for the commands below. Check `node --version` and `pnpm --version` before installing dependencies.
+If using mise in a fresh clone, review `mise.toml`, run `mise trust`, then `mise install`. Activate mise in your shell or use `mise exec -- pnpm …` for the commands below.
 
 This repository is private; your GitHub account must have access.
 
 ```bash
-gh repo clone nicknisi/beyond-done
+gh repo clone workos/beyond-done
 cd beyond-done
 pnpm install
 pnpm exec playwright install chromium
-pnpm lab:doctor
-pnpm lab:loop --solution
+pnpm snack doctor
+pnpm lab:exercise --solution
 ```
 
-Expect **REPAIR → ACCEPT** and a `.lab-runs/<id>/report.json` path. No key required.
+`doctor` should show `node` and `chromium` ok (the `session` check fails until you run `up`). The exercise check should end with `prove exercise: PASS`. No key required.
 
 ```bash
-pnpm dev                              # lesson site + glossary + slides
-pnpm lab:app --scenario memory-only    # separate, deliberately broken app
-pnpm slides                           # optional presenter view
+pnpm dev          # lesson site + glossary + slides
+pnpm snack up     # the deliberately broken app, in a Chrome that snack drives; leave it running
+pnpm slides       # optional presenter view
 ```
 
-Use each printed URL. Linux may need `pnpm exec playwright install --with-deps chromium`.
+Linux may need `pnpm exec playwright install --with-deps chromium`.
 
 ## The hour
 
 | Minutes | Activity | Result |
 | --- | --- | --- |
-| 0–6 | Real incident → intros + repo QR → vote → live app failure | A completion claim needs independent evidence |
-| 6–10 | Glossary QR, smoke test, contract | Know where to work and what evidence must show |
-| 10–21 | Playwright collector | One submit/reload observation |
-| 21–33 | Fast/slow architecture, two questions + live comparison | Distinguish support from confident wording |
-| 33–43 | Policy + bounded repair | Witness repair → accept and repair → escalate |
-| 43–55 | Bouncer vs. Bluffer: two authored challenges | Catch lies without rejecting good paraphrases |
-| 55–60 | Transfer exercise | A verification plan for your own project |
+| 0–7 | Real incident → intros + repo QR → vote → live app failure → why verification pays off | A completion claim needs evidence |
+| 7–10 | What would *you* check? Paragraph vs. lever | The agent needs tools, not instructions |
+| 10–18 | Meet snack; everyone reproduces the bug | The bug, named with JSON evidence |
+| 18–30 | Write `prove()`; read the receipt | A proof that fails broken apps and passes a correct one |
+| 30–44 | Feature map, then your agent repros, fixes and proves; the copy that still lies; when to stop | An agent that shows proof instead of saying “done” |
+| 44–55 | Break it quietly: two rounds, the reveal, the stale-receipt boss | Know what your proof misses, and what to add |
+| 55–60 | Transfer exercise | A plan for the lever in your own app |
 
 [Lessons](src/content/lessons/) · [Facilitator guide](docs/facilitator.md) · [Preflight](docs/preflight.md) · [Take-home](docs/take-home.md)
 
 ## Follow the same feature across the materials
 
-The deck, lessons, and CLI all follow the Midnight Snack Lab waitlist. Open the printed `pnpm dev` URL for lessons and `/glossary/` for searchable terms; `lab:app` is the separate prototype you inspect.
-
 | Deck checkpoint | Lesson | Edit / run | Evidence of progress |
 | --- | --- | --- | --- |
-| Now break our app | 02 · Misleading success | `pnpm lab:app --scenario memory-only` | Submit survives until reload; then the record is gone |
-| Same task. Very different afternoon. | 02 · Misleading success | `pnpm lab:check --scenario memory-only --solution` | Real browser observations expose the reload failure; slide clocks are illustrative |
-| Catch the vanishing act | 03 · Observe evidence | `lab/exercises/observe.ts` · `pnpm lab:exercise browser` | `browser exercise: PASS`; inspect the saved observations |
-| Two questions | 04 · Honest questions | `lab/exercises/questions.ts` · `pnpm lab:exercise questions` | Construction passes; compare live scores to assess meaning |
-| The bouncer's rulebook | 05 · Policy and repair | `lab/exercises/decide.ts` · `pnpm lab:exercise policy` | Policy passes; `pnpm lab:loop` repairs then accepts with fresh evidence |
-| Bouncer vs. Bluffer | 06 · Red team | `lab/challenges/*.json` | Compare your label with a live judge or human peer |
-| App CLI → browser traces → receipt history → your verifier | 07 · Transfer | `public/materials/transfer-worksheet.md` | One feature, a repeatable check, a saved receipt, and a first evaluation case |
+| Now break our app | 02 · When “done” lies | `pnpm snack up` | Submit shows waitlisted; reload, and the record is gone |
+| Your agent’s eyes, in your terminal | 03 · Drive the app | `pnpm snack join` / `storage` / `reload` / `snapshot` | `"localStorage": {}` and `"status": "none"` after reload |
+| Make `prove` refuse “looks done” | 04 · Build the proof | `lab/exercises/prove.ts` · `pnpm lab:exercise` | `prove exercise: PASS`; `pnpm snack prove` says FAIL on the attendee app |
+| “Repro it. Fix it. Show me proof.” | 05 · Hand it to your agent | `lab/verify/SKILL.md` + your agent | A PASS receipt for a new revision, plus a screenshot |
+| It persists. It also lies. | 05 · Hand it to your agent | `pnpm snack judge` | FAIL on “Your seat is confirmed”; PASS after the copy is fixed |
+| Break it quietly | 06 · Break it quietly | `pnpm snack up --bug …` | The detective names the bug with output |
+| Browser traces → receipt history → your verifier | 07 · Transfer | `public/materials/transfer-worksheet.md` | One feature, a repeatable check, a saved receipt, and a first evaluation case |
 
-Setup is prework. During class, predict the result, edit the named file, run its check, and inspect the evidence. If blocked, pair with someone or save your work and copy one file from `lab/solution/`. `--solution` switches all three files to the reference.
+If blocked, pair with someone, or add `--solution` to `snack prove` / `lab:exercise` to use the reference proof without overwriting yours. To catch up, save your edits, then `cp lab/solution/prove.ts lab/exercises/prove.ts`. To reset the app after an agent edits it: `git checkout lab/app/index.html`.
 
-The opening repo QR links here. The glossary QR uses `class.config.json`'s hostname; the placeholder deliberately shows **link pending**. `pnpm slides:qr`, `pnpm slides`, `pnpm dev`, and class builds refresh the local SVGs without an external QR service. Agree, deploy, and check the public glossary URL before sharing that code. The repo is currently private: attendee access must be arranged.
+Lesson 07 includes a first-30-minutes plan, copyable agent prompts, Chrome DevTools references, receipt fields, and a bounded improvement-loop recipe.
 
-Lesson 07 includes a first-30-minutes plan, copyable agent prompts, Chrome DevTools references, receipt fields, and a bounded improvement-loop recipe. The animated takeaways connect those steps to the existing lab commands and saved reports.
+The opening repo QR links here. The glossary QR uses `class.config.json`'s hostname. `pnpm slides:qr`, `pnpm slides`, `pnpm dev`, and class builds refresh the local SVGs without an external QR service. The repo is currently private: attendee access must be arranged.
 
-[Opening script and primary sources](docs/opening.md) connect the PocketOS incident, Lauren Tan's pstack verification advice, and our exercise. Saved browser reports live in `public/materials/opening-report.json` and `repair-report.json`; their semantic scores are explicitly synthetic.
+[Opening script and primary sources](docs/opening.md) connect the PocketOS incident, Lauren Tan's pstack verification advice, and the lab. The lab's shape (a project-specific CLI over CDP, a feature map, a proof bar, `doctor` first) is modelled on the verification approach in her [pstack guide](https://x.com/poteto/status/2094457600259842065).
 
-## Three sources of scores — do not confuse them
-
-| Mode | What it does | What it cannot establish |
-| --- | --- | --- |
-| Default `--judge fixture` | Uses hand-authored scores to test policy reproducibly | Jev accuracy or your question quality |
-| `--judge live` | Sends the task and observed confirmation text to Jev | General reliability from a handful of examples |
-| `pnpm lab:replay` | Displays actual recorded Jev requests/responses | New feedback on edited questions |
-
-**Real Jev is part of lesson 4**, using attendees' keys or the facilitator's projected comparison. The fixture path keeps coding exercises runnable without keys. During an outage, use the explicitly labeled recording.
-
-The default **worker is scripted** so everyone sees a repair within the hour. The optional real generative worker is an after-class extension.
-
-## Jev setup
-
-Copy `.env.example` to `.env` and set `TYPESAFE_API_KEY`. The CLI loads it; existing environment variables take precedence. Get a key from [TypeSafe](https://console.typesafe.ai/); event credits are not assumed.
+## snack
 
 ```bash
-pnpm lab:check --scenario happy --solution --judge live
-pnpm lab:check --scenario overpromise --solution --judge live
-pnpm lab:loop --solution --judge live
+pnpm snack help              # every command, grouped
+pnpm snack help <command>    # one command
 ```
 
-These make billable external API calls with fictional task/confirmation text. No worker case IDs, human labels, expected actions, or synthetic scores are sent to Jev.
+| Group | Commands |
+| --- | --- |
+| Health | `up [--bug NAME\|random] [--solution] [--headless]`, `doctor`, `down` |
+| Drive | `join <email>`, `reload`, `reset [--dry-run]` |
+| Look | `snapshot`, `storage`, `console [--errors]`, `network`, `screenshot [path]`, `eval <expression>` |
+| Prove | `prove [--solution]`, `judge` |
 
-The adapter uses `@typesafe-ai/sdk` 0.6.0, `TypeSafeClient`, and two `noul()` questions in one `systemOne()` request. Default model: `jev-latest`; override with `TYPESAFE_MODEL`. Timeout: 15 seconds; SDK retries disabled. Live failure escalates; **never silently falls back**.
+- `up` serves `lab/app/index.html` (re-read on every request, so edits show on reload) and launches Chromium with a remote-debugging port. Other commands attach over CDP, do one thing, and detach. `up` records console, page errors, and responses to `.lab-runs/snack/events.jsonl`. Headed by default; `--headless` (or CI / no display) runs without a window. `SNACK_DIR` moves the session files, so a second instance can run alongside.
+- Every page carries a **revision**: a hash of the HTML that was served. `doctor` compares it with the source on disk (STALE means reload) and reports whether the last receipt is for the current source.
+- `prove` opens a fresh browser context (no storage), runs the proof, and writes `.lab-runs/snack/receipt.json` (the latest, which `doctor` reads), appends a copy to `.lab-runs/snack/receipts/`, and saves one `proof-<revision>-<time>.png` per run. Exit codes: **0** PASS, **1** FAIL, **2** can't tell (no session, the proof threw, or the source changed mid-run).
+- `--bug` serves the reference app with one bug injected at load time: `none`, `memory-only`, `wrong-email`, `lost-confirmation`, `overpromise`, `console-error`, or `random`. Stopping `up` prints `{"reveal": …}`. `--solution` serves the fixed reference app.
+- pnpm prints a `$ tsx …` header on stderr; stdout is pure JSON.
 
-Real Jev was smoke-tested against happy, overpromise, injection, and the repair loop. [Captured examples](public/materials/jev-recording.json) include exact inputs, questions, model version, and responses. They are examples, **not a benchmark**. Automated tests use fake HTTP transports, not paid model calls.
+## Jev: `snack judge`
 
-## Exercise checks and catch-up
+Copy `.env.example` to `.env` and set `TYPESAFE_API_KEY` (get one from [TypeSafe](https://console.typesafe.ai/); event credits are not assumed). Existing environment variables take precedence.
 
-```bash
-pnpm lab:exercise browser
-pnpm lab:exercise questions
-pnpm lab:exercise policy
-```
+`pnpm snack judge` runs a fresh visitor through join and reload, then sends both confirmation messages and the contract to Jev in one `systemOne()` request with two `noul()` questions (`@typesafe-ai/sdk` 0.6.0; model `jev-latest`, override with `TYPESAFE_MODEL`; 15-second timeout; SDK retries off). Both probabilities ≥ 0.9: PASS. Either ≤ 0.2: FAIL. Otherwise ASK A HUMAN. A missing key or failed request exits 2 and is never turned into a score. Each run is one billable request with fictional text.
 
-These are **intentionally red** until you implement the corresponding function. The question check only validates construction; use a live call to evaluate meaning.
-
-Add `--solution` to run the reference instead. It switches **all three files**, so omit it when testing your own question changes.
-
-To catch up one file, save your edits first, then:
-
-```bash
-cp lab/solution/observe.ts lab/exercises/observe.ts
-```
-
-There is no automatic reset or overwrite.
-
-## The game: your own candidate
-
-Edit `lab/challenges/bluff.json` (introduce one plausible false promise), then `lab/challenges/legit.json` (a valid paraphrase). Both start valid. Keep `storage: "local"`; change only confirmation. Label before judging and freeze the verifier for both rounds.
-
-```bash
-pnpm lab:check --candidate lab/challenges/bluff.json --solution --judge live
-pnpm lab:check --candidate lab/challenges/legit.json --solution --judge live
-# No-key peer-review version:
-pnpm lab:app --candidate lab/challenges/bluff.json
-```
-
-`lab:app` validates and renders the candidate **once, at startup**. After you edit a challenge JSON, stop the server (Ctrl+C), start it again, and open the **newly printed URL**.
-
-Each start uses a new port. A new port is a new browser origin, so localStorage does not carry over from the previous run. To test that the waitlist entry survives reload, reload the **same running URL**.
-
-[Game rules](src/content/lessons/06-red-team.md) · [Paper scorecard](public/materials/bouncer-scorecard.md). No synthetic scores for novel text, no labels sent to the judge, no leaderboard service required.
+Rehearsal results with jev-1.13.0: the attendee app's “Your seat is confirmed” copy with persistence working (`--bug overpromise`) scored 0.01 / 0.02 (FAIL); the agent-fixed copy scored 0.98 / 0.98 (PASS). [Earlier captured examples](public/materials/jev-recording.json) use the same two questions. These are examples, **not a benchmark**. Automated tests use fake HTTP transports.
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm lab:doctor` | Check Node, Chromium, local listener; report key presence without testing it |
-| `pnpm lab:app --scenario happy` | Manually explore a candidate in a browser |
-| `pnpm lab:app --candidate FILE` | Preview your own candidate for a human round; reads FILE once, so restart after edits and use the new URL |
-| `pnpm lab:check --candidate FILE --judge live` | Judge your own validated JSON candidate |
-| `pnpm lab:check --scenario NAME [--solution]` | Evaluate one candidate; print its evidence/report path |
-| `pnpm lab:loop --solution [--stubborn]` | Run the bounded worker → verify → repair loop |
-| `pnpm lab:eval --solution [--accept-at 0.8]` | Evaluate single-candidate decisions, not post-repair outcomes |
-| `pnpm lab:eval --solution --suite heldout` | Reveal after choosing a policy; teaching holdout, not secret data |
-| `pnpm lab:replay` | Inspect the recorded real Jev comparison offline |
-| `pnpm lab:test` | **Required.** Lab tests (`lab/*.test.ts`): unit, fake-transport, and real-browser reference tests; no model costs |
+| `pnpm snack <command>` | Drive, inspect, and prove the waitlist app (see above) |
+| `pnpm lab:exercise [--solution]` | Run your `prove()` (or the reference) against a correct app and three broken ones |
+| `pnpm lab:test` | **Required.** Lab tests: bugs, proofs, judge mapping (fake transport), and the CLI end to end in real Chromium; no model costs |
 | `pnpm test` | **Required.** Template and script regression tests (`scripts/*.test.ts`) |
 | `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
-| `pnpm slides:check` | Check 40 slides, verification comparison, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
+| `pnpm slides:check` | Check every slide at initial and fully revealed states, the verification comparison, reveals, QR assets, the agent-run fallback, timers, and reduced motion |
 
-**Run both `pnpm test` and `pnpm lab:test`.** Each covers only its own folder: `pnpm test` runs the script tests and `pnpm lab:test` runs the lab tests. Passing one says nothing about the other.
-
-Training scenarios: `happy`, `memory-only`, `overpromise`, `polite-lie`, `missing-next-step`, `injection`, `paraphrase`, `uncertain`, `missing-evidence`, `stale-evidence`, `judge-down`.
-
-The illustrative defaults are `--repair-below 0.2 --accept-at 0.9`. Enforce `0 <= repairBelow < acceptAt <= 1`. With synthetic fixtures, 0.8 admits the polite lie and exits **1** to flag the false accept. This is an expected teaching result, not a setup error.
-
-`lab:check` reports decisions without treating an intentional repair/escalation as a process failure. Exercise checks and regression tests use nonzero exit on failed assertions. `lab:eval` uses nonzero exit for false accepts or missed required escalations.
-
-## Optional live worker
-
-Set `OPENROUTER_API_KEY` and an explicit `WORKER_MODEL` supporting JSON output:
-
-```bash
-pnpm lab:loop --solution --judge live --worker live
-```
-
-The generative model proposes only the small candidate schema. It receives failures on repair; no arbitrary shell execution is granted. Maximum two worker requests and two Jev requests per loop. Provider token budgets, 20-second worker timeouts, and the attempt cap bound the demo. The real worker adapter has fake-transport tests but has **not** been exercised against a live provider here.
+**Run both `pnpm test` and `pnpm lab:test`.** Each covers only its own folder.
 
 ## Keep the claims honest
 
-- Hard checks are gates, not points in an average.
-- Missing evidence and model outages are not known product defects.
+- A receipt belongs to one revision. After any edit, the old receipt proves nothing.
+- “Can't tell” (exit 2) is not a product defect, and it never becomes a pass.
+- `prove` covers only what it checks. The screenshot and the judge exist because some claims aren't assertions.
 - A Noul is the model's probability of yes, not proof or a separate confidence score.
-- A repaired candidate requires fresh observations and judgment.
-- A source hash provides local provenance checks, not isolation from a shell-capable attacker.
-- More escalation is not automatically better: count unnecessary interruption of valid work.
-- The small teaching suite does not establish production calibration or reliability.
+- The revision hash is local provenance, not isolation from an agent with a shell. In this repo the agent *could* edit the proof; the skill tells it not to.
+- Five bugs and one app don't establish anything about production reliability.
 
-Run reports, screenshots, and human-review packets live under ignored `.lab-runs/`. Only fictional data is used. Do not reuse this reporting path for sensitive production evidence without retention/access controls.
+Receipts, screenshots, and event logs live under ignored `.lab-runs/`. Only fictional data is used.
 
 ## Instructor and site notes
 
 - [Minute-by-minute run-of-show](docs/facilitator.md)
-- [Deck visual direction](DESIGN.md): shared portrait intro, WorkOS-indigo tickets and stamps, click-driven reveals, a step-through repair loop, and opt-in 90-second timers. All assets/fonts are local.
+- [Deck visual direction](DESIGN.md): shared portrait intro, WorkOS-indigo tickets and stamps, click-driven reveals, and opt-in round timers. All assets/fonts are local.
 - [Setup and failure plans](docs/preflight.md)
 - [Verification results and remaining rehearsal work](docs/verification.md)
 - [Transfer worksheet](public/materials/transfer-worksheet.md)
 - [Implementation contract](docs/lab-contract.md)
 - [Template operations](.agents/skills/workshop/SKILL.md)
 
-`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, then corrected by hand against the lessons. Regenerating replaces those corrections. Source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done).
+`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, then corrected by hand against the lessons. Regenerating replaces those corrections. Source is hosted privately at [workos/beyond-done](https://github.com/workos/beyond-done).
 
 ## Deploying the site
 

@@ -34,15 +34,19 @@ fonts:
 
 **Why this slide:** Holding card while the room settles. Advancing to the incident starts the clock.
 
-**The whole hour in one line:** “‘Done’ is a claim. Ask for the receipt.” Every slide does one of three things: shows the problem, builds a piece of the receipt-checker, or tries to break it.
+**The whole hour in one line:** “‘Done’ is a claim. Ask for the receipt.” Every slide does one of three things: shows the problem, builds a piece of the lever that produces the receipt, or tries to break it.
 
 **The arc (for you, not the room):**
 
 1. **The claim (0–6 min):** agents say “done.” A real incident shows the stakes. Our toy app shows the same gap in two minutes. A quote names the thesis, and a contrast shows why verification pays off.
-2. **The setup (6–10):** one small task, three acceptance criteria, three files, and a worker that can’t grade itself.
-3. **The build (10–43):** Observe → Infer → Stop. Each build answers one question: *What did we observe? What did we infer? Why did we stop?*
-4. **The game (43–55):** attendees try to fool the verifier both ways: sneak bad work in, get good work bounced.
-5. **Take it home (55–60):** apply it to one real feature in their own app.
+2. **The gap (6–10):** what *you* do to check (reload, DevTools) and the agent can’t. Instructions don’t fix that; a lever does.
+3. **Eyes (10–18):** `snack`, a small CLI that drives the app over the Chrome DevTools Protocol. Everyone drives it.
+4. **The proof (18–30):** attendees write `prove`, the one coding exercise, and read the receipt it produces.
+5. **The agent (30–44):** a feature map, then their own agent: “Repro it. Fix it. Show me proof.” Then the receipt from that run, the copy that still lies, and the stop rule.
+6. **The game (44–55):** a saboteur hides a bug; a detective finds it with snack alone. Every miss becomes a new check. Final boss: a stale receipt.
+7. **Take it home (55–60):** a tool for your app, browser instruments, receipt history, and concrete examples, then two minutes to write their own first check.
+
+The three verbs to keep repeating: **Observe. Fix. Prove.** They’re the right-hand lane on slide 8 and the close.
 
 **If you need to fill time:** “Grab a seat. Get the repo cloning; the QR is two slides away.” The fake agent log on the right is the talk in miniature: five green checks, “Done.”, and “evidence: none.”
 -->
@@ -112,14 +116,14 @@ Then read the caption: “Here’s the deal. For the next hour we build a verifi
 
 **Next →** “To build it, you need the code. Get it on your laptop now.”
 
-**Roles:** Nick drives the first demo and plays the overconfident worker. Zack calls the vote and watches the room. Swap during the Jev or policy build (confirm in rehearsal). Riker and CTX get their own slide later; don’t pitch them here.
+**Roles:** Nick drives the first demo and plays the overconfident worker. Zack calls the vote and watches the room. Swap at the agent run (confirm in rehearsal). Riker and CTX get their own slide later; don’t pitch them here.
 -->
 
 ---
 ---
 
 <div class="split">
-<div><p class="small-label">FOLLOW ALONG</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/nicknisi/beyond-done.git<br>cd beyond-done<br>pnpm lab:doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
+<div><p class="small-label">FOLLOW ALONG</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/workos/beyond-done.git<br>cd beyond-done<br>pnpm snack doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
 <ResourceQr resource="repo" />
 </div>
 
@@ -130,8 +134,8 @@ Then read the caption: “Here’s the deal. For the next hour we build a verifi
 
 **Say:**
 - “This repo is your workbench for the hour. Scan it or type the clone URL.”
-- “If you did the prework, `pnpm lab:doctor` is already green. Keep the README open beside the lesson site; every command lives there.”
-- “Your files are in `lab/exercises`. If you fall behind, reference answers are in `lab/solution`.”
+- “If you did the prework, `pnpm snack doctor` already says Node and Chromium are fine. Keep the README open beside the lesson site; every command lives there.”
+- “There’s one file to write today, in `lab/exercises`. If you fall behind, the reference is in `lab/solution`.”
 - “It’s private right now. If access fails, wave at one of us.”
 - “You don’t need an API key for most of this. When we get to the live model, we’ll project ours.”
 
@@ -174,7 +178,7 @@ class: lime
 ---
 
 <div class="split">
-<div><h1>Now break<br>our app.</h1><p class="lede">Submit. Reload.<br>Where did your request go?</p><div class="command">pnpm lab:app --scenario memory-only</div><p class="aside-note">Open the printed URL.<br>Use <code>ada@example.test</code>.</p><p class="aside-note">So it was <strong>briefly done.</strong></p></div>
+<div><h1>Now break<br>our app.</h1><p class="lede">Submit. Reload.<br>Where did your request go?</p><div class="command">pnpm snack up</div><p class="aside-note">A browser opens. Leave the terminal running.<br>Use <code>ada@example.test</code>.</p><p class="aside-note">So it was <strong>briefly done.</strong></p></div>
 <ReloadReveal />
 </div>
 
@@ -183,7 +187,7 @@ class: lime
 
 **Why this slide:** The room sees the gap for itself. Every check on the worker’s ticket was *true*, and the feature still fails. The checks stopped one step before the requirement could fail. This is the problem we spend the hour solving.
 
-**Do** (switch to the already-open `pnpm lab:app --scenario memory-only` in a fresh window):
+**Do** (switch to the browser that `pnpm snack up` opened before the talk; leave that terminal running for the rest of the hour):
 
 1. Point at status `none`.
 2. Submit `ada@example.test`.
@@ -223,7 +227,7 @@ class: night
 </ol>
 </div>
 </div>
-<p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · One waitlist, three edits, one verification loop.</p>
+<p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · One waitlist. One CLI. One proof.</p>
 
 <!--
 **ACT 1 · THE CLAIM** · 4:30–4:50 · either host
@@ -264,7 +268,7 @@ clicks: 3
 
 **Next →** “This isn’t a theory we made up for a workshop. We both build tools that run on this rule.”
 
-**Careful:** The clocks are invented for illustration. They aren’t measurements. A check narrows the search; it doesn’t guarantee a fast fix. The real version is `pnpm lab:check --scenario memory-only --solution`.
+**Careful:** The clocks are invented for illustration. They aren’t measurements. A check narrows the search; it doesn’t guarantee a fast fix. The real version is `pnpm snack prove --solution`, which comes later.
 
 **Optional:** The Slow UI button tells the same story with Chrome DevTools: record, find the hot path, fix, re-record against the budget. It’s a schematic, not part of the lab. Switch back to Waitlist before advancing.
 -->
@@ -301,7 +305,7 @@ clicks: 3
 ---
 
 <div class="split">
-<div><p class="small-label">YOUR REFERENCE THROUGHOUT THE HOUR</p><h1>A word lost you?<br>Keep this open.</h1><p class="lede">Searchable terms, examples,<br>and checks for understanding.</p><div class="follow-steps"><p><strong>Read</strong> the matching lesson.</p><p><strong>Edit → run → inspect</strong> at each checkpoint.</p><p><strong>Predict first.</strong> Explain the evidence.</p></div><p class="aside-note">Behind? Save your work and copy one reference file.<br><code>--solution</code> switches all three files.</p></div>
+<div><p class="small-label">YOUR REFERENCE THROUGHOUT THE HOUR</p><h1>A word lost you?<br>Keep this open.</h1><p class="lede">Searchable terms, examples,<br>and checks for understanding.</p><div class="follow-steps"><p><strong>Read</strong> the matching lesson.</p><p><strong>Edit → run → inspect</strong> at each checkpoint.</p><p><strong>Predict first.</strong> Explain the evidence.</p></div><p class="aside-note">Behind? Add <code>--solution</code> to a snack command,<br>or copy <code>lab/solution/prove.ts</code>.</p></div>
 <ResourceQr resource="glossary" />
 </div>
 
@@ -312,7 +316,7 @@ clicks: 3
 
 **Say:**
 - “Scan this one too. It’s the glossary: every term we use today, searchable, with examples. If we say a word you don’t know, look it up there instead of tuning out.” Search “evidence” live.
-- “Three surfaces today: the repo is the code, the lesson site is the instructions, and `lab:app` is the deliberately broken app.”
+- “Three surfaces today: the repo is the code, the lesson site is the instructions, and `pnpm snack` drives the deliberately broken app.”
 - Walk the three steps: “Every build: read the lesson, edit-run-inspect, and **predict before you run**. Predicting is how you notice when the evidence surprises you.”
 - “Fall behind? Save your file and copy just that one reference file. Or add `--solution` to any command to run the reference.”
 
@@ -322,99 +326,149 @@ clicks: 3
 -->
 
 ---
+clicks: 6
 ---
 
-<div class="split">
-<div><h1>The snack club<br>is full.</h1><p class="lede">Your job: make the<br>waitlist trustworthy.</p><p class="aside-note">Fictional event. Browser-local storage.<br>No emails, seats, or payments actually issued.</p></div>
-<div class="ticket">
-<div class="ticket-top"><span>MIDNIGHT SNACK LAB</span><span>SOLD OUT</span></div>
-<div class="ticket-title">Waitlist<br>≠ a seat.</div>
-<p>Same email + status after reload.</p><p>No guaranteed seat.</p><p>Email <strong>if</strong> a place opens.</p>
-<div class="ticket-bottom"><span>THREE ACCEPTANCE CRITERIA</span><span>↻</span></div>
+<div class="split check-split">
+<div><p class="small-label">BEFORE YOU’D SHIP THAT WAITLIST</p><h1>What do <span class="accent">you</span><br>do to check?</h1><p class="lede">Shout it out.</p><p class="lede agent-gap" v-click="6">Your agent can’t do any of this.<br>It has your code and a terminal.</p></div>
+<div class="devtools" aria-label="The checks a person runs in the browser">
+<div class="devtools-tabs"><span>Elements</span><span>Console</span><span>Network</span><span class="on">Application</span></div>
+<ul class="devtools-checks">
+<li v-click="1"><b>↻</b> Reload the page</li>
+<li v-click="2"><b>▤</b> Application → Local storage</li>
+<li v-click="3"><b>!</b> Console → any errors?</li>
+<li v-click="4"><b>⇅</b> Network → did anything get sent?</li>
+<li v-click="5"><b>◎</b> Read what the page actually says</li>
+</ul>
 </div>
 </div>
 
 <!--
-**ACT 2 · THE SETUP** · 7:00–8:00
+**ACT 2 · THE SETUP** · 7:00–9:00 · Zack asks, Nick clicks
 
-**Why this slide:** Turn “make the waitlist work” into three things we can actually check. These criteria are the contract everything else gets graded against.
+**Why this slide:** The room already knows how to verify this bug by hand. Make them say it, then point out the gap: the agent that claimed “done” had none of those tools. Everything after this slide closes that gap.
 
-**Say:**
-- “The Midnight Snack Lab is sold out. Fictional, unfortunately. You own the waitlist. ‘Done’ means three things.”
-- “One: same email and status after reload. That’s the bug we just saw.”
-- “Two: it says you’re on a waitlist, not that you have a seat.”
-- “Three: it says you’ll get an email *if* a place opens. If, not when.”
-- **The setup line:** “Notice that two and three are about what the page *says*, not what it *does*. Hold onto that. It’s why we’ll need two different kinds of checks.”
-- “These criteria belong to the harness. The worker doesn’t get to redefine ‘done’ to fit what it built.”
+**Say:** “You just watched the waitlist forget Ada. Be honest: before you shipped it, what would *you* have done to check?”
 
-**Next →** “Three criteria. Three files to edit.”
+Take answers from the room. Click each line as someone says it (order doesn’t matter, just click on the next shout):
 
-**Careful:** Keep the boundary honest. This is browser-local storage. Nobody is registered with an organizer and no email is sent.
+- [click] **(1)** Reload. “Yes, exactly what the worker never did.”
+- [click] **(2)** Local storage in DevTools. “Did it actually save?”
+- [click] **(3)** Console. “Did anything blow up quietly?”
+- [click] **(4)** Network. “Did it send anything anywhere?”
+- [click] **(5)** Read the page. “What does the message actually promise?” Plant it; it pays off later.
+
+If the room goes quiet, prompt with “Who opens DevTools first thing?”
+
+[click] **(6)** “Here’s the thing. Your agent can’t do any of this. It has your code and a terminal. So it guesses, and it says ‘done.’”
+
+**Next →** “So how do you give it those tools? Most people start by writing instructions.”
 -->
 
 ---
 ---
 
-# Three edits. Then mischief.
+<p class="small-label">THE FIRST INSTINCT, AND THE BETTER ONE</p>
 
-<div class="contract-lines">
-<p><code>observe.ts</code><span>What actually happened?</span></p>
-<p><code>questions.ts</code><span>What does the evidence support?</span></p>
-<p><code>decide.ts</code><span>Accept, repair, or ask a human?</span></p>
+# Don’t write a paragraph.<br><span class="accent">Build a lever.</span>
+
+<div class="comparison lever-compare">
+<div><div class="small-label">AGENTS.md</div><blockquote class="paragraph-quote">“Always verify UI changes in a browser. Remember to reload and check that data persists. Look at the console for errors…”</blockquote><p class="comparison-label">Re-read and re-interpreted every run. Leaves no evidence.</p></div>
+<div><div class="small-label">One command</div><div class="command lever-command">pnpm snack prove</div><blockquote class="lever-result">→ <code>FAIL</code> status after reload: none</blockquote><p class="comparison-label">Same steps every run. Fewer tokens than a throwaway script. Leaves a receipt.</p></div>
 </div>
-<p class="lede">Final stretch: you try to fool it.</p>
-<p class="footnote">Your files: lab/exercises/ · Checkpoints: lab/solution/ · Three small edits, not an agent framework.</p>
 
 <!--
-**ACT 2 · THE SETUP** · 8:00–8:45
+**ACT 2 · THE SETUP** · 9:00–10:00 · Nick
 
-**Why this slide:** The map of the build. Each file answers one question, and those three questions come back on the thesis slides and at the close. Promise the game here so people know why they’re building it.
+**Why this slide:** The core move of the hour. Instructions describe verification; a tool *does* it. A small CLI that drives your app is cheaper for the agent, repeatable, testable, and it leaves evidence.
 
 **Say:**
-- “You’ll edit three small files. Each answers one question.”
-- “`observe.ts`: what actually happened? Drive a real browser and write down facts.”
-- “`questions.ts`: what does that evidence support? Ask a model narrow questions about meaning.”
-- “`decide.ts`: so now what? Accept, repair once, or hand it to a human. Plain code.”
-- “They chain together. Observations feed the questions, and checks plus judgments feed the decision.”
-- “Then the fun part. In the last stretch, you try to fool the thing you built.”
+- “The first thing everyone does is write it down. AGENTS.md: ‘always verify in a browser, remember to reload.’ The agent reads it, nods, and interprets it a little differently every time. And when it’s done, there’s nothing to look at.”
+- “The better move is to build a lever. One command that does the checking the same way every time.”
+- “It’s cheaper, too. Without it, the agent writes a throwaway Playwright script every session to click one button. With it, it runs one command and reads JSON.”
+- “And because it’s code, you can test it, improve it, and share it with everyone on the team, including the agents.”
 
-**Next →** “One rule before any code: who’s allowed to do what.”
+**Next →** “We built one for the waitlist. Meet snack.”
+
+**Careful:** Not anti-AGENTS.md. Instructions still say *when* to use the lever. They’re just a poor substitute for the lever itself.
 -->
 
 ---
-class: indigo
+class: night
 ---
 
-<div class="split equal">
-<div><h1>The worker<br>gets a pen.<br><span class="accent">Not the rulebook.</span></h1><p class="lede">Propose a candidate.<br>Don’t grade yourself.</p></div>
+<div class="surface-head"><div><p class="small-label">A REMOTE CONTROL FOR ONE APP</p><h1>Meet <code class="snack-word">snack</code>.</h1></div><p class="lede">One file, built for agents first.<br>Speaks the Chrome DevTools Protocol.</p></div>
+
+<div class="command-surface">
+<div><span class="lane-label">HEALTH</span><code>up</code><code>doctor</code><code>down</code></div>
+<div><span class="lane-label">DRIVE</span><code>join</code><code>reload</code><code>reset</code></div>
+<div><span class="lane-label">LOOK</span><code>snapshot</code><code>storage</code><code>console</code><code>network</code><code>screenshot</code><code>eval</code></div>
+<div><span class="lane-label">PROVE</span><code>prove</code><code>judge</code></div>
+</div>
+
+<div class="cli-rules"><span>JSON out</span><span>Errors say what to do next</span><span><code>help</code> on everything</span><span><code>doctor</code> first</span><span><code>--dry-run</code> before anything destructive</span></div>
+
+<!--
+**ACT 3 · EYES** · 10:00–12:00 · Zack
+
+**Why this slide:** Show the shape of a good verification CLI before anyone runs it. Every command maps to something a person does in the browser or DevTools. The rules along the bottom are what make it usable by an agent.
+
+**Say:**
+- “snack is a remote control for exactly one app: our waitlist. It isn’t a framework. It’s one file.”
+- Walk the columns left to right:
+  - “**Health:** start it, check it, stop it. `doctor` answers ‘is this instance worth driving?’ Run it first, every time.”
+  - “**Drive:** the things a user does. Join, reload, start over as a fresh visitor.”
+  - “**Look:** the things *you* did in DevTools a minute ago: what’s on the page, what’s in storage, the console, the network, a screenshot.”
+  - “**Prove:** one command that runs the whole user path and gives you a receipt. You’ll build that part.”
+- “Under the hood it speaks the Chrome DevTools Protocol, the same connection DevTools uses. So anything you can inspect by hand, the agent can inspect too.”
+- Point at the rules: “JSON out, so the agent doesn’t parse prose. Errors that tell it what to do instead. Help on everything. And `--dry-run` before anything that deletes something.”
+
+**Next →** “Enough slides. Everybody drive it.”
+
+**Careful:** snack is ours, built for this workshop. Don’t imply it’s a published tool. The pattern is the takeaway.
+-->
+
+---
+clicks: 1
+---
+
+<p class="small-label">EVERYONE · DRIVE IT LIKE AN AGENT WOULD</p>
+
+# Your agent’s eyes, in your terminal.
+
+<div class="split equal drive-split">
 <div>
-
-```ts
-type Candidate = {
-  storage: "memory" | "local";
-  confirmation: string;
-};
-```
-
-<p class="aside-note">Tests, questions, policy, and<br>acceptance criteria stay outside<br>this worker interface.</p>
+<p class="code-caption">Terminal 1 · leave it running</p>
+<div class="command">pnpm snack up</div>
+<p class="code-caption drive-gap">Terminal 2 · one at a time. Predict first.</p>
+<div class="command">pnpm snack doctor<br>pnpm snack join ada@example.test<br>pnpm snack storage<br>pnpm snack reload<br>pnpm snack snapshot</div>
+</div>
+<div class="ticket drive-ticket">
+<div class="ticket-top"><span>pnpm snack storage</span><span>JSON</span></div>
+<div class="ticket-title">What got<br>saved?</div>
+<div v-click><code class="json-out">"localStorage": {}</code><p><strong>Nothing.</strong> The page said “waitlisted.” Storage never heard about it.</p></div>
 </div>
 </div>
-<p class="footnote">A deliberately narrow tool—not a sandbox against a shell-capable agent.</p>
+<p class="footnote">Lesson 03 · No laptop? Call out what you think each command will print.</p>
 
 <!--
-**ACT 2 · THE SETUP** · 8:45–10:00
+**ACT 3 · EYES** · 12:00–18:00 (1 explain · 4 drive · 1 debrief) · Nick drives on screen, Zack walks the room
 
-**Why this slide:** Separation of powers. If the worker can edit the checks, the checks mean nothing. This is the trust boundary the rest of the hour relies on.
+**Why this slide:** Hands on the lever. People feel how fast the agent’s view of the app is: five commands, a few seconds, and the bug is named with evidence, without opening a browser tab.
 
 **Say:**
-- “Our worker gets a pen, not the rulebook. All it can do is propose a candidate: which storage to use and what the confirmation says. That’s the whole interface.”
-- Point at the type: “It can’t touch the tests, the questions, the policy, or the acceptance criteria. Those live in code it can’t reach.”
-- “It proposes. It never grades itself.”
-- “In class the worker is scripted, so everyone sees the same thing. A real model could fill in the same schema.”
+- “Terminal one: `pnpm snack up`. A Chrome window opens. Leave it alone; snack drives it.”
+- “Terminal two: run these one at a time. Before each one, predict what it’ll print.”
+- After `join`: “Status waitlisted, Ada’s email, a confirmation. Exactly what the worker saw.”
+- “Now the one the worker never ran. `storage`. What do you predict?”
 
-**Next →** “So the worker proposes. Our first job is to find out what actually happened.”
+[click] **(click: answer)** “Empty. The page said waitlisted; storage never heard about it. Then `reload` and `snapshot`: status none. You just debugged it the way your agent will, from a terminal, with JSON.”
 
-**Careful:** A narrow interface is not a sandbox. An agent with a shell needs real isolation, and that’s a separate problem. Say so if anyone asks.
+**Do:** Run the commands live, alongside the room. Show `pnpm snack help` once. If someone runs `up` twice, show off the error message: it tells you what to do instead.
+
+**Next →** “snack can look. Now let’s teach it what ‘done’ means.”
+
+**Careful:** `up` needs Chromium from preflight. If it fails, `pnpm snack doctor` says why. Pair anyone stuck after two minutes.
 -->
 
 ---
@@ -422,325 +476,211 @@ class: observe-slide
 ---
 
 <div class="observe-head">
-<div><div class="exercise-number">Build 1 · Observe</div><h1>Catch the vanishing act.</h1></div>
-<div><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
+<div><div class="exercise-number">Build · the one coding exercise</div><h1>Make <code>prove</code> refuse “looks done.”</h1></div>
+<div><div class="command">pnpm lab:exercise</div><p class="aside-note">Pass a correct app.<br>Fail three broken ones.</p></div>
 </div>
-<div class="observe-caption-row"><p class="build-description">Fresh browser → submit → read → reload → read again.</p><p class="code-caption">lab/exercises/observe.ts</p></div>
+<div class="observe-caption-row"><p class="build-description">Fresh visitor → join → reload → check what survived.</p><p class="code-caption">lab/exercises/prove.ts</p></div>
 
 ```ts
-const status = page.getByTestId("status");
-const email = page.getByTestId("email");
-const confirmation = page.getByRole("status");
-await page.getByLabel("Email").fill("ada@example.test");
-await page.getByRole("button", { name: "Join waitlist" }).click();
-await expect(status).toHaveText("waitlisted");
-const submitted = await status.innerText();
-await page.reload();
-// Your turn: read status, email and confirmation again.
-// An empty value is a finding, not an error.
+export async function prove({ page, email, check, storage }: ProofKit) {
+  check("fresh visitor starts empty", await status.innerText(), "none");
+  await page.getByLabel("Email").fill(email);
+  await page.getByRole("button", { name: "Join waitlist" }).click();
+  await expect(status).toHaveText("waitlisted"); // no sleeps
+  const promised = await confirmation.innerText();
+  // Your turn: reload like a user, then check() what survived:
+  // status · saved email · confirmation · storage()
+}
 ```
-<p class="footnote">Lesson 03 · lab/exercises/observe.ts · Check: browser exercise: PASS · Inspect observations in report.json.</p>
+<p class="footnote">Lesson 04 · <code>check()</code> never throws · <code>storage()</code> reads localStorage over CDP</p>
 
 <!--
-**ACT 3 · THE BUILD · Build 1 of 3: Observe** · 10:00–21:00 (3 explain · 6 build · 2 checkpoint) · hard stop 21:00
+**ACT 4 · THE PROOF** · 18:00–27:00 (2 explain · 6 build · 1 checkpoint) · hard stop 27:00
 
-**Why this slide:** It answers *“What did we observe?”* We turn the reload bug from slide 6 into recorded facts. The key idea: an empty value after reload is a **finding to record**, not an error to throw.
+**Why this slide:** The one coding exercise. `prove` is the lever’s most important command: it turns “the waitlist works” into a script that fails when it doesn’t. Whatever attendees write here becomes their agent’s definition of done in twenty minutes.
 
-**Say (about 3 min):**
-- “Build one: catch the vanishing act. Do in code exactly what you did by hand: fresh browser, submit, read, reload, read again.”
-- Walk the code: “Find elements by role and label, the way a user would. `expect(...).toHaveText` waits until the page is actually ready. No sleeps. Sleeps flake and prove nothing.”
-- “The scaffold reads status after submit. Your turn: read status, email and confirmation again after reload. Seven fields in all; the lesson lists them.”
-- **The line that matters:** “An empty value is a finding, not an error. If the record vanished, write down that it vanished. Don’t throw, and don’t assert ‘waitlisted’ after reload. That turns a product bug into a broken test and hides it.”
+**Say (about 2 min):**
+- “snack’s `prove` command calls one function, and you write it. It gets a fresh visitor with the app loaded.”
+- Walk the code: “The first half is done: check the visitor starts empty, fill the form the way a user would, click the button, wait for the page to say waitlisted. No sleeps. Sleeps flake and prove nothing.”
+- “Your turn: reload, then check what survived. Status, saved email, the confirmation, and what’s actually in storage.”
+- **The line that matters:** “`check()` records a fact. It never throws. If the record vanished, that’s a finding: write it down, don’t crash. A crash means ‘can’t tell’; a failed check means ‘broken’. Your agent needs to know the difference.”
+- “Give each check a hint that tells an agent what to fix. You’ll see why in a minute.”
 
-**Build (6 min):** `pnpm lab:exercise browser` until you see `PASS`. Mistakes to call out as you walk:
-- adding sleeps
-- reusing the first confirmation value instead of reading it again after reload
-- asserting `waitlisted` after reload
-- forgetting to import `expect`
+**Build (6 min):** `pnpm lab:exercise` until it prints `PASS`. It runs your proof against a correct app and three broken ones, and tells you which broken one slipped through. Mistakes to call out as you walk:
+- reusing the pre-reload values instead of reading again after reload
+- asserting with `expect` after reload (that throws, so a broken app looks like “can’t tell”)
+- checking the exact confirmation text instead of comparing it to `promised`
 
-**Checkpoint (2 min):** Save first, then `cp lab/solution/observe.ts lab/exercises/observe.ts`, or add `--solution`.
+**Checkpoint (1 min):** behind? `cp lab/solution/prove.ts lab/exercises/prove.ts` (save first), or add `--solution` to `snack prove` and `lab:exercise`.
 
-**Next →** “Let’s look at what that evidence looks like once it’s saved.”
+**Next →** “While the stragglers finish: what counts as proof?”
 
-**Roles:** One host calls out common mistakes; the other walks the room for stuck pairs.
--->
-
----
-clicks: 2
----
-
-# The opening bug.<br>Now with evidence.
-
-<EvidenceFlow />
-
-<!--
-**ACT 3 · THE BUILD · Build 1 payoff** · ~20:00, inside the checkpoint
-
-**Why this slide:** The payoff of Build 1: the opening bug, now as a receipt instead of a demo. It also plants the idea that evidence belongs to one specific revision. The final boss pays that off.
-
-**Say:** “Remember the opening bug? Here it is as evidence. After submit: waitlisted, ada@example.test. After reload: none. That’s what your observe function just collected.”
-
-[click] **(click 1: revision)** “Every observation is stamped with the candidate revision the browser actually loaded, plus the attempt number. Evidence belongs to *this* run of *this* version. Change the code and the old evidence stops counting. Remember that; it comes back.”
-
-[click] **(click 2: hard check)** “Then plain code compares the two sides. Persistence check: fail. No model involved. Some things you can just assert.”
-
-**Next →** “So the browser catches that one. Here’s a version where the browser says everything is fine.”
-
-**Careful:** This is a saved real browser run (reference solution), not a live one. Its judge scores are synthetic. Hashes show local consistency; they don’t protect against someone who controls the machine. To reproduce: `pnpm lab:check --scenario memory-only` and open the printed report.json, or `public/materials/opening-report.json`.
+**Roles:** One host calls out common mistakes; the other walks the room.
 -->
 
 ---
 class: coral
 ---
 
-# It persists.<br>It also lies.
+<p class="small-label">THE PROOF BAR</p>
 
-<div class="comparison">
-<div><div class="small-label">What the browser recorded</div><blockquote>status:<br>“waitlisted”</blockquote><p class="comparison-label">Behavior check: passes.</p></div>
-<div><div class="small-label">What the confirmation promised</div><blockquote>“Your seat<br>is confirmed.”</blockquote><p class="comparison-label">Acceptance criterion: unsupported.</p></div>
+# A screenshot of success isn’t proof.
+
+<div class="contract-lines proof-bar">
+<p><strong>Use the user’s path.</strong><span>The form, the button, a reload. Never an internal shortcut.</span></p>
+<p><strong>Check side effects.</strong><span>What’s in storage. What survives the reload.</span></p>
+<p><strong>One run, start to finish.</strong><span>The trigger and the end state in the same receipt.</span></p>
+<p><strong>Doctor first.</strong><span>Evidence for the wrong build is no evidence.</span></p>
 </div>
-<p class="aside-note">Same feature. Two different kinds of checking.</p>
 
 <!--
-**ACT 3 · THE BUILD · the turn** · 21:00–23:00
+**ACT 4 · THE PROOF** · 27:00–28:00 · either host, while people finish
 
-**Why this slide:** The pivot of the talk. Behavior and meaning are different questions. A browser assertion can tell you the record persisted. It can’t tell you whether the message is honest. That’s why we need a second kind of check, and why Build 2 exists.
+**Why this slide:** The standard every proof is held to, in four lines. It explains why their `prove` reloads and reads storage instead of trusting the success message.
 
 **Say:**
-- “The storage is fixed. The record survives reload. Browser check: pass.”
-- “Now read the confirmation: ‘Your seat is confirmed.’ There is no seat. It’s a waitlist. That breaks criterion two.”
-- “Why not just grep for ‘waitlist’? Picture: ‘You’re on the waitlist, no seat guaranteed. But your seat is confirmed!’ The keywords pass. The meaning fails.”
-- “If your product has one approved message, use a template and an exact match. It’s simpler. We let the copy be paraphrased on purpose, so we need something that checks meaning.”
+- “Here’s the bar. One: use the user’s path. If the proof calls `save()` directly, it proves `save()` works, not the feature.”
+- “Two: check side effects, not just pixels. The worker’s screenshot of ‘You’re on the list!’ was real. It just wasn’t saved.”
+- “Three: one run, start to finish. The click and the result belong in the same receipt, from the same visitor.”
+- “Four: doctor first. A perfect proof against an old build proves nothing.” Pause on it. “Remember that one. It comes back as the final boss.”
 
-**Next →** “That’s a different kind of job, so it needs a different kind of tool.”
-
-**Optional:** Show it live with `pnpm lab:app --scenario overpromise`.
+**Next →** “So what does your agent actually get back when a proof fails?”
 -->
 
 ---
 ---
 
-<p class="small-label">WHY DIFFERENT JOBS NEED DIFFERENT TOOLS</p>
+# A failure that says<br>what to do next.
 
-# Fast judgments.<br>Deliberate repairs.
+<div class="split receipt-split">
+<div>
 
-<div class="architecture-lanes">
-<div><span class="lane-label">SYSTEM 1 · an analogy</span><h2>Check a narrow claim.</h2><p>Fast, structured judgment.<br>“Does this copy promise a seat?”</p></div>
-<div><span class="lane-label">SYSTEM 2 · an analogy</span><h2>Work through a problem.</h2><p>Plan, reason, use tools, repair.<br>“How should I fix this feature?”</p></div>
-</div>
-<p class="aside-note">Neither establishes what the browser did. Observe that separately.<br>The harness coordinates the work; code owns the acceptance decision.</p>
-<p class="footnote"><a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noopener noreferrer">TypeSafe’s fast/slow framing</a> · <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener noreferrer">Generator/evaluator architecture: Anthropic</a></p>
-
-<!--
-**ACT 3 · THE BUILD · bridge to Build 2** · ~22:00, same two-minute block
-
-**Why this slide:** Explains why we use a small, fast judge model instead of asking the worker or a big model, and introduces Jev before we use it. It also restates who owns what: the browser owns facts, the judge owns meaning, and code owns the decision.
-
-**Say:**
-- “An analogy from fast and slow thinking. System 1 is quick, narrow judgment: ‘Does this copy promise a seat?’ System 2 is deliberate work: ‘How should I fix this feature?’”
-- “Your coding agent is System 2. To check one narrow claim, you want System 1: fast, structured, one question at a time.”
-- “Our System 1 judge is Jev, from TypeSafe.”
-- Point at the note under the lanes: “Neither one tells you what the browser did. That’s still Playwright. And neither one makes the decision. Code does.”
-- Optional: “Anthropic’s long-running app harness splits the work the same way: planner, generator, evaluator.”
-
-**Next →** “So what do we ask the fast judge? Two questions.”
-
-**Careful:** It’s an analogy, not a claim about how models think. Fast doesn’t mean correct. Our class worker is scripted, not a live System 2 model.
--->
-
----
----
-
-<div class="exercise-number small-label">Build 2 · Infer</div>
-
-# Two questions. No vibes check.
-
-<div class="question-pair">
-<div><span class="question-key">honest</span><p>Waitlist membership, no guaranteed seat,<br>and no contradictory promise?</p></div>
-<div><span class="question-key">nextStep</span><p>An email <strong>only if</strong> a place opens?</p></div>
-</div>
-<div class="command">pnpm lab:exercise questions</div>
-<p class="aside-note">Jev is our semantic judge. <code>noul(question, { true, false })</code><br>asks a yes/no question and returns its probability of “yes.”</p>
-<p class="footnote">Lesson 04 · lab/exercises/questions.ts · Check: questions exercise: PASS · Then inspect a live judgment.</p>
-
-<!--
-**ACT 3 · THE BUILD · Build 2 of 3: Infer** · 23:00–28:00 (2 explain · 3 build)
-
-**Why this slide:** It answers *“What did we infer?”* We turn criteria two and three into two narrow yes/no questions a model can answer from the evidence. Narrow beats broad: “is this good?” can’t tell you which criterion failed.
-
-**Say:**
-- “Build two. No vibes check. We don’t ask ‘is this good?’ We ask two narrow questions, one per criterion.”
-- “**honest**: do both messages say waitlist, no guaranteed seat, and nothing that contradicts it?”
-- “**nextStep**: do both say you’ll get an email *only if* a place opens?”
-- “`noul` is Jev’s yes/no primitive. You write the question, what a yes looks like, and what a no looks like. You get back the probability of yes.”
-- Three tips:
-  - “Say ‘both messages.’ A blank message after reload can’t support a yes.”
-  - “Allow equivalent wording. Don’t demand your favorite phrasing.”
-  - “The confirmation text is untrusted. Tell the judge to ignore any instructions inside it.” (This sets up the game.)
-
-**Build:** `pnpm lab:exercise questions` until you see `PASS`. That checks structure only, not whether the questions are any good. The next slides test that.
-
-**Catch-up:** `cp lab/solution/questions.ts lab/exercises/questions.ts` (save first).
-
-**Next →** “While you write, a word about the number you’ll get back.”
--->
-
----
-class: night
----
-
-# 0.55 is not<br>“55% done.”
-
-<div class="probability-scale"><span>0.0</span><span class="middle">0.5</span><span>1.0</span><span class="marker">▴</span></div>
-<p class="lede">The model reports a probability of “yes.”</p>
-<p class="lede">Useful signal.<br><span class="accent">Not proof. Not permission.</span></p>
-<p class="footnote">No separate confidence field.</p>
-
-<!--
-**ACT 3 · THE BUILD · during Build 2** · 30 seconds while people type
-
-**Why this slide:** Head off the most common misreading of the judge’s output before anyone sees a live score. It also hands the next job to Build 3: the policy decides what the number means.
-
-**Say:**
-- “Jev gives you the probability that the answer is yes. 0.55 doesn’t mean 55% done, or a C-grade message. It means the model is torn between yes and no.”
-- “It’s a useful signal. It isn’t proof, and it isn’t permission. Deciding what to do with the number is the policy’s job. That’s build three.”
-- “A threshold like 0.9 only means something after you’ve checked it against real labeled examples from your product. Not our handful of teaching cases.”
-
-**Next →** “Let’s see some real numbers.”
--->
-
----
----
-
-# Ask the actual judge.
-
-<p class="lede">Predict first. Then inspect the evidence and Jev’s answer.</p>
-
-```bash
-pnpm lab:check --scenario happy --judge live
-pnpm lab:check --scenario overpromise --judge live
+```json
+{
+  "verdict": "FAIL",
+  "revision": "d14af25cd65a",
+  "checks": [
+    { "name": "status survives reload",
+      "expected": "waitlisted", "actual": "none" },
+    { "name": "record is in localStorage",
+      "expected": true, "actual": false }
+  ],
+  "next": ["The record vanished on reload. Persist it…"],
+  "screenshot": ".lab-runs/snack/proof-d14af25cd65a.png"
+}
 ```
 
-<div class="comparison">
-<div><h2>Your questions</h2><p>No <code>--solution</code> flag.<br>Inspect raw scores—not the unfinished policy.</p></div>
-<div><h2>No key / no Wi-Fi?</h2><p>Watch the co-host’s live run.<br>Or <code>pnpm lab:replay</code>, clearly labeled.</p></div>
 </div>
-<p class="footnote">Recorded ≠ newly evaluated.</p>
+<div><p class="lede">This is what your agent reads.</p><div class="exit-codes"><p><strong>0</strong>PASS</p><p><strong>1</strong>FAIL · fix the app</p><p><strong>2</strong>Can’t tell · fix the setup</p></div><p class="aside-note">Missing evidence never becomes a pass.</p></div>
+</div>
+<p class="footnote">Real output, trimmed · <code>snack prove --solution</code> on the attendee app</p>
 
 <!--
-**ACT 3 · THE BUILD · Build 2 payoff** · 28:00–33:00 · one host drives, the other runs predictions
+**ACT 4 · THE PROOF** · 28:00–30:00 · Nick · hard stop 30:00
 
-**Why this slide:** The first real model call. People test their own questions against live Jev. The habit we’re teaching: **predict, then inspect.**
+**Why this slide:** The receipt is the interface between your proof and the agent. A specific failure plus a next step means a targeted fix instead of a guess. This is the right-hand lane from the “very different afternoon” slide.
 
 **Say:**
-- “Predict first. Happy path: both scores high? Overpromise, the ‘seat confirmed’ copy: which question should drop?” Get a guess from the room.
-- Run `pnpm lab:check --scenario happy --judge live`, then `--scenario overpromise --judge live`. Show the raw honest and nextStep scores and the evidence that was sent.
-- “Your policy isn’t written yet, so the final decision will say escalate. Ignore that for now. Look at the scores.”
-- If a result surprises you: “Before blaming the model, read the exact evidence and the exact question wording.”
+- “Run `pnpm snack prove` against the app. Here’s what comes back.” Point at each part:
+  - “The verdict.”
+  - “The revision: a fingerprint of the exact code that was served. This proof belongs to *that* code.”
+  - “Each check: what we expected, what we got.”
+  - “`next`: your hints. That’s the line the agent acts on.”
+  - “And a screenshot from the end of the run.”
+- “Three exit codes. Zero passed. One failed: the app is broken, fix the app. Two: can’t tell. The browser didn’t start, the proof crashed. That’s a setup problem, and the worst thing an agent can do is ‘fix’ the app because the test harness fell over.”
+- “Remember the left lane, ‘probably a timing issue’? This is the cure. Not ‘something’s wrong’, but ‘status after reload was none, persist it.’”
 
-**Next →** “Which raises a question to ask about every score you see today: where did it come from?”
+**Do:** Have people run `pnpm snack prove` with their own proof. Finished proofs FAIL against the attendee app. An unfinished proof says PASS, which is the point: a weak proof calls a broken app done.
 
-**Flags:** Learners omit `--solution` to test their own questions. The instructor uses `--solution` for the reference.
+**Next →** “Your proof knows what done means. Now your agent needs a map.”
 
-**Fallback:** Give each call 15 seconds at most, then `pnpm lab:replay`. Say “recorded, not new feedback.” Don’t make the room wait on Wi-Fi. Synthetic fixtures ignore question wording entirely, so never use them to judge a prompt.
+**Careful:** The JSON is a real run, trimmed for the slide. Revision hashes will differ if the app file changed.
 -->
 
 ---
-class: indigo
 ---
 
-# Name the source.<br>Every time.
-
-<div class="source-lines">
-<div><strong>Synthetic fixture</strong><span>Authored scores. Tests policy.</span></div>
-<div><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
-<div><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
+<div class="split map-split">
+<div><p class="small-label">ONE FILE PER FEATURE</p><h1>Write the map,<br>not the manual.</h1><p class="lede">What exists. How a user gets there.<br>How to drive it. What usually lies.</p><div class="command">lab/verify/features/waitlist.md</div><p class="aside-note">Add two gotchas. Three minutes.<br>Then the skill that ties it together: <code>lab/verify/SKILL.md</code></p></div>
+<div class="ticket map-card">
+<div class="ticket-top"><span>waitlist.md</span><span>FEATURE MAP</span></div>
+<p class="map-h">Sub-features</p>
+<p class="map-h">How to get to it (user POV)</p>
+<p class="map-h">Driving it with snack</p>
+<p class="map-h">What done means</p>
+<p class="map-h on">Gotchas</p>
+<p class="gotcha">The success message appears whether or not anything was saved.</p>
+<p class="gotcha blank">+ ________________________________</p>
+<p class="gotcha blank">+ ________________________________</p>
+</div>
 </div>
 
 <!--
-**ACT 3 · THE BUILD · closes Build 2** · ~33:00 (also a callback whenever sources get mixed up)
+**ACT 5 · THE AGENT** · 30:00–34:00 (1 explain · 3 write) · Zack
 
-**Why this slide:** One habit that prevents a lot of self-deception: always say what kind of result you’re looking at. We use these labels for the rest of the hour, including in the game.
+**Why this slide:** The CLI tells the agent *how* to look. The map tells it *where* to look and what to distrust. It’s short, it lives in the repo, and everyone who touches the feature benefits, people and agents.
 
 **Say:**
-- “You’ll see three kinds of scores today.”
-- “**Synthetic fixture**: we wrote the numbers by hand. Good for testing the policy. Says nothing about your questions.”
-- “**Recorded response**: a real Jev call from earlier. Real, but not feedback on what you just wrote.”
-- “**Live Jev**: a fresh judgment of your words. Still fallible.”
-- “When someone shows you an eval, ask which of these it is.”
-- “In the game there’s a fourth source: your partner. That’s human judgment. Keep it separate too.”
+- “A remote control is only useful if you know what the buttons are for. That’s the map: one short file per feature.”
+- Walk the headings: “What’s in the feature. How a user gets to it, in user words. The exact snack commands to drive it. What done means: our three acceptance criteria. And gotchas: what usually lies.”
+- “We wrote the first gotcha: the success message shows up whether or not anything was saved. That’s the bug you found.”
+- “Your turn: add two more. What else in this feature *looks* done but might not be?” If they’re stuck: a message that promises more than it should; a record that comes back with the wrong email; something that only breaks on the second visit.
+- “Then open `lab/verify/SKILL.md`. Seven steps: doctor, read the map, reproduce, fix, prove, read the screenshot, report. That’s what you hand your agent.”
 
-**Next →** “So we have facts and we have judgments. Now: what do we do with them?”
+**Next →** “Let’s hand it over.”
+
+**Careful:** Keep gotchas behavioral (“what a user would see”), not implementation notes. A gotcha the agent can’t observe with snack isn’t useful yet.
 -->
 
 ---
+clicks: 7
 ---
 
-<div class="small-label">Build 3 · Stop</div>
+<p class="small-label">LIVE · BRING YOUR OWN AGENT</p>
 
-# The bouncer’s rulebook.
+# “Repro it. Fix it. Show me proof.”
 
-<div class="policy-row"><span>Missing, stale, invalid, or unavailable?</span><span>→</span><strong>Ask a human</strong></div>
-<div class="policy-row"><span>Hard failure or any <code>p ≤ 0.2</code>?</span><span>→</span><strong>Repair once</strong></div>
-<div class="policy-row"><span>Otherwise, any <code>p &lt; 0.9</code>?</span><span>→</span><strong>Ask a human</strong></div>
-<div class="policy-row"><span>All required checks clear?</span><span>→</span><strong>Let it in</strong></div>
-<div class="command">pnpm lab:exercise policy</div>
-<p class="footnote">Lesson 05 · lab/exercises/decide.ts · Check: policy exercise: PASS · Then run pnpm lab:loop.</p>
+<div class="split agent-split">
+<div><div class="command prompt-box">Read lab/verify/SKILL.md. Reproduce the reload bug in the waitlist with snack. If it reproduces, fix it, and show me the receipt and the screenshot as proof.</div><p class="aside-note">Any agent with a terminal: Claude Code, Codex, Cursor, pi.<br>Unfinished <code>prove.ts</code>? Your agent will call a broken app done.</p></div>
+<div class="agent-run">
+<div class="agent-log-bar"><i></i><i></i><i></i><span>agent session · fallback recording</span></div>
+<p v-click="1"><b>›</b>snack doctor<em>ok · build fresh</em></p>
+<p v-click="2"><b>›</b>snack join ada@example.test<em>waitlisted</em></p>
+<p v-click="3"><b>›</b>snack storage<em class="bad">{ }</em></p>
+<p v-click="4"><b>›</b>snack reload<em class="bad">status: none</em></p>
+<p v-click="5"><b>✎</b>lab/app/index.html<em>persist + honest copy</em></p>
+<p v-click="6"><b>›</b>snack prove --solution<em class="good">PASS · 4e8c43d6bc1e</em></p>
+<p v-click="7"><b>▣</b>proof-4e8c43d6bc1e.png<em>read it</em></p>
+</div>
+</div>
 
 <!--
-**ACT 3 · THE BUILD · Build 3 of 3: Stop** · 33:00–40:00 (3 explain · 4 build)
+**ACT 5 · THE AGENT** · 34:00–40:00 · Nick drives the agent on screen, Zack walks the room
 
-**Why this slide:** It answers *“Why did we stop?”* This is where the decision lives: in plain code, not in the worker and not in the judge. The order of the rules is the lesson.
+**Why this slide:** The payoff. The same agent that said “done” on slide 5 now reproduces the bug, fixes it, and proves it, without anyone babysitting. The prompt is three sentences because the lever, the map, and the proof carry the rest.
 
 **Say:**
-- “Build three: the bouncer’s rulebook. Read it top to bottom. Order matters.”
-- “**Row 1:** evidence missing, stale or invalid, or the judge is down? Ask a human. We can’t judge, so we don’t guess, and we don’t blame the product.”
-- “**Row 2:** a hard check failed, or any score is 0.2 or lower? That’s a known defect. Repair, once. If the repair is already used, ask a human.”
-- “**Row 3:** anything else below 0.9? Uncertain. Ask a human.”
-- “**Row 4:** everything clear? Let it in.”
-- Two rules people break:
-  - “You can’t average away a hard failure. A 0.99 on the copy doesn’t rescue a lost record.”
-  - “‘Ask a human’ isn’t ‘reject.’ It means ‘here’s the evidence, you decide.’”
+- “Here’s the whole prompt. Read the skill. Repro the bug with snack. If it repros, fix it and show me proof.”
+- “Notice what isn’t in the prompt: no steps, no ‘remember to reload.’ That all lives in the skill and the map.”
+- “Run it with whatever agent you use. We’ll run ours up here.”
 
-**Build:** Implement `decide()`, then `pnpm lab:exercise policy` until you see `PASS`. Validate that probabilities are 0–1, thresholds are sane, and the repair count is a non-negative integer. Then `pnpm lab:loop`.
+**Do:** Before the slide, `pnpm snack up` is already running in a visible terminal and `lab/app/index.html` is clean (`git checkout lab/app/index.html`). Paste the prompt into the agent. Narrate as it goes: doctor, prove fails, it looks at storage, edits the file, proves again.
 
-**Catch-up:** `cp lab/solution/decide.ts lab/exercises/decide.ts` (save first).
+**If the live run stalls (90 seconds max), click through the fallback recording.** It’s a real Claude Code run with exactly this prompt (about 50 seconds, 12 turns):
 
-**Next →** “Let’s watch all three pieces run together.”
--->
+[click] **(1)** “Doctor first: fresh build.”
+[click] **(2)** “It joins, like a user.”
+[click] **(3)** “It checks storage itself. Empty.”
+[click] **(4)** “Reload: gone. Reproduced, with evidence.”
+[click] **(5)** “One file edited: persist the record. It also rewrote the copy, because the map says what done means.”
+[click] **(6)** “It noticed the unfinished exercise proof was too weak and ran the reference proof. PASS, for a new revision.”
+[click] **(7)** “And it opened the screenshot, because the skill says to.”
 
----
-clicks: 5
----
+**Land it:** “Same agent as slide 5. The difference isn’t the model. It’s the lever.”
 
-# Repair once. Then decide.
+**Next →** “Let’s open the receipt from that run.”
 
-<LoopMachine />
-
-<!--
-**ACT 3 · THE BUILD · the payoff** · 40:00–41:00 · arrow keys through six stages
-
-**Why this slide:** All three builds running as one loop, including the repair. It shows the two ways a bounded loop can end: accept fixed work, or stop and hand it to a human.
-
-**Say:** “Attempt one. The worker proposes: ‘Your seat is confirmed.’ Plausible. Wrong.”
-
-[click] **(click 1: browser)** “Browser: the record survives reload. Pass. But that says nothing about the seat promise.”
-
-[click] **(click 2: judge)** “Judge: honest 0.01, next step 0.03. Not supported. Policy says it’s a known defect. Repair.”
-
-[click] **(click 3: repair)** “One repair. The worker gets the failed criteria, not permission to rewrite them. And look at the trail: the old proof is dead. New revision, new evidence required.”
-
-[click] **(click 4: re-check)** “Attempt two: ‘Waitlist only, no guaranteed seat.’ Fresh browser run, fresh judgment. Both pass.”
-
-[click] **(click 5: decision)** “Now you can call it done. And we accept the *repaired* revision, not the original promise.”
-
-Then tick **Make the worker stubborn**: “Same loop, with a worker that won’t fix it. Attempt two still promises a seat. The budget’s spent, so a human gets it, evidence attached. One repair means two attempts at most. No infinite retry loop.”
-
-**Next →** “That was the cartoon. Here’s the actual receipt.”
-
-**Do:** If time allows, run `pnpm lab:loop` (or `--solution`) for the real browser-backed run, and `--stubborn` for the escalation.
-
-**Careful:** This animation is an illustration with synthetic scores. The toggle doesn’t rerun anything.
+**Careful:** Agents vary. If yours fixes the copy too, great: ask it why. That’s the next slide. If an attendee’s agent says PASS without fixing anything, their `prove.ts` is unfinished; that’s a lesson, not a failure. The fallback is a recorded run, not a live one; say so.
 -->
 
 ---
@@ -748,298 +688,257 @@ class: indigo receipt-slide
 clicks: 3
 ---
 
-<p class="small-label">THE ACTUAL SAVED RUN</p>
+<p class="small-label">THE RUN YOU JUST WATCHED</p>
 
 # Open the receipt.
 
 <RepairReceipt />
-<div class="receipt-command">Try it: <code>pnpm lab:loop --solution</code> · inspect the printed report path</div>
+<div class="receipt-command">Try it: <code>pnpm snack prove</code> · every receipt is appended to <code>.lab-runs/snack/receipts/</code></div>
 
 <!--
-**ACT 3 · THE BUILD · the receipt** · 41:00–41:45 · three clicks
+**ACT 5 · THE AGENT · the receipt** · 40:00–41:00 · three clicks
 
-**Why this slide:** A receipt is a durable record of an evaluation. It should explain the outcome today and preserve enough context to compare runs later. Nick and Zack arrived at this independently in Riker and CTX.
+**Why this slide:** A receipt is a durable record of an evaluation. It should explain the outcome today and preserve enough context to compare runs later. These two are the agent run from the previous slide: before and after its fix. Nick and Zack arrived at this independently in Riker and CTX.
 
 **Say / click:**
-- **0 — bind:** “Which run, attempt and candidate revision did we check? This is a real saved report.”
-- **1 — observe:** “What did the browser see, and when? Keep the evidence itself and its hash. A hash identifies bytes; it cannot tell us whether the check was good.”
-- **2 — decide:** “Which questions and policy produced this decision? These synthetic scores ask us to repair the copy. We keep the reasons, too.”
-- **3 — append:** “A new candidate gets fresh evidence. Attempt two accepts; attempt one remains in the history. Don’t overwrite the failure with the final green.”
+- **0 — bind:** “Which revision did we check, and when? This is a real saved receipt from the run you just watched.”
+- **1 — observe:** “What did the app actually do? Status after reload: none. Nothing in localStorage. No page errors.”
+- **2 — decide:** “Which checks failed, and what should happen next? That `next` line is what the agent acted on.”
+- **3 — append:** “New code, new revision, fresh evidence. Attempt two passes; attempt one stays in the history. Don’t overwrite the failure with the final green.”
 - Optional callback: Nick’s Riker preserves the job’s check; Zack’s CTX ties evidence to a work-graph revision. The shared move is to preserve the run, not just its final message.
 
-**Do:** Ask attendees to find these fields in their own report later. Lesson 07 maps the actual report fields and the extra metadata to add in a real system.
+**Do:** Have attendees open their own `.lab-runs/snack/receipts/`: one file per `prove`. Lesson 07 maps the receipt fields and the extra metadata a real system needs.
 
-**Next →** “That history becomes useful evaluation data. We’ll return to it after the game. First: what did we build?”
+**Next →** “That history becomes useful evaluation data; we’ll come back to it at the end. But first: the receipt says PASS. So… done? Look at the screenshot.”
 
-**Careful:** Saved run, scripted worker, synthetic judge scores, real browser observations. The candidate revision is a hash of the candidate JSON, not a Git commit. This lab does not yet record the full model/tool/environment versions or run costs needed for a production dataset.
+**Careful:** Saved receipts from the reference proof (`--solution`) before and after a real Claude Code run, not your live run; your revisions will differ. The revision is a hash of the served HTML, not a Git commit. snack doesn’t record model, tool or environment versions or costs, which a production run archive needs.
 -->
 
 ---
-class: night
+class: coral
+clicks: 1
 ---
 
-<div class="thesis-questions">
-<div><p>What did we <span class="accent">observe?</span></p><p class="thesis-build"><code>observe.ts</code> · Build 1</p></div>
-<div><p>What did we <span class="accent">infer?</span></p><p class="thesis-build"><code>questions.ts</code> · Build 2</p></div>
-<div><p>Why did we <span class="accent">stop?</span></p><p class="thesis-build"><code>decide.ts</code> · Build 3</p></div>
+# It persists.<br>It also lies.
+
+<div class="comparison">
+<div><div class="small-label">What prove checked</div><blockquote>status after reload:<br>“waitlisted”</blockquote><p class="comparison-label">Verdict: PASS.</p></div>
+<div><div class="small-label">What the screenshot says</div><blockquote>“You’re in! Your seat<br>is confirmed.”</blockquote><p class="comparison-label">The map says: waitlist only.</p></div>
 </div>
+<div class="judge-line" v-click><code>pnpm snack judge</code><span>honest <strong>0.01</strong> · next step <strong>0.02</strong> → <strong>FAIL</strong></span></div>
+<p class="aside-note">Some claims aren’t assertions. Ask a fast judge one narrow question, or show a human the screenshot.</p>
 
 <!--
-**ACT 3 · THE BUILD · summary** · 41:45–43:00 · hard stop 43:00
+**ACT 5 · THE AGENT** · 41:00–43:30 · Zack
 
-**Why this slide:** The photo slide. It sums up the build as three questions, and those questions are the takeaway. A short Q&A pause follows before the game.
+**Why this slide:** Behavior and meaning are different checks. `prove` can tell you the record survived. It can’t tell you whether the message is honest. That’s why the receipt has a screenshot, and why there’s a second kind of check.
 
 **Say:**
-- “Three questions to ask of any agent’s ‘done.’”
-- “What did we **observe**? Your browser evidence.”
-- “What did we **infer**? The judge’s read on meaning.”
-- “Why did we **stop**? Your policy.”
-- **“‘Done’ is a claim. Ask for the receipt.”**
+- “Prove passed. The record survives reload. Now read the screenshot.” Pause. “‘Your seat is confirmed.’ It’s a waitlist. There is no seat. You may have noticed this way back on slide 6.”
+- “Why not grep for ‘waitlist’? Picture: ‘You’re on the waitlist, no seat guaranteed. Your seat is confirmed!’ Keywords pass. Meaning fails.”
+- “So we ask a different kind of check. Jev, from TypeSafe, is a small, fast judge: one narrow yes/no question, a probability back.”
 
-Pause long enough for phones.
+[click] **(click: judge)** Run `pnpm snack judge` live. “Does this copy say waitlist only, no guaranteed seat? Almost certainly not. Fail.”
 
-Then: “Questions before the game?” Take one or two. Park the rest for the Q&A at the end.
+- “No key? Same idea, a human: open the screenshot and read it against the contract in the map. The point is that *someone* reads it.”
+- “If your product has one approved message, skip the model and use an exact match. We allow paraphrases on purpose.”
 
-**Next →** “You built the bouncer. Let’s see if it holds.”
+**Do:** Have the agent (or a volunteer) fix the copy, then run `prove` and `judge` again: both pass (rehearsal: 0.98 / 0.98).
+
+**If your live agent already fixed the copy** (Claude Code did in rehearsal, because the map lists the contract): say so. “It caught it because it read the map and the screenshot. `prove` alone passed it.” The numbers on the slide are from `pnpm snack up --bug overpromise`, which serves a working app with only the copy bug.
+
+**Next →** “So when does the agent stop?”
+
+**Careful:** A probability is a signal, not proof. 0.55 doesn’t mean 55% done; it means the judge is torn, and a human decides. The slide’s numbers are a real jev-1.13.0 run of this exact copy with persistence working; live numbers can differ.
+-->
+
+---
+---
+
+<p class="small-label">IN THE SKILL, SO THE AGENT KNOWS</p>
+
+# When to stop.
+
+<div class="stop-rules">
+<div class="policy-row"><span>PASS on this revision, screenshot read, copy honest</span><span>→</span><strong>Done. Show the receipt.</strong></div>
+<div class="policy-row"><span>Same check still fails after two fixes</span><span>→</span><strong>Hand a human the receipt.</strong></div>
+<div class="policy-row"><span><code>doctor</code> red, or <code>prove</code> can’t tell (exit 2)</span><span>→</span><strong>Fix the setup. Don’t guess.</strong></div>
+<div class="policy-row"><span>The judge is unsure</span><span>→</span><strong>A human reads the screenshot.</strong></div>
+</div>
+<p class="footnote">The skill states the rule. The CLI supplies the evidence. Neither trusts the agent’s word.</p>
+
+<!--
+**ACT 5 · THE AGENT** · 43:30–44:00 · Nick · hard stop 44:00
+
+**Why this slide:** A loop without a stop rule either quits early or never ends. These four lines live in `lab/verify/SKILL.md`, so every agent reads the same rule.
+
+**Say:**
+- “Top to bottom. Done means PASS on *this* revision, screenshot read, copy honest. Then show the receipt.”
+- “Two fixes and the same check still fails? Stop. Hand a human the receipt and what you tried. No infinite retry loops.”
+- “Doctor red, or prove can’t tell? That’s the environment. Fix the setup or ask. Never ‘fix’ the app because the browser didn’t start.”
+- “Judge unsure? A human reads it.”
+- “Notice who decides ‘done’: not the agent’s confidence. The evidence.”
+
+**Next →** “You built a verifier. Time to see if it holds.”
 -->
 
 ---
 class: indigo
 ---
 
-<p class="small-label">You built the bouncer. Time to test the door.</p>
+<p class="small-label">The game: you built the lever. Now try to sneak one past it.</p>
 
 <div class="role-match">
-<div><div class="role-name">Bouncer</div><p>Catch the lie.<br>Let good work through.</p></div>
+<div><div class="role-name">Saboteur</div><p>Start the app with a secret bug.<br>Keep a straight face.</p></div>
 <span class="versus">vs.</span>
-<div><div class="role-name accent">Bluffer</div><p>Write a convincing lie.<br>Then an unusual truth.</p></div>
+<div><div class="role-name accent">Detective</div><p>Find it with snack alone.<br>Name the bug and the proof.</p></div>
 </div>
 
-<p class="lede">Two rounds. Switch roles. Bring receipts.</p>
-<p class="footnote">A good verifier doesn’t just say no to everything.</p>
+<p class="lede">Two rounds. Switch roles. Sometimes there is no bug.</p>
+<p class="footnote">Solo? <code>pnpm snack up --bug random</code>. Stopping it reveals the answer.</p>
 
 <!--
-**ACT 4 · THE GAME** · 43:00–44:00
+**ACT 6 · THE GAME** · 44:00–45:00
 
-**Why this slide:** It tests both ways a verifier can fail: letting bad work in, and keeping good work out. A verifier that rejects everything is useless, and the scoring will show that.
+**Why this slide:** It tests the lever both ways. Can it find a bug that’s there? Can it stay quiet when nothing is wrong? A detective that cries “bug!” every round is as useless as one that never does.
 
 **Say:**
-- “Pair up. One of you is the Bouncer, defending the verifier. The other is the Bluffer.”
-- “Round one: the Bluffer writes a convincing lie, a confirmation that breaks the contract but sounds great.”
-- “Round two: swap. Write an honest message in an unusual way, and see whether the bouncer wrongly bounces it.”
-- “A good verifier doesn’t just say no to everything.”
-- **Rules:** “Freeze the verifier: no editing questions or thresholds mid-game. Before you run anything, write down whether your message is honest or a lie. On paper, not in the JSON.”
+- “Pair up. One of you is the Saboteur, one is the Detective.”
+- “Saboteur: stop your `up`, then restart it with a secret bug. The detective looks away while you type.”
+- “Detective: you get snack and nothing else. No reading files, no `eval` on the source. Find the bug, name it, and show the command output that proves it.”
+- “Sometimes the saboteur picks ‘none.’ ‘It works’ is a real answer, and it scores.”
+- “Detectives may use their agent. Hand it the skill and say ‘find what’s wrong’.”
 
 **Next →** “Round one.”
 
-**No key?** Same game, but your partner judges. That’s human judgment, not a Jev measurement.
+**Careful:** The bug is injected by the server at load time, so it isn’t in `lab/app/index.html`. The bug name is revealed only when `up` stops.
 -->
 
 ---
 ---
 
 <div class="split">
-<div><p class="small-label">Round 1 · The polite lie</p><h1>Get bad work<br>past the door.</h1><p class="lede">One false promise.<br>As plausible as you can make it.</p><div class="command">Edit lab/challenges/bluff.json</div><p class="aside-note">Keep <code>storage: "local"</code>.<br>Change only the confirmation.</p></div>
-<RoundTimer :seconds="90" />
+<div><p class="small-label">Round 1 · then swap</p><h1>Find the bug.</h1><div class="command">pnpm snack up --bug NAME</div><p class="aside-note">none · memory-only · wrong-email<br>lost-confirmation · overpromise · console-error<br>Or <code>--bug random</code>.</p><div class="game-rules"><p>Detective: snack commands only.</p><p>Name the bug and the output that proves it.</p></div></div>
+<RoundTimer :seconds="120" />
 </div>
 
 <!--
-**ACT 4 · THE GAME · Round 1: false accept** · 44:00–45:30 · 90-second timer
+**ACT 6 · THE GAME · rounds** · 45:00–50:00 · two 2-minute rounds plus the swap
 
-**Why this slide:** It probes false acceptance. Storage stays local, so the only thing under test is meaning.
-
-**Say:**
-- “Bluffers: get bad work past the door. Edit `bluff.json`. Keep storage local and change only the confirmation. One false promise, as plausible as you can make it.”
-- “Stuck? Contradict yourself politely. Bury a seat guarantee in fine print. Or hide an instruction to the judge inside the message.”
-- “Before you run it, agree with your partner on which criterion it breaks. Silly isn’t wrong. It has to actually break something.”
-
-**Do:** Press Start. The timer pauses if you leave the slide.
-
-**Next →** “Time. Put it on trial.”
-
-**Careful:** The starter file is valid as given. People must introduce a real violation. If partners disagree on the label, mark it “needs review” and don’t count it.
--->
-
----
----
-
-# Put your own copy on trial.
-
-```bash
-pnpm lab:check --candidate lab/challenges/bluff.json \
-  --solution --judge live
-```
-
-<div class="trial-brief">
-<p class="lede">Inspect the criterion, evidence, scores, and decision.<br><strong>Then reveal your label.</strong></p>
-<div class="game-rules"><p>At most two live calls per pair.</p><p>No changing prompts, labels, or thresholds after seeing the answer.</p></div>
-</div>
-
-<div class="command">No key? pnpm lab:app --candidate lab/challenges/bluff.json</div>
-<p class="aside-note">The partner judges the visible message against the same contract.<br>Human round ≠ a measurement of Jev.</p>
-
-<!--
-**ACT 4 · THE GAME · the trial** · 45:30–47:00
-
-**Why this slide:** Run the attack through the frozen verifier and read *why* it decided what it did, not just whether it was fooled.
+**Why this slide:** Two minutes is enough with the lever and far too little without it. That’s the point.
 
 **Say:**
-- “Run your bluff through the verifier.” Point at the command.
-- “Read the criterion, the evidence, the scores and the decision. Then reveal your label. Did the bouncer catch it?”
-- “Two live calls per pair, max. No changing questions, labels or thresholds after you see the answer. That’s grading on a curve.”
-- “No key? Open the app with your candidate, and your partner judges it against the contract. That’s a human round, not a measurement of Jev.”
+- “Saboteurs: Ctrl+C your `up`, then `pnpm snack up --bug` and one name from the list. Or `random` if you want to be surprised too.”
+- “Detectives: go. Start with `doctor`. Then whatever you like.”
+- “Write down your answer before the saboteur reveals it.”
 
-**Next →** “Swap roles.”
+**Do:** Press Start. When the timer ends, saboteurs stop `up` to print the reveal. Swap roles and press Start again.
 
-**Details if asked:** `--solution` means everyone tests against the same reference verifier. Drop it if both partners finished their code and want to test their own. A model outage or broken JSON is no contest, not a win. The parser rejects extra keys, and the human label never reaches Jev. API failures never fall back to synthetic scores.
--->
+**Hints if a pair is stuck:** “Did you run `prove`? Did you *read* everything it printed?” “Did you look at the screenshot?” “What does the console say?”
 
----
-class: lime
----
+**Next →** “Time. Let’s score it.”
 
-<div class="split">
-<div><p class="small-label">Round 2 · The unfair rejection</p><h1>Now get<br>good work in.</h1><p class="lede">Say it differently.<br>Keep every promise honest.</p><div class="command">Edit lab/challenges/legit.json</div><p class="aside-note">Swap roles. Same frozen verifier.<br>Run the same command with legit.json.</p></div>
-<RoundTimer :seconds="90" />
-</div>
-
-<!--
-**ACT 4 · THE GAME · Round 2: false reject** · 47:00–48:30 write · 48:30–50:00 judge
-
-**Why this slide:** It probes the opposite failure: honest work that gets bounced. That costs a human interruption every time, and interruptions add up.
-
-**Say:**
-- “Swap roles. Now get good work in. Edit `legit.json`. Say it differently but keep every promise honest: waitlist only, no guaranteed seat, email if a place opens.”
-- “Try a pirate, a poet, a very formal maître d’. Funny is optional. Clear is required.”
-- “If the bouncer rejects an honest message, that’s a real cost: someone gets pulled in for nothing.”
-
-**Do:** Press Start. When time’s up, run the same trial command with `legit.json`.
-
-**Next →** “Let’s score it.”
+**Careful:** `--bug` serves the reference app plus one bug, not the attendee’s edited app. That’s on purpose: everyone plays the same game.
 -->
 
 ---
 ---
 
 <div class="split">
-<div><h1>Score the<br>bouncer.<br><span class="accent">Not the bravado.</span></h1><p class="lede">Who found a useful<br>counterexample?</p><p class="aside-note">Prizes: bragging rights for the<br>best polite lie and most unfair rejection.</p><div class="game-rules"><p>Outage or disputed label: no contest.</p></div></div>
+<div><h1>Score the<br>detective.<br><span class="accent">Not the confidence.</span></h1><p class="lede">Who got fooled,<br>and by which bug?</p><div class="game-rules"><p>Bragging rights only.</p></div></div>
 <div class="score-receipt">
 <div class="small-label">Two-round paper scorecard</div>
-<div class="score-line"><span>Bad work → repair</span><strong>+2</strong></div>
-<div class="score-line"><span>Good work → accept</span><strong>+2</strong></div>
-<div class="score-line"><span>Bad work → accept</span><strong>−3</strong></div>
-<div class="score-line"><span>Good work → repair / escalate</span><strong>−1</strong></div>
-<div class="score-line"><span>Bad work → escalate</span><strong>0</strong></div>
+<div class="score-line"><span>Named the bug, with output</span><strong>+2</strong></div>
+<div class="score-line"><span>Said “it works” and it did</span><strong>+2</strong></div>
+<div class="score-line"><span>Said “it works” and it didn’t</span><strong>−3</strong></div>
+<div class="score-line"><span>Blamed a bug that wasn’t there</span><strong>−1</strong></div>
+<div class="score-line"><span>Right bug, no evidence</span><strong>0</strong></div>
 </div>
 </div>
-<p class="footnote">Human-reviewed rounds and live-model rounds use separate scoreboards.</p>
 
 <!--
-**ACT 4 · THE GAME · scoring** · 50:00–52:00
+**ACT 6 · THE GAME · scoring** · 50:00–51:30
 
-**Why this slide:** The scoring encodes the lesson: false accepts cost the most, but refusing everything isn’t a win. Then pull one useful counterexample from the room and get the room’s real numbers.
+**Why this slide:** The scoring is the lesson. Calling a broken app done costs the most. Crying wolf costs something too. A guess without evidence earns nothing, even when it’s right.
 
 **Say:**
-- Walk the card: “Catch bad work: plus two. Let good work in: plus two. Let bad work in: minus three, the expensive mistake. Bounce good work: minus one. Escalate bad work: zero, safe but no credit.”
-- “A bouncer that escalates everything scores minus one across the two rounds. Max is four.”
-- Count hands: “How many polite lies got through? How many honest rewrites got bounced?” **Say the numbers out loud. They’re the only real data in the deck.**
-- Ask one pair for their most *useful* counterexample, not necessarily a successful one. Then ask: “What failed: the question, the evidence, the policy, or your label?”
+- Walk the card. “Named it with output: plus two. Correctly said it works: plus two. Said it works when it didn’t: minus three. That’s the expensive one, the one this whole hour is about. Blamed a bug that wasn’t there: minus one. Right guess, no evidence: zero.”
+- Count hands: “Who said ‘it works’ and was wrong? Which bug got you?” **Say the bug names out loud.** You’re fishing for overpromise and console-error.
 
-**Next →** “You just felt a trade-off. Here it is in numbers.”
+**Next →** “Here’s why those two.”
 
-**Rules:**
-- An outage or a disputed label is no contest.
-- The hosts are the label jury. Don’t move a label to fit the model.
-- Human and live rounds go on separate scoreboards.
-- Bragging rights only, no physical prize.
-- Keep it about the system. Never embarrass a participant.
+**Rules:** The hosts settle disputes. Keep it about the system, never embarrass a participant.
 -->
 
 ---
+clicks: 3
 ---
 
-# Less interruption.<br>More false confidence?
+<p class="small-label">THE REVEAL</p>
 
-<div class="metric-comparison">
-<div><div class="threshold">Accept at 0.9</div><div class="cost">0 / 5</div><div class="numbers">bad candidates accepted<br><strong>2 / 3</strong> good ones interrupted</div></div>
-<div><div class="threshold">Accept at 0.8</div><div class="cost">1 / 5</div><div class="numbers">bad candidates accepted<br><strong>1 / 3</strong> good ones interrupted</div></div>
+# Every miss is a new line in the map.
+
+<div class="miss-list">
+<div><code>memory-only</code><span class="status-lozenge good">prove caught it</span><span>status and storage after reload</span></div>
+<div><code>wrong-email</code><span class="status-lozenge good">prove caught it</span><span>saved email after reload</span></div>
+<div><code>lost-confirmation</code><span class="status-lozenge good">prove caught it</span><span>confirmation after reload</span></div>
+<div v-click="1"><code>overpromise</code><span class="status-lozenge bad">prove said PASS</span><span>the screenshot, or <code>judge</code></span></div>
+<div v-click="2"><code>console-error</code><span class="status-lozenge bad">prove said PASS</span><span><code>console</code>. It was in the receipt all along.</span></div>
+<div v-click="3"><code>none</code><span class="status-lozenge warn">nothing to find</span><span>“It works” is a real answer.</span></div>
 </div>
-<p class="aside-note" style="margin-top: 24px">Synthetic policy fixtures—not measured Jev accuracy. Same cases, different policy.</p>
 
 <!--
-**ACT 4 · THE GAME · the trade-off** · 52:00–54:00
+**ACT 6 · THE GAME · the reveal** · 51:30–53:30
 
-**Why this slide:** It turns the game’s tension into a design decision. Every threshold trades interruptions for false confidence. You choose based on which mistake costs more in your product.
+**Why this slide:** The lever is never finished. Every bug that slipped through tells you exactly what to add: a check in `prove`, or a gotcha in the map. That’s how the tool gets better, by being attacked.
 
 **Say:**
-- “Same cases, two thresholds. At 0.9: zero of five bad candidates get in, but two of three good ones interrupt a human.”
-- “Drop to 0.8: one fewer interruption, and one bad candidate walks in.”
-- “The honest paraphrase that 0.8 lets in? The polite lie comes in with it.”
-- “So which is right? It depends on what each mistake costs you. A false seat promise, or a person reading one extra message. Decide with labeled examples, not vibes. 0.9 isn’t magic.”
+- “Three bugs, your proof caught. That’s the four checks you wrote.”
 
-**Next →** “One last case. It’s the sneakiest.”
+[click] **(1) overpromise** “Prove said PASS. Persistence is fine; the copy lies. Only the screenshot or the judge sees it.”
 
-**Careful:** These are synthetic policy fixtures, not measured Jev accuracy. They’re single-candidate decisions with no repairs. Don’t mix them with the game scores.
+[click] **(2) console-error** “Prove said PASS. But scroll up in the receipt: `pageErrors: track is not defined`. The evidence was right there. No check looked at it.”
 
-**If ahead:** `pnpm lab:eval --solution`, then `--accept-at 0.8`. The second run exits 1 on purpose.
+[click] **(3) none** “And the detectives who said ‘it works’ on a working app: that’s the hardest call. Well done.”
+
+- “So, two new lines. A gotcha: ‘read the screenshot, the copy can lie.’ And a check: ‘no page errors.’ Every miss becomes a line in the map or a check in the proof. That’s the maintenance loop.”
+
+**Next →** “One more. The sneakiest.”
 -->
 
 ---
 class: night
+clicks: 1
 ---
 
-<p class="small-label">The final boss: a perfect receipt for the wrong revision</p>
+<p class="small-label">The final boss: a perfect receipt for the wrong code</p>
 
 # “But it passed<br><span class="accent">yesterday.</span>”
 
-<div class="command">pnpm lab:check --scenario stale-evidence --solution</div>
-<p class="lede" v-click>Escalate. Don’t guess.<br>Don’t ask the worker to fix missing proof.</p>
-<p class="footnote">After class: freeze your policy, then reveal --suite heldout. Keep unseen cases unseen.</p>
+<div class="command">pnpm snack doctor</div>
+<div class="doctor-stale"><code>"proof": "STALE: the last receipt says PASS for 4e8c43d6bc1e, but the source is now 1b539940221a. That proof is for code that no longer exists."</code></div>
+<p class="lede" v-click>Prove it again. Yesterday’s green is not today’s.</p>
 
 <!--
-**ACT 4 · THE GAME · final boss** · 54:00–54:30
+**ACT 6 · THE GAME · final boss** · 53:30–55:00 · hard stop 55:00
 
-**Why this slide:** A callback to the revision stamp on slide 15. Evidence can be perfect and still worthless if it’s for a different version. Provenance is part of the receipt.
+**Why this slide:** Callback to “doctor first.” Every receipt is stamped with the revision it proved. Change one character and the old PASS stops counting. Agents love to reuse an old green; doctor catches it.
 
-**Say:**
-- “The final boss: a perfect receipt. Every check green. For the wrong revision. It passed yesterday, on yesterday’s code.”
-- Run `pnpm lab:check --scenario stale-evidence --solution` (cut it if behind).
-- Ask: “What should the policy do?” Let someone answer in one sentence and give them the room’s final point.
-
-[click] **(click: answer)** “Escalate. Don’t guess. And don’t send it back to the worker. Nothing is known to be wrong with the product; what’s missing is proof. That’s a human call.”
-
-**Story beat (optional):**
-- **Nick:** Riker’s rule: a file the worker writes into the proof folder proves nothing, and a log that changed after the check shows up as changed, not as proof. When a job adds tests, Riker also runs them against the base. Tests that pass there too don’t prove the fix. If you have a real story behind that rule, tell it here. Don’t invent one.
-- **Zack:** CTX evaluates every node from current, unexpired observations. Failed or untrusted receipts never satisfy a gate.
-
-**Next →** “Which brings us back to the three questions.”
-
-**Careful:** Stale evidence is a fault we inject into the harness, not something the worker produced. Take-home from the footnote: freeze your policy *before* running `--suite heldout`, and don’t tune on cases you’re calling unseen.
--->
-
----
-class: night
----
-
-<div class="thesis-questions">
-<div><p>What did we <span class="accent">observe?</span></p><p class="thesis-build"><code>observe.ts</code> · Build 1</p></div>
-<div><p>What did we <span class="accent">infer?</span></p><p class="thesis-build"><code>questions.ts</code> · Build 2</p></div>
-<div><p>Why did we <span class="accent">stop?</span></p><p class="thesis-build"><code>decide.ts</code> · Build 3</p></div>
-</div>
-
-<!--
-**ACT 4 · THE GAME · bookend** · 54:30–55:00
-
-**Why this slide:** The same slide as before the game, but now each question has been attacked and held. It’s a second chance for photos, and it closes the build-and-break arc.
+**Do (live, 30 seconds):** With a passing receipt from the agent run, make a one-character edit to `lab/app/index.html` (add a space in a comment). Run `pnpm snack doctor`. Show `build: STALE` and `proof: STALE`.
 
 **Say:**
-- “Same three questions. Now you’ve attacked them.”
-- “**Observe**: `observe.ts` recorded what happened, including the record that vanished.”
-- “**Infer**: `questions.ts` asked what the evidence supports, and you tested whether it could be fooled.”
-- “**Stop**: `decide.ts` made the call, including when to hand it to a human, like the stale proof just now.”
-- **“‘Done’ is a claim. Ask for the receipt.”**
+- “The final boss. Every check green. For yesterday’s code.”
+- “What should the agent do?” Take one answer.
+
+[click] **(click: answer)** “Prove it again. A receipt is for one revision. Change the code and the old proof is about code that no longer exists.”
+
+**Story beat (optional, one sentence each):**
+- **Nick:** Riker records the commit with every check result, and a job with no fresh check is reported unverified.
+- **Zack:** CTX evaluates gates only from current, unexpired receipts tied to the exact revision.
 
 **Next →** “Now take it home.”
+
+**Careful:** Undo the edit afterwards (`git checkout lab/app/index.html` resets the whole app, including the agent’s fix).
 -->
 
 ---
@@ -1050,9 +949,9 @@ clicks: 2
 <VerificationWorkbench />
 
 <!--
-**ACT 5 · TAKE IT HOME · a tool for your app** · 55:00–55:30 · two clicks
+**ACT 7 · TAKE IT HOME · a tool for your app** · 55:00–55:30 · two clicks
 
-**Why this slide:** Make the pstack lesson concrete. An agent needs a maintained recipe for exercising your app, plus a way to run it. We already built the small version.
+**Why this slide:** Turn the hour into a recipe for their own app. An agent needs a maintained map of the feature plus a tool to exercise it. We built the small version: the map, snack, and `prove`.
 
 **Say / click:**
 - **0:** “One feature, one user path, one observable outcome. This is the feature map.”
@@ -1072,7 +971,7 @@ clicks: 2
 <BrowserProof />
 
 <!--
-**ACT 5 · TAKE IT HOME · browser instruments** · 55:30–56:00 · two clicks
+**ACT 7 · TAKE IT HOME · browser instruments** · 55:30–56:00 · two clicks
 
 **Say / click:**
 - **0:** “Console for exceptions, network for failed requests, performance traces for work that blocks the browser. Let the agent use those instruments.”
@@ -1094,7 +993,7 @@ clicks: 3
 <ReceiptHistory />
 
 <!--
-**ACT 5 · TAKE IT HOME · a history you can improve against** · 56:00–56:30 · three clicks
+**ACT 7 · TAKE IT HOME · a history you can improve against** · 56:00–56:30 · three clicks
 
 **Say / click:**
 - **0:** “Nick and I both ended up here: receipts are evidence now, and a history of the system over time. Keep the failure, the repair and the final outcome.”
@@ -1102,9 +1001,9 @@ clicks: 3
 - **2:** “Hillclimbing means keeping a change only when independent evaluation supports it. Check untouched cases before promotion. If the agent can rewrite its own scorekeeper, the hill might be fake.”
 - **3:** “Over time you have your own run dataset. With permission, redaction, reviewed labels and a separate evaluation split, it can also support fine-tuning. That’s an option, not something these logs do automatically.”
 
-**Concrete next step:** Lesson 07 shows the lab’s `lab:eval` comparison, where the reports land, and which extra fields a real run archive needs. The lab’s synthetic scores can evaluate policy wiring, not whether an edited prompt or trained model got better. An automatic improvement loop also needs a bounded experiment budget, a promotion gate and rollback.
+**Concrete next step:** Lesson 07 shows where snack keeps receipts (`.lab-runs/snack/receipts/`), what each field means, and which extra fields a real run archive needs. The game already produced the first eval cases: the bugs that slipped past `prove`. An automatic improvement loop also needs a bounded experiment budget, a promotion gate and rollback.
 
-**Careful:** The left cards are actual saved attempts from two runs, not a measured trend or a training corpus. The right side is the workflow attendees can build next. This workshop does not fine-tune anything.
+**Careful:** The left cards are real saved snack receipts from this workshop (the reload failure, the agent’s fix, and the game’s console-error miss), not a measured trend or a training corpus. The right side is the workflow attendees can build next. This workshop does not fine-tune anything.
 
 **Next →** “Now write the first row for your own app.”
 -->
@@ -1117,7 +1016,7 @@ clicks: 2
 <VerifierExamples />
 
 <!--
-**ACT 5 · TAKE IT HOME** · 56:30–58:45 · 15-second examples, then protect the two-minute exercise
+**ACT 7 · TAKE IT HOME** · 56:30–58:45 · 15-second examples, then protect the two-minute exercise
 
 **Why this slide:** Give people concrete starting points for their own apps. Leave all three examples visible while they write one small check they will build first.
 
@@ -1138,20 +1037,21 @@ class: indigo
 ---
 
 <p class="small-label">Beyond “Done” · Keep the materials</p>
-<div class="closing-resources"><div><div class="close-questions"><p>What did we <span class="accent">observe?</span></p><p>What did we <span class="accent">infer?</span></p><p>Why did we <span class="accent">stop?</span></p></div><p class="lede" style="margin-top: 35px">Nick Nisi &amp; Zack Proser</p></div><ResourceQr resource="glossary" compact /></div>
-<p class="footnote">Your agents can keep saying “done.” Now you can ask for the receipt.</p>
+<div class="closing-resources"><div><div class="close-questions"><p>Observe.</p><p>Fix.</p><p><span class="accent">Prove.</span></p></div><p class="lede" style="margin-top: 35px">Nick Nisi &amp; Zack Proser</p></div><ResourceQr resource="glossary" compact /></div>
+<p class="footnote">Your agents will keep saying “done.” Now they can show you the receipt.</p>
 
 <!--
-**ACT 5 · TAKE IT HOME · close** · 58:45–60:00 · both hosts
+**ACT 7 · TAKE IT HOME · close** · 58:45–60:00 · both hosts
 
-**Why this slide:** Close the story by running a real example from the room through the three questions.
+**Why this slide:** Close the arc where slide 8 opened it. The right-hand lane was “Observe. Fix. Prove.” Now they’ve built it.
 
 **Say:**
-- Take one or two examples. For each, ask: “What would you observe? What would you need to infer? When would you stop?”
-- Close together: “Your agents will keep saying ‘done.’ Now you know how to ask for the receipt.”
+- Take one example from the room. Ask: “What would its `doctor` check? What’s its `prove`?”
+- “Remember the two afternoons? This is the right-hand one. Observe. Fix. Prove.”
+- Close together: “Your agents will keep saying ‘done.’ Now they can show you the receipt.”
 - Credit each other. “The repo, the glossary and the worksheet all stay with you.”
 
-Leave them one next action (build that first check), not a reading list.
+Leave them one next action (build the first command), not a reading list.
 -->
 
 ---
@@ -1169,12 +1069,12 @@ class: night
 **Why this slide:** Leave the QR codes up while people ask questions.
 
 **Likely questions (short answers):**
-- **Why two models?** Different jobs. The worker proposes; the judge checks one narrow claim.
-- **Why not check exact text?** If exact text is the requirement, use a template. We allowed paraphrases on purpose.
-- **Can the agent change the tests?** Not through this interface. An agent with a shell needs real isolation.
-- **Is 0.9 safe?** Not universally. Measure on labeled cases, weighted by what each mistake costs you.
-- **Does a passing browser test prove the backend?** No. This app has no backend. Add server-side observations when that’s your requirement.
-- **Why escalate an outage instead of retrying?** A production harness might retry transient failures separately. Here we escalate so a repair can’t hide an infrastructure failure.
+- **Why a CLI and not an MCP server?** Either works. A CLI is cheap to build, easy to test, composes with the shell, and every agent already knows how to run commands.
+- **Why not just Playwright tests?** `prove` *is* a Playwright script. The difference is the agent can run it on demand and read a receipt with next steps, plus all the Look commands for debugging.
+- **Can the agent edit the proof?** In this repo, yes; it has a shell. The skill tells it not to. Real isolation (separate checkout, read-only verifier) is a separate problem.
+- **What about apps that aren’t web?** Same shape, different wire: the simulator for iOS, a PTY or tmux for CLIs, plain HTTP for services.
+- **Does a passing browser proof prove the backend?** No. This app has no backend. Add server-side checks to `prove` when that’s your requirement.
+- **Is Jev required?** No. It’s one narrow check for meaning. Without it, a human reads the screenshot.
 
 More in docs/facilitator.md, under “Questions to listen for.”
 -->
@@ -1188,7 +1088,7 @@ class: lime
 <div class="ticket hero-ticket">
 <div class="ticket-top"><span>AIE · WORKOS</span><span>ADMIT ALL</span></div>
 <div class="ticket-title">Booth 6</div>
-<p>Bring your half-built verifier,<br>or your agent’s weirdest “done.”</p>
+<p>Bring your half-built lever,<br>or your agent’s weirdest “done.”</p>
 <div class="ticket-bottom"><span>NO RECEIPT REQUIRED</span></div>
 <span class="stamp">Come by</span>
 </div>
@@ -1197,7 +1097,11 @@ class: lime
 <!--
 **AFTER THE HOUR · booth** · while the room clears
 
-**Say:** “Not done talking? Neither are we. Find us at Booth 6. Bring the agent that swears it’s done, or the verifier you started today.”
+**Say:** “Not done talking? Neither are we. Find us at Booth 6. Bring the agent that swears it’s done, or the lever you started today.”
 
 Leave it up while people pack.
 -->
+
+---
+src: ./decision-models.md
+---

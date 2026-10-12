@@ -24,5 +24,5 @@ test("the class system prompt grounds answers in the glossary and lessons", asyn
   const prompt = await classSystemPrompt();
   assert.match(prompt, /Answer from the glossary and lessons below/);
   assert.match(prompt, /- Bounded repair:/);
-  assert.match(prompt, /===== SOURCE: 03-observe-evidence\.md =====/);
+  assert.match(prompt, /===== SOURCE: 03-drive-the-app\.md =====/);
 });

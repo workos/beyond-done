@@ -125,7 +125,7 @@ const copy = computed(() => mode.value === "waitlist" ? {
     </div>
 
     <div class="contrast-conclusion" role="status">{{ ['Give the agent a way to see what its edits actually did.', 'A failing check turns a guess into a specific next step.', 'The check passes. That clock stops.', 'Evidence narrows the search. A retry budget stops the spiral.'][step] }}</div>
-    <div class="contrast-resource" v-if="mode === 'waitlist'"><span>TRY THE CHECK</span><code>pnpm lab:check --scenario memory-only --solution</code></div>
+    <div class="contrast-resource" v-if="mode === 'waitlist'"><span>TRY THE CHECK</span><code>pnpm snack prove</code></div>
     <div class="contrast-resource" v-else><span>TRANSFER EXAMPLE</span><a href="https://developer.chrome.com/docs/devtools/performance/overview" target="_blank" rel="noopener noreferrer" @click.stop>Chrome DevTools · record → inspect → re-record ↗</a></div>
     <p class="contrast-disclaimer">Illustration · compressed, invented elapsed times (mm:ss), not a benchmark. {{ mode === 'waitlist' ? 'CLI runs the real app.' : 'Schematic trace, not a lab recording.' }}</p>
   </div>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, unref } from "vue";
 import { useSlideContext } from "@slidev/client";
-import report from "../../public/materials/opening-report.json";
+import receipt from "../../public/materials/snack-receipts/1-fail-attendee-app.json";
 
 const { $clicks } = useSlideContext();
 const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 2)));
-const observation = report.attempts[0].evidence.observation;
+const afterReload = receipt.checks.find(check => check.name === "status survives reload");
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const observation = report.attempts[0].evidence.observation;
     <div class="workbench-stage">
       <div class="tool-terminal">
         <div class="terminal-title"><i></i><i></i><i></i><span>the agent’s repeatable tool</span></div>
-        <code>pnpm lab:check \<br>&nbsp; --scenario memory-only \<br>&nbsp; --solution</code>
+        <code>pnpm snack prove</code>
         <div class="tool-path" :class="{ wired: step >= 1 }">
           <span>Launch</span><b>→</b><span>Drive</span><b>→</b><span>Observe</span>
         </div>
@@ -35,14 +35,14 @@ const observation = report.attempts[0].evidence.observation;
           <span>{{ step === 0 ? 'Launch, seed data, check readiness.' : 'Submit. Read. Reload. Read again.' }}</span>
         </div>
         <div v-else key="result" class="proof-result">
-          <div><span>After submit</span><strong>{{ observation.submittedStatus }}</strong></div>
-          <div><span>After reload</span><strong class="bad-value">{{ observation.reloadedStatus }}</strong></div>
+          <div><span>Expected after reload</span><strong>{{ afterReload?.expected }}</strong></div>
+          <div><span>Got after reload</span><strong class="bad-value">{{ afterReload?.actual }}</strong></div>
           <p>Now the agent has a specific failure to repair.</p>
         </div>
       </div>
     </div>
     <p class="workbench-takeaway">Map one feature → expose one check → keep the evidence.</p>
-    <p class="source-note"><a href="https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md" target="_blank" rel="noopener noreferrer">Lauren Tan’s pstack: verification skills + feature maps ↗</a><br>Our CLI · saved real browser observation · synthetic judge scores</p>
+    <p class="source-note"><a href="https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md" target="_blank" rel="noopener noreferrer">Lauren Tan’s pstack: verification skills + feature maps ↗</a><br>Our CLI · a real saved receipt (<code>public/materials/snack-receipts/</code>)</p>
   </section>
 </template>
 

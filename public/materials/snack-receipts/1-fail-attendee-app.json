@@ -1,0 +1,51 @@
+{
+  "verdict": "FAIL",
+  "revision": "d14af25cd65a",
+  "app": "http://127.0.0.1:63724",
+  "at": "2026-10-12T14:31:57.596Z",
+  "checks": [
+    {
+      "name": "fresh visitor starts empty",
+      "pass": true,
+      "expected": "none",
+      "actual": "none"
+    },
+    {
+      "name": "status survives reload",
+      "pass": false,
+      "expected": "waitlisted",
+      "actual": "none",
+      "hint": "The record vanished on reload. Persist it (localStorage), then re-run: pnpm snack prove"
+    },
+    {
+      "name": "email survives reload",
+      "pass": false,
+      "expected": "ada@example.test",
+      "actual": "\u2014",
+      "hint": "After reload, the saved email is not the one the visitor typed. Persist the address they entered."
+    },
+    {
+      "name": "confirmation survives reload",
+      "pass": false,
+      "expected": "You're in! Your seat is confirmed. We'll email your ticket shortly.",
+      "actual": "",
+      "hint": "The confirmation disappeared or changed after reload. Show it for a saved record too."
+    },
+    {
+      "name": "record is in localStorage",
+      "pass": false,
+      "expected": true,
+      "actual": false,
+      "hint": "Nothing in localStorage holds the visitor's email. What the page shows is not what was saved."
+    }
+  ],
+  "pageErrors": [],
+  "next": [
+    "The record vanished on reload. Persist it (localStorage), then re-run: pnpm snack prove",
+    "After reload, the saved email is not the one the visitor typed. Persist the address they entered.",
+    "The confirmation disappeared or changed after reload. Show it for a saved record too.",
+    "Nothing in localStorage holds the visitor's email. What the page shows is not what was saved.",
+    "Then re-run: pnpm snack prove"
+  ],
+  "screenshot": ".lab-runs/snack/proof-d14af25cd65a.png"
+}

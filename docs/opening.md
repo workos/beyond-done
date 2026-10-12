@@ -16,14 +16,14 @@ Our browser-local exercise does not simulate production infrastructure or establ
 
 ## 0:45–2:30 — Introductions, repo, and a smaller claim
 
-Introduce both hosts on slide 3. Put the repo QR up on slide 4 (1:15–1:45) so anyone who skipped prework can clone before the next demo asks them to run `pnpm lab:app`. Then ask the room to vote on the staged completion report. “Let's start with something we can actually break in this room.” The report is a teaching prop, not an actual worker transcript.
+Introduce both hosts on slide 3. Put the repo QR up on slide 4 (1:15–1:45) so anyone who skipped prework can clone before the next demo asks them to run `pnpm snack up`. Then ask the room to vote on the staged completion report. “Let's start with something we can actually break in this room.” The report is a teaching prop, not an actual worker transcript.
 
 ## 2:30–4:30 — Run the actual app
 
-Before the session, start this in a separate terminal and open its printed URL in a fresh browser window:
+Before the session, start this in a separate terminal and leave it running for the whole hour. It opens a Chrome window on the attendee app:
 
 ```bash
-pnpm lab:app --scenario memory-only
+pnpm snack up
 ```
 
 1. Show the initial `none` status.
@@ -32,13 +32,15 @@ pnpm lab:app --scenario memory-only
 4. Reload the actual page. Point to `none`, `—`, and the empty confirmation.
 5. Ask which acceptance criterion the original completion report omitted.
 
-Slide 6's illustration is only the fallback if the app cannot start. Name it as such. The later evidence slide reads the captured local run in `public/materials/opening-report.json`; its browser observations are real and its semantic scores are synthetic fixtures.
+The confirmation says “Your seat is confirmed.” Don’t point it out yet; slide 21 pays it off.
+
+Slide 6's illustration is only the fallback if the app cannot start. Name it as such.
 
 ## 4:30–5:30 — Lauren Tan's thesis
 
 Slide 7 credits the short quote from [pstack Part 2](https://x.com/poteto/status/2097732320606507506). Explain that checking one's work means driving the actual product and preserving evidence. Asking the same model whether it is finished is insufficient.
 
-[Part 1](https://x.com/poteto/status/2094457600259842065) develops reusable verification tools and feature maps. Our CLI is a small example of a repeatable tool; our three exercises separate observations, meaning, and policy. At the close, participants map a feature in their own app to its user journey and observable success condition.
+[Part 1](https://x.com/poteto/status/2094457600259842065) develops reusable verification tools (“build the lever”: give agents a small CLI rather than markdown), rich debugging runtimes such as the Chrome DevTools Protocol, and feature maps. The second half of the workshop is a small version of that approach: `snack`, a feature map, a proof bar, and `doctor` first. The new slides don't name pstack; this quote and the take-home link are the credit. At the close, participants plan the same lever for their own app.
 
 ## 5:30–6:00 — Our own tools
 
@@ -46,14 +48,14 @@ Slide 9 shows that the hosts live by this rule. Nick: Riker's status comes from 
 
 ## 6:00–10:00 — Follow along
 
-The repo QR already appeared on slide 4; slide 10 adds the interactive glossary. Source lives at `github.com/nicknisi/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm lab:doctor` as the smoke test. Pair people who are blocked.
+The repo QR already appeared on slide 4; slide 10 adds the interactive glossary. Source lives at `github.com/workos/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm snack doctor` as the smoke test. Pair people who are blocked.
 
 The glossary QR is generated from the class hostname by `pnpm slides:qr` (also run by `pnpm build` and `pnpm slides`). The template hostname deliberately produces no glossary QR. Once the public destination is agreed, update `class.config.json`, regenerate, deploy through the normal workshop workflow, and check `/glossary/` from an attendee device. Deployment requires an agreed destination and is separate from editing the deck.
 
 The repository QR is available immediately. Both codes use a white background, a four-module quiet zone, and visible text links. For local rehearsal, `pnpm dev` serves `/glossary/`; do not encode localhost for attendees' phones.
 
-## Sources for the architecture bridge
+## Sources for the second half
 
-- [TypeSafe: System One models and Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev): fast structured judgments, inspired by the fast/slow thinking distinction. Present System 1/2 as an analogy; speed and schema validity do not establish semantic correctness.
-- [Anthropic: harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps): a concrete planner/generator/evaluator architecture with an evaluator driving the app. Our scripted worker is a teaching simplification, not a live reasoning model.
-- [pstack verification skill source](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md): launch, drive, observe, and preserve proof for mapped features.
+- [pstack verification skill source](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md): launch, doctor, drive, evidence, cleanup, and a feature map with four headings. `lab/verify/` follows that shape.
+- [TypeSafe: System One models and Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev): fast structured judgments, used by `snack judge` for one narrow meaning check. Speed and schema validity don't establish semantic correctness.
+- [Anthropic: harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps): a planner/generator/evaluator architecture with an evaluator driving the app.

@@ -187,7 +187,7 @@ test("class builds publish slides only when enabled and never overwrite the glos
       await exec(process.execPath, ["--import", "tsx", "scripts/class.ts", "build"], { cwd: directory, maxBuffer: 4_000_000 });
       const home = await readFile(join(directory, "dist/index.html"), "utf8");
       assert.match(home, /Preflight — before the hour/);
-      assert.match(home, /Judge what the evidence supports/);
+      assert.match(home, /Hand it to your agent/);
       assert.match(home, /<dd>1 h<\/dd>/);
       assert.match(home, /<h1>Configured class<\/h1>/);
       assert.match(home, /Workshop instructor/);
@@ -195,8 +195,8 @@ test("class builds publish slides only when enabled and never overwrite the glos
       assert.equal(home.includes('class="class-audience"'), publish);
       assert.equal(home.includes('href="/beyond-done/slides/"'), publish && link);
       assert.doesNotMatch(home, /(?:href|src)="\/(?!beyond-done\/)/, "every root link is under the base path");
-      const lesson = await readFile(join(directory, "dist/lessons/04-honest-questions/index.html"), "utf8");
-      assert.match(lesson, /Test the questions with real Jev/);
+      const lesson = await readFile(join(directory, "dist/lessons/04-build-the-proof/index.html"), "utf8");
+      assert.match(lesson, /Read the receipt/);
       const glossaryPage = await readFile(join(directory, "dist/glossary/index.html"), "utf8");
       for (const page of [home, lesson, glossaryPage]) {
         assert.equal(page.includes('aria-label="Class links"'), publish);
