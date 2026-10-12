@@ -3,7 +3,7 @@ import { computed, unref } from "vue";
 import { useSlideContext } from "@slidev/client";
 
 const { $clicks } = useSlideContext();
-const step = computed(() => Math.min(Number(unref($clicks)), 2));
+const step = computed(() => Math.min(Number(unref($clicks)), 1));
 const hearts = Array.from({ length: 12 }, (_, i) => ({
   x: (i % 6 - 2.5) * 29,
   drift: (i % 2 ? 1 : -1) * (18 + i * 3),
@@ -14,8 +14,8 @@ const hearts = Array.from({ length: 12 }, (_, i) => ({
 
 <template>
   <div class="friends-reveal" :data-step="step">
-    <slot :friends="step === 2" />
-    <div v-if="step === 2" class="friend-hearts" aria-hidden="true">
+    <slot :friends="step === 1" />
+    <div v-if="step === 1" class="friend-hearts" aria-hidden="true">
       <span class="heart-keepsake">♥</span>
       <span v-for="(heart, i) in hearts" :key="i" class="flying-heart" :style="{
         '--x': `${heart.x}px`, '--drift': `${heart.drift}px`,
@@ -38,16 +38,14 @@ const hearts = Array.from({ length: 12 }, (_, i) => ({
 }
 .friends-reveal :deep(.host-photo) { transition: transform 850ms cubic-bezier(.22, 1.25, .36, 1); }
 .friends-reveal :deep(.people-caption) { transition: transform 850ms cubic-bezier(.22, 1.25, .36, 1); }
-[data-step="1"] :deep(.host:first-child .host-label) { transform: translate(40px, 14px) rotate(4deg); }
-[data-step="1"] :deep(.host:last-child .host-label) { transform: translate(-62px, 14px) rotate(-4deg); }
-[data-step="2"] :deep(.host:first-child .host-label) { transform: translate(126px, 54px) rotate(-6deg) scale(1.18); }
-[data-step="2"] :deep(.host:last-child .host-label) { transform: translate(-211px, 54px) rotate(6deg) scale(1.18); }
-[data-step="2"] :deep(.host-label) { background: #ffbad3; color: #84294f; box-shadow: 0 5px 18px #d6447d25; font-weight: 750; }
-[data-step="2"] :deep(.host:first-child .host-photo) { transform: rotate(4deg); }
-[data-step="2"] :deep(.host:last-child .host-photo) { transform: rotate(-4deg); }
-[data-step="2"] :deep(.host-photo) { animation: portrait-hop 620ms 2700ms ease-in-out 3; }
-[data-step="2"] :deep(.host:last-child .host-photo) { animation-delay: 2780ms; }
-[data-step="2"] :deep(.host::before), [data-step="2"] :deep(.host::after) {
+[data-step="1"] :deep(.host:first-child .host-label) { transform: translate(126px, 54px) rotate(-6deg) scale(1.18); }
+[data-step="1"] :deep(.host:last-child .host-label) { transform: translate(-211px, 54px) rotate(6deg) scale(1.18); }
+[data-step="1"] :deep(.host-label) { background: #ffbad3; color: #84294f; box-shadow: 0 5px 18px #d6447d25; font-weight: 750; }
+[data-step="1"] :deep(.host:first-child .host-photo) { transform: rotate(4deg); }
+[data-step="1"] :deep(.host:last-child .host-photo) { transform: rotate(-4deg); }
+[data-step="1"] :deep(.host-photo) { animation: portrait-hop 620ms 2700ms ease-in-out 3; }
+[data-step="1"] :deep(.host:last-child .host-photo) { animation-delay: 2780ms; }
+[data-step="1"] :deep(.host::before), [data-step="1"] :deep(.host::after) {
   position: absolute;
   z-index: 3;
   pointer-events: none;
@@ -55,7 +53,7 @@ const hearts = Array.from({ length: 12 }, (_, i) => ({
   opacity: 0;
   animation: sparkle-pop 620ms 2700ms ease-in-out 3 both;
 }
-[data-step="2"] :deep(.host::before) {
+[data-step="1"] :deep(.host::before) {
   content: "✦" / "";
   left: -12px;
   top: 10px;
@@ -63,7 +61,7 @@ const hearts = Array.from({ length: 12 }, (_, i) => ({
   color: #d49413;
   text-shadow: 160px -8px 0 #dc4380, 16px 165px 0 #8b70d9;
 }
-[data-step="2"] :deep(.host::after) {
+[data-step="1"] :deep(.host::after) {
   content: "✧" / "";
   left: 158px;
   top: 150px;
@@ -72,7 +70,7 @@ const hearts = Array.from({ length: 12 }, (_, i) => ({
   text-shadow: -152px -70px 0 #8b70d9, -25px -158px 0 #d49413;
   animation-delay: 2850ms;
 }
-[data-step="2"] :deep(.people-caption) { transform: translateY(42px); }
+[data-step="1"] :deep(.people-caption) { transform: translateY(42px); }
 .friend-hearts { position: absolute; left: 50%; top: 224px; z-index: 3; pointer-events: none; color: #dc4380; }
 .heart-keepsake { display: block; font-size: 29px; transform: translateX(-50%); animation: heart-beat 650ms ease-in-out 3; }
 .flying-heart { position: absolute; left: var(--x); top: 10px; opacity: 0; font-size: var(--size); animation: heart-float 2100ms var(--delay) ease-out both; }

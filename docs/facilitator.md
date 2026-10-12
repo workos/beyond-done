@@ -17,22 +17,22 @@ Prepare with [preflight.md](preflight.md). Keep the lesson site and demo app in 
 
 The shared intro is slide 3. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
 
-The deck has 36 slides within the same 60-minute schedule: a title slide, then an incident animation, repo/glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, and a closing Q&A slide.
+The deck has 37 slides within the same 60-minute schedule: a title slide, then an incident animation, the repo QR right after the intros, a glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, a closing Q&A slide, and a Booth 6 invite to leave up as people pack up.
 
-The verification comparison on slide 7 takes 40 seconds inside the opening: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace; it is not part of the lab.
+The verification comparison on slide 8 takes 40 seconds inside the opening: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace; it is not part of the lab.
 
-The primary opening demo is the real memory-only app; slide 5 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 2. Do not imply our exercise would have prevented that incident.
+The primary opening demo is the real memory-only app; slide 6 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 2. Do not imply our exercise would have prevented that incident.
 
 ## Timing and stage cues
 
 | Clock | Mode | Your cue / visible checkpoint |
 | --- | --- | --- |
 | 0–0:45 | Real incident | PocketOS founder excerpt, deletion animation, Railway recovery. Keep attribution visible. |
-| 0:45–2 | Intro + vote | Nick + Zack, then “Ship it or hold it?” Vote on the staged worker claim. |
-| 2–4 | Live failure | Submit and reload the actual memory-only app. Show the lost record. |
-| 4–5 | Thesis + comparison | Credit Lauren Tan, then three advances on slide 7: guesses multiply, evidence narrows the repair, and the verified clock stops. |
-| 5–5:30 | Our tools | Riker (Nick) and CTX (Zack): one sentence each on how your tool treats a worker's “done.” |
-| 5:30–7 | Resources + smoke test | Repo QR on slide 9; glossary on 10. README → lessons → exercises. `pnpm lab:doctor`; pair anyone stuck. |
+| 0:45–2:30 | Intro + repo + vote | Nick + Zack, then the repo QR on slide 4 so latecomers can clone, then “Ship it or hold it?” Vote on the staged worker claim. |
+| 2:30–4:30 | Live failure | Submit and reload the actual memory-only app. Show the lost record. |
+| 4:30–5:30 | Thesis + comparison | Credit Lauren Tan, then three advances on slide 8: guesses multiply, evidence narrows the repair, and the verified clock stops. |
+| 5:30–6 | Our tools | Riker (Nick) and CTX (Zack): one sentence each on how your tool treats a worker's “done.” |
+| 6–7 | Glossary + smoke test | Glossary QR on slide 10 (repo QR was slide 4). README → lessons → exercises. `pnpm lab:doctor`; pair anyone stuck. |
 | 7–10 | Contract | Same identity after reload; honest waitlist/no seat; conditional email. Explain browser-local boundary and three editable files. |
 | 10–13 | Explain | Role/label locators, fresh context, explicit transition, observation versus assumption. |
 | 13–19 | Build | Attendees write `observe()`. Offer hints, not the whole solution first. |
@@ -44,7 +44,7 @@ The primary opening demo is the real memory-only app; slide 5 has a labelled ill
 | 33–36 | Policy | Walk the ordered table. Missing evidence first; no averaging hard gates. |
 | 36–40 | Build | Implement `decide()`; run focused policy check. |
 | 40–42 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 24. Last 30 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
-| 42–43 | Questions | “Questions before the game?” Take one or two; park the rest for the final Q&A slide. |
+| 42–43 | Questions | “Questions before the game?” Take one or two; park the rest for the closing Q&A slide. |
 | 43–44 | Pair up | Bouncer vs. Bluffer. Freeze the verifier; keep human labels out of JSON. |
 | 44–47 | Round 1 | 90 seconds to write the polite lie; 90 seconds to judge and inspect. |
 | 47–50 | Round 2 | Swap roles. 90 seconds to write a valid paraphrase; 90 seconds to judge. |
@@ -53,7 +53,7 @@ The primary opening demo is the real memory-only app; slide 5 has a labelled ill
 | 54–55 | Final boss | Stale-evidence shared check; explain why perfect but old proof cannot approve this revision. Last 30 seconds: the thesis slide again; tie it back to the three builds. |
 | 55–58 | Transfer | Map one feature to launch command, user path, evidence, and stop condition. Pair-share; finish the longer worksheet after class. |
 | 58–60 | Close | One or two examples. Repeat the three closing questions. |
-| 60+ | Q&A | Final slide: repo and glossary QRs stay up while you take questions, for as long as the session allows. |
+| 60+ | Q&A | Slide 36: repo and glossary QRs stay up while you take questions, for as long as the session allows. Then slide 37: invite people to Booth 6. |
 
 Hard stops: **21, 33, 43, 55**. Preflight is not charged against the hour. Participant-authored bluff + valid-paraphrase rounds take priority over repeated fixture runs. Holdout evaluation is now take-home so the game fits. Do not sacrifice the transfer exercise.
 

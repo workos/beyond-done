@@ -6,16 +6,27 @@ download: false
 exportFilename: beyond-done-slides
 colorSchema: light
 transition: fade-out
-class: night
+class: night title-slide
 fonts:
   provider: none
 ---
 
-<div class="center-stage title-stage">
-<p class="small-label">AIE · Workshop</p>
-<h1 class="display">Beyond “Done”</h1>
+<div class="title-stage">
+<div class="title-copy">
+<p class="title-kicker">AIE · Workshop</p>
+<h1 class="display">Beyond<br><span class="done-word"><span class="q">“</span>Done<span class="q">”</span><span class="stamp title-stamp" aria-hidden="true">Unverified</span></span></h1>
 <p class="lede">Building verification loops for AI agents</p>
-<p class="credits">Nick Nisi · Zack Proser · WorkOS</p>
+<p class="credits"><img src="/people/nick-nisi.webp" alt=""><img src="/people/zack-proser.jpg" alt="">Nick Nisi · Zack Proser · WorkOS</p>
+</div>
+<div class="agent-log">
+<div class="agent-log-bar"><i></i><i></i><i></i><span>agent session</span></div>
+<p class="cmd"><b>›</b> <span>add a waitlist signup</span></p>
+<p><b>✎</b> edited 3 files</p>
+<p><b>✓</b> form submits</p>
+<p><b>✓</b> “You’re on the list!”</p>
+<p class="claim"><b>✓</b> Done.</p>
+<p class="no-evidence"><b>✗</b> evidence: none</p>
+</div>
 </div>
 
 <!--
@@ -50,7 +61,7 @@ Sources and the five-minute script: docs/opening.md. Both hosts introduce themse
 
 ---
 class: hosts-stage
-clicks: 2
+clicks: 1
 ---
 
 # Two humans.<br>One suspicious “done.”
@@ -82,6 +93,20 @@ Switch driver/room-reader during Jev or policy as suits you. Confirm the exact h
 -->
 
 ---
+---
+
+<div class="split">
+<div><p class="small-label">FOLLOW ALONG · 1–2 MINUTES</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/nicknisi/beyond-done.git<br>cd beyond-done<br>pnpm lab:doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
+<ResourceQr resource="repo" />
+</div>
+
+<!--
+1:15–1:45. Setup is prework. Doctor should already be green. Leave the QR up while late arrivals clone: the next demo asks them to run pnpm lab:app. If blocked after two minutes total, pair up.
+QR opens the source repo. README → Start here; pnpm dev prints the lesson URL. Learner files: lab/exercises. Reference checkpoints: lab/solution.
+Followers edit; observers predict results with a partner. No key is needed for browser/policy work. Project the live judge for people without keys.
+-->
+
+---
 class: lime
 ---
 
@@ -101,7 +126,7 @@ Teaching expectations:
 - Distinguish a worker's self-reported checklist from independently observed evidence.
 - Ask attendees to name a missing check before revealing the defect; success on submit alone leaves persistence untested.
 
-1:15–2:00. "Let's start with something we can actually break in this room." Vote with hands BEFORE the next slide. Zack calls the room's vote; Nick plays the overly confident worker.
+1:45–2:30. "Let's start with something we can actually break in this room." Vote with hands BEFORE the next slide. Zack calls the room's vote; Nick plays the overly confident worker.
 This is a staged report, not an actual agent transcript or a claim that a test suite ran.
 Ask what evidence is missing. Don't reveal the punchline until people commit.
 -->
@@ -110,7 +135,7 @@ Ask what evidence is missing. Don't reveal the punchline until people commit.
 ---
 
 <div class="split">
-<div><h1>Now break<br>our app.</h1><p class="lede">Submit. Reload.<br>Where did your request go?</p><div class="command">pnpm lab:app --scenario memory-only</div><p class="aside-note">Open the printed URL.<br>Use <code>ada@example.test</code>.</p><p class="aside-note" v-click>So it was <strong>briefly done.</strong></p></div>
+<div><h1>Now break<br>our app.</h1><p class="lede">Submit. Reload.<br>Where did your request go?</p><div class="command">pnpm lab:app --scenario memory-only</div><p class="aside-note">Open the printed URL.<br>Use <code>ada@example.test</code>.</p><p class="aside-note">So it was <strong>briefly done.</strong></p></div>
 <ReloadReveal />
 </div>
 
@@ -120,9 +145,9 @@ Teaching expectations:
 - Teach that verification must exercise the transition where a requirement could fail, not stop at a success message.
 - Connect the failure to the next exercise: capture state on both sides of reload rather than trusting the worker's report.
 
-2:00–4:00. PRIMARY: switch to the already-open actual app from pnpm lab:app --scenario memory-only. Submit ada@example.test, show waitlisted and saved email, then reload and show none and an empty confirmation.
+2:30–4:30. PRIMARY: switch to the already-open actual app from pnpm lab:app --scenario memory-only. Submit ada@example.test, show waitlisted and saved email, then reload and show none and an empty confirmation.
 Return to this slide. The right-hand illustration is a labelled fallback if the app fails to start, not the default proof. Its Reload button shows the same failure.
-Click the slide advance once for the punchline. A passing submit check did not prove persistence.
+No click here: land the punchline out loud. A passing submit check did not prove persistence.
 Thesis, out loud, in your own words: 'Done' is a claim. Ask for the receipt.
 -->
 
@@ -130,12 +155,23 @@ Thesis, out loud, in your own words: 'Done' is a claim. Ask for the receipt.
 class: night
 ---
 
-<div class="center-stage">
-<p class="small-label">Lauren Tan · @poteto · The Complete Guide to pstack, Part 2</p>
-<h1 class="quote-thesis">“if an agent can’t verify<br>its own work,<br><span class="accent">nothing else matters.”</span></h1>
-<p class="lede" v-click>Build the check. Give the agent a way to run it.<br>Keep the evidence. Decide when to stop.</p>
-<p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · Today: one waitlist, three edits, one verification loop.</p>
+<div class="quote-slide">
+<div>
+<span class="quote-glyph" aria-hidden="true">“</span>
+<h1 class="quote-thesis">if an agent can’t verify<br>its own work,<br><span class="accent">nothing else matters.”</span></h1>
+<p class="quote-cite">Lauren Tan · @poteto · The Complete Guide to pstack, Part 2</p>
 </div>
+<div class="quote-loop">
+<p class="small-label">The loop we’ll build</p>
+<ol>
+<li><b>01</b>Build the check.</li>
+<li><b>02</b>Give the agent a way to run it.</li>
+<li><b>03</b>Keep the evidence.</li>
+<li><b>04</b>Decide when to stop.</li>
+</ol>
+</div>
+</div>
+<p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · One waitlist, three edits, one verification loop.</p>
 
 <!--
 Teaching expectations:
@@ -143,7 +179,7 @@ Teaching expectations:
 - Introduce the three ingredients of a useful verifier: observed facts, explicit acceptance criteria, and a stopping rule.
 - Explain why this enables delegation: code can accept supported work, request a bounded repair, or hand uncertainty to a human.
 
-4:00–4:20. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
+4:30–4:50. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
 Self-verification means exercising the real product against criteria, not asking the model whether it feels finished. Our implementation combines deterministic checks, a fallible semantic judge, and code-owned policy.
 -->
 
@@ -155,7 +191,7 @@ clicks: 3
 <VerificationContrast />
 
 <!--
-4:20–5:00. Same opening time budget. Three advances: (1) guesses vs. a specific failure; (2) more retries vs. a repaired, rechecked result; (3) wasted elapsed time vs. a stopped clock.
+4:50–5:30. Same opening time budget. Three advances: (1) guesses vs. a specific failure; (2) more retries vs. a repaired, rechecked result; (3) wasted elapsed time vs. a stopped clock.
 These are invented, compressed elapsed times, not measurements, an agent transcript, or a claimed speedup. A usable verifier can narrow the search; it does not guarantee a fast or successful repair.
 The waitlist example connects to our actual custom CLI: pnpm lab:check --scenario memory-only --solution. It drives a real browser through submit/reload and writes observations, checks, and a report. --solution uses the reference collector/questions/policy; default semantic scores are synthetic. Here we are illustrating the persistence check, not full semantic acceptance.
 The optional Slow UI button transfers the idea to Chrome DevTools: record the interaction, inspect the main-thread flame chart, identify expensive repeated work, then re-record with the same conditions and check the original performance budget. The trace is a schematic; the repo does not contain this performance task or a DevTools agent integration. Source: https://developer.chrome.com/docs/devtools/performance/overview
@@ -168,7 +204,7 @@ Return to Waitlist before continuing. Arrow back resets each reveal; motion is f
 # We hold our own tools to this.
 
 <div class="comparison">
-<div><div class="small-label">Riker · Nick · runs coding agents for you</div><blockquote>“A worker saying it’s done is not proof.”</blockquote><p class="comparison-label">Riker runs the job’s check itself and keeps the command, exit code, commit and output hash. No check: reported unverified.</p></div>
+<div><div class="small-label">Riker · Nick · runs coding agents for you</div><blockquote>“Status comes from records, not model prose.”</blockquote><p class="comparison-label">Riker runs the job’s check itself and keeps the command, exit code, commit and output hash. No check: reported unverified.</p></div>
 <div><div class="small-label">CTX · Zack · context + verification control plane</div><blockquote>“A bare executor claim is kept in the ledger but ignored.”</blockquote><p class="comparison-label">Verifiers write receipts bound to the exact revision. Only CTX’s evaluators close a node.</p></div>
 </div>
 
@@ -177,24 +213,10 @@ Teaching expectations:
 - Show that the thesis comes from the hosts' daily work: both tools refuse to treat a worker's "done" as proof.
 - Preview today's ideas in production form: independent checks, receipts bound to a revision, and code (not the worker) deciding completion.
 
-5:00–5:30. Credibility, not a product pitch. Each host: one sentence on what your tool does when a worker says "done".
+5:30–6:00. Credibility, not a product pitch. Each host: one sentence on what your tool does when a worker says "done".
 Nick: Riker hands work to a worker agent (Pi, Claude Code or Codex) in its own worktree, then runs the job's check itself. The output lands under ~/.riker/jobs/<id>/proof/, and Riker's own store records command, exit code, commit, timing and the output's sha256. A file the worker writes there proves nothing. The last PR to this deck came from a Riker job branch.
 Zack: CTX models work as a completion graph of observable final states. Executors report evidence, verifiers write receipts (release identity, authenticated browser smoke, GitHub merge state), the owner attests. Only CTX's evaluators mark a node satisfied, from current, unexpired observations.
 Both repos are private: describe them, don't promise links or access.
--->
-
----
----
-
-<div class="split">
-<div><p class="small-label">FOLLOW ALONG · 5–6 MINUTES</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/nicknisi/beyond-done.git<br>cd beyond-done<br>pnpm lab:doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
-<ResourceQr resource="repo" />
-</div>
-
-<!--
-5:30–6:00. Setup is prework. Doctor should already be green. If blocked after two minutes total, pair up.
-QR opens the source repo. README → Start here; pnpm dev prints the lesson URL. Learner files: lab/exercises. Reference checkpoints: lab/solution.
-Followers edit; observers predict results with a partner. No key is needed for browser/policy work. Project the live judge for people without keys.
 -->
 
 ---
@@ -206,7 +228,7 @@ Followers edit; observers predict results with a partner. No key is needed for b
 </div>
 
 <!--
-6:00–7:00. Open the glossary and search "evidence". Its QR must point to the checked public deployment, never localhost or the template hostname. Local fallback: pnpm dev then /glossary/.
+6:00–7:00. Open the glossary and search "evidence". Confirm doctor is green; pair anyone stuck. Its QR must point to the checked public deployment, never localhost or the template hostname. Local fallback: pnpm dev then /glossary/.
 Repo = source; local lesson site = instructions; lab:app = deliberately broken app. Three surfaces of this workshop.
 -->
 
@@ -241,10 +263,10 @@ These criteria are held by the harness, not generated by the worker.
 
 <div class="contract-lines">
 <p><code>observe.ts</code><span>What actually happened?</span></p>
-<p v-click><code>questions.ts</code><span>What does the evidence support?</span></p>
-<p v-click><code>decide.ts</code><span>Accept, repair, or ask a human?</span></p>
+<p><code>questions.ts</code><span>What does the evidence support?</span></p>
+<p><code>decide.ts</code><span>Accept, repair, or ask a human?</span></p>
 </div>
-<p class="lede" v-click>At minute 43, you become the adversary.</p>
+<p class="lede">At minute 43, you become the adversary.</p>
 <p class="footnote">Your files: lab/exercises/ · Checkpoints: lab/solution/ · Three small edits, not an agent framework.</p>
 
 <!--
@@ -254,7 +276,7 @@ Teaching expectations:
 - Show where to work and how to catch up one file at a time without overwriting all of a learner's progress.
 
 8:00–8:45. Promise the game early. They are building the bouncer they will later challenge.
-Each advance adds one responsibility. Catch-up is one file, not resetting a branch.
+All three files are on screen at once; walk them top to bottom. Catch-up is one file, not resetting a branch.
 -->
 
 ---
@@ -375,9 +397,9 @@ If a fixed approved message meets the product need, use a template. We allow par
 
 <div class="architecture-lanes">
 <div><span class="lane-label">SYSTEM 1 · an analogy</span><h2>Check a narrow claim.</h2><p>Fast, structured judgment.<br>“Does this copy promise a seat?”</p></div>
-<div v-click><span class="lane-label">SYSTEM 2 · an analogy</span><h2>Work through a problem.</h2><p>Plan, reason, use tools, repair.<br>“How should I fix this feature?”</p></div>
+<div><span class="lane-label">SYSTEM 2 · an analogy</span><h2>Work through a problem.</h2><p>Plan, reason, use tools, repair.<br>“How should I fix this feature?”</p></div>
 </div>
-<p class="aside-note" v-click>Neither establishes what the browser did. Observe that separately.<br>The harness coordinates the work; code owns the acceptance decision.</p>
+<p class="aside-note">Neither establishes what the browser did. Observe that separately.<br>The harness coordinates the work; code owns the acceptance decision.</p>
 <p class="footnote"><a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noopener noreferrer">TypeSafe’s fast/slow framing</a> · <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener noreferrer">Generator/evaluator architecture: Anthropic</a></p>
 
 <!--
@@ -395,7 +417,7 @@ Anthropic's planner/generator/evaluator harness is one broader example. Our clas
 
 <div class="question-pair">
 <div><span class="question-key">honest</span><p>Waitlist membership, no guaranteed seat,<br>and no contradictory promise?</p></div>
-<div v-click><span class="question-key">nextStep</span><p>An email <strong>only if</strong> a place opens?</p></div>
+<div><span class="question-key">nextStep</span><p>An email <strong>only if</strong> a place opens?</p></div>
 </div>
 <div class="command">pnpm lab:exercise questions</div>
 <p class="aside-note">Jev is our semantic judge. <code>noul(question, { true, false })</code><br>asks a yes/no question and returns its probability of “yes.”</p>
@@ -421,7 +443,7 @@ class: night
 
 <div class="probability-scale"><span>0.0</span><span class="middle">0.5</span><span>1.0</span><span class="marker">▴</span></div>
 <p class="lede">The model reports a probability of “yes.”</p>
-<p class="lede" v-click>Useful signal.<br><span class="accent">Not proof. Not permission.</span></p>
+<p class="lede">Useful signal.<br><span class="accent">Not proof. Not permission.</span></p>
 <p class="footnote">No separate confidence field.</p>
 
 <!--
@@ -474,8 +496,8 @@ class: indigo
 
 <div class="source-lines">
 <div><strong>Synthetic fixture</strong><span>Authored scores. Tests policy.</span></div>
-<div v-click><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
-<div v-click><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
+<div><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
+<div><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
 </div>
 
 <!--
@@ -496,9 +518,9 @@ No additional lecture block. Later, in the game's no-key rounds, name the fourth
 # The bouncer’s rulebook.
 
 <div class="policy-row"><span>Missing, stale, invalid, or unavailable?</span><span>→</span><strong>Ask a human</strong></div>
-<div class="policy-row" v-click><span>Hard failure or any <code>p ≤ 0.2</code>?</span><span>→</span><strong>Repair once</strong></div>
-<div class="policy-row" v-click><span>Otherwise, any <code>p &lt; 0.9</code>?</span><span>→</span><strong>Ask a human</strong></div>
-<div class="policy-row" v-click><span>All required checks clear?</span><span>→</span><strong>Let it in</strong></div>
+<div class="policy-row"><span>Hard failure or any <code>p ≤ 0.2</code>?</span><span>→</span><strong>Repair once</strong></div>
+<div class="policy-row"><span>Otherwise, any <code>p &lt; 0.9</code>?</span><span>→</span><strong>Ask a human</strong></div>
+<div class="policy-row"><span>All required checks clear?</span><span>→</span><strong>Let it in</strong></div>
 <div class="command">pnpm lab:exercise policy</div>
 <p class="footnote">Lesson 05 · lab/exercises/decide.ts · Check: policy exercise: PASS · Then run pnpm lab:loop.</p>
 
@@ -509,7 +531,7 @@ Teaching expectations:
 - Escalate remaining probabilities below 0.9; accept only when all hard checks pass and both semantic criteria clear the threshold.
 - Validate probabilities, thresholds, and repair count; never average away a hard failure or treat uncertainty as a known defect.
 
-33:00–40:00. Reveal rules in order; then write decide(). Validate probabilities, thresholds, and repair count.
+33:00–40:00. Walk the rules top to bottom; then write decide(). Validate probabilities, thresholds, and repair count.
 “Ask a human” is escalate in code, not an automatic rejection. After the one repair, a known failure escalates too.
 -->
 
@@ -791,7 +813,7 @@ class: indigo
 ---
 
 <p class="small-label">Beyond “Done” · Keep the materials</p>
-<div class="closing-resources"><div><div class="close-questions"><p>What did we <span class="accent">observe?</span></p><p v-click>What did we <span class="accent">infer?</span></p><p v-click>Why did we <span class="accent">stop?</span></p></div><p class="lede" style="margin-top: 35px">Nick Nisi &amp; Zack Proser</p></div><ResourceQr resource="glossary" compact /></div>
+<div class="closing-resources"><div><div class="close-questions"><p>What did we <span class="accent">observe?</span></p><p>What did we <span class="accent">infer?</span></p><p>Why did we <span class="accent">stop?</span></p></div><p class="lede" style="margin-top: 35px">Nick Nisi &amp; Zack Proser</p></div><ResourceQr resource="glossary" compact /></div>
 <p class="footnote">Your agents can keep saying “done.” Now you can ask for the receipt.</p>
 
 <!--
@@ -816,4 +838,24 @@ class: night
 <!--
 After 60:00, for as long as the session allows. Leave this up during Q&A so people can scan the repo and glossary while others ask.
 Likely questions and short answers: "Questions to listen for" in docs/facilitator.md.
+-->
+
+---
+class: lime
+---
+
+<div class="split booth-close">
+<div><p class="small-label">After the workshop</p><h1 class="display">Not done<br>talking?</h1><p class="lede">Find us at <strong>Booth 6</strong>.<br>Bring the agent that swears it’s done.<br>We’ll help you ask for the receipt.</p><p class="aside-note">Nick Nisi · Zack Proser · WorkOS</p></div>
+<div class="ticket hero-ticket">
+<div class="ticket-top"><span>AIE · WORKOS</span><span>ADMIT ALL</span></div>
+<div class="ticket-title">Booth 6</div>
+<p>Bring your half-built verifier,<br>or your agent’s weirdest “done.”</p>
+<div class="ticket-bottom"><span>NO RECEIPT REQUIRED</span></div>
+<span class="stamp">Come by</span>
+</div>
+</div>
+
+<!--
+After Q&A, or as soon as the room has to clear. Leave it up while people pack up.
+Invite people to bring their own agent's "done" and the verifier they started in the transfer exercise.
 -->

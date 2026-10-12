@@ -1,6 +1,6 @@
 # Opening: incident → live failure → verification
 
-Keep this sequence inside the first five and a half minutes. The excerpt and animation are local, so the opener does not depend on X, a video player, or conference Wi-Fi.
+Keep this sequence inside the first six minutes. The excerpt and animation are local, so the opener does not depend on X, a video player, or conference Wi-Fi.
 
 ## 0:00–0:45 — PocketOS
 
@@ -14,11 +14,11 @@ Suggested bridge: **“Agents can act faster than we can inspect. Production saf
 
 Our browser-local exercise does not simulate production infrastructure or establish that a semantic judge would have prevented this incident.
 
-## 0:45–2:00 — Introductions and a smaller claim
+## 0:45–2:30 — Introductions, repo, and a smaller claim
 
-Introduce both hosts on slide 3. Then ask the room to vote on the staged completion report. “Let's start with something we can actually break in this room.” The report is a teaching prop, not an actual worker transcript.
+Introduce both hosts on slide 3. Put the repo QR up on slide 4 (1:15–1:45) so anyone who skipped prework can clone before the next demo asks them to run `pnpm lab:app`. Then ask the room to vote on the staged completion report. “Let's start with something we can actually break in this room.” The report is a teaching prop, not an actual worker transcript.
 
-## 2:00–4:00 — Run the actual app
+## 2:30–4:30 — Run the actual app
 
 Before the session, start this in a separate terminal and open its printed URL in a fresh browser window:
 
@@ -32,21 +32,21 @@ pnpm lab:app --scenario memory-only
 4. Reload the actual page. Point to `none`, `—`, and the empty confirmation.
 5. Ask which acceptance criterion the original completion report omitted.
 
-Slide 5's illustration is only the fallback if the app cannot start. Name it as such. The later evidence slide reads the captured local run in `public/materials/opening-report.json`; its browser observations are real and its semantic scores are synthetic fixtures.
+Slide 6's illustration is only the fallback if the app cannot start. Name it as such. The later evidence slide reads the captured local run in `public/materials/opening-report.json`; its browser observations are real and its semantic scores are synthetic fixtures.
 
-## 4:00–5:00 — Lauren Tan's thesis
+## 4:30–5:30 — Lauren Tan's thesis
 
-Slide 6 credits the short quote from [pstack Part 2](https://x.com/poteto/status/2097732320606507506). Explain that checking one's work means driving the actual product and preserving evidence. Asking the same model whether it is finished is insufficient.
+Slide 7 credits the short quote from [pstack Part 2](https://x.com/poteto/status/2097732320606507506). Explain that checking one's work means driving the actual product and preserving evidence. Asking the same model whether it is finished is insufficient.
 
 [Part 1](https://x.com/poteto/status/2094457600259842065) develops reusable verification tools and feature maps. Our CLI is a small example of a repeatable tool; our three exercises separate observations, meaning, and policy. At the close, participants map a feature in their own app to its user journey and observable success condition.
 
-## 5:00–5:30 — Our own tools
+## 5:30–6:00 — Our own tools
 
-Slide 8 shows that the hosts live by this rule. Nick: Riker runs the job's check itself and keeps the command, exit code, commit and output hash; a worker's "done" is not proof. Zack: CTX ignores bare executor claims; only its evaluators close a node, from receipts bound to the exact revision. Keep it to one sentence each. Both repositories are private, so don't promise links or access. The receipt and final-boss slides have callbacks in their presenter notes.
+Slide 9 shows that the hosts live by this rule. Nick: Riker's status comes from records, not model prose: it runs the job's check itself and keeps the command, exit code, commit and output hash. Zack: CTX ignores bare executor claims; only its evaluators close a node, from receipts bound to the exact revision. Keep it to one sentence each. Both repositories are private, so don't promise links or access. The receipt and final-boss slides have callbacks in their presenter notes.
 
-## 5:30–10:00 — Follow along
+## 6:00–10:00 — Follow along
 
-The next two slides introduce the repo and interactive glossary. Source lives at `github.com/nicknisi/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm lab:doctor` as the smoke test. Pair people who are blocked.
+The repo QR already appeared on slide 4; slide 10 adds the interactive glossary. Source lives at `github.com/nicknisi/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm lab:doctor` as the smoke test. Pair people who are blocked.
 
 The glossary QR is generated from the class hostname by `pnpm slides:qr` (also run by `pnpm build` and `pnpm slides`). The template hostname deliberately produces no glossary QR. Once the public destination is agreed, update `class.config.json`, regenerate, deploy through the normal workshop workflow, and check `/glossary/` from an attendee device. Deployment requires an agreed destination and is separate from editing the deck.
 
