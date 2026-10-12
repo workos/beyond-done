@@ -12,6 +12,8 @@
     "slides:check": "tsx scripts/check-deck.ts",
     "glossary": "tsx scripts/class.ts generate",
     "preview": "pnpm build && astro preview",
+    "deploy:talks": "tsx scripts/deploy-talks.ts",
+    "deploy:talks:dry-run": "tsx scripts/deploy-talks.ts --dry-run",
     "generate": "tsx scripts/generate.ts",
     "build": "pnpm typecheck && tsx scripts/class.ts build",
     "build:workshop": "tsx scripts/build-workshop.ts",

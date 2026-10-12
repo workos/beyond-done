@@ -1,0 +1,9 @@
+{
+  "name": "talks",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-15",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}
