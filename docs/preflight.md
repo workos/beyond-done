@@ -7,52 +7,63 @@ Send attendees [lesson 1](../src/content/lessons/01-preflight.md) before the eve
 ```bash
 pnpm install
 pnpm exec playwright install chromium
-pnpm lab:doctor
+pnpm snack doctor
+pnpm lab:exercise --solution
 pnpm lab:test
 pnpm test
 pnpm build
 pnpm slides:check
-pnpm lab:loop --solution
-pnpm lab:loop --solution --stubborn
-pnpm lab:replay
 ```
 
-- `pnpm dev` serves materials. `pnpm lab:app --scenario memory-only` serves the demo app.
-- Close prior demo tabs and use a fresh private window. Automated checks create fresh contexts themselves.
+Then walk the room's path once on the presentation machine:
+
+```bash
+git checkout lab/app/index.html
+pnpm snack up                         # headed, own terminal, leave it running
+pnpm snack doctor
+pnpm snack join ada@example.test
+pnpm snack storage                    # {}
+pnpm snack reload                     # status: none
+pnpm snack prove --solution           # FAIL, exit 1
+pnpm snack judge                      # needs TYPESAFE_API_KEY; one billable call
+```
+
+- `pnpm dev` serves the materials. `pnpm snack up` serves the attendee app and opens the Chrome window snack drives.
 - Verify display size, terminal font, and projected contrast. Zoom the lesson site if needed.
 - Don't install Chromium or debug corporate certificates on stage. Pair a stuck attendee after two minutes.
 
-## Jev: core demonstration at minute 28
+## Rehearse the agent run
 
-Use a server-side/CLI `TYPESAFE_API_KEY`, with billing/quota checked before class. Do not display `.env`. Attendees may bring their own keys, but the workshop does not promise credits.
+Run slide 19's prompt with the agent you'll use on stage, against a clean `lab/app/index.html`. Time it. Confirm it can run `pnpm` and edit files without stopping for approval mid-demo. In rehearsal, Claude Code finished in about 50 seconds. Afterwards: `git checkout lab/app/index.html`.
 
-Run happy, overpromise, and injection with `--solution --judge live`. Confirm source mode, actual model name, scores, and latency. Store your own resulting reports for rehearsal. The included recording is a fallback, not an evergreen promise about the model.
+Also rehearse the final boss: with a PASS receipt, make a one-character edit and run `pnpm snack doctor`. Both `build` and `proof` should report STALE.
 
-If live mode stalls, stop at the 15-second request timeout and use `pnpm lab:replay`. Say **“recorded response; this does not evaluate your changes.”** Do not switch to synthetic scores and claim the questions worked.
+## Jev: one check at minute 40
 
-The optional real worker needs `OPENROUTER_API_KEY` and `WORKER_MODEL`; leave it out of the required hour.
+Use a server-side/CLI `TYPESAFE_API_KEY`, with billing and quota checked before class. Don't display `.env`. Attendees may bring their own keys, but the workshop doesn't promise credits.
 
-## Prepare the two-host game
+Confirm the model name and both verdicts: the attendee copy fails, the fixed copy passes. If live mode stalls past the 15-second timeout, say so and judge the screenshot as a human. Never present a rehearsal number as a new judgment.
 
-Nick and Zack share the intro slide. Confirm the supplied existing portraits are the ones you want to use. Rehearse the driver/room-reader handoff; suggested roles are in the facilitator guide.
+## Prepare the game
 
-Print or share `public/materials/bouncer-scorecard.md`. Test both `lab/challenges/*.json` starters and the `--candidate` CLI route. Budget no more than two live calls per pair. Without attendee keys, use human peer review for the room and one selected live example on the projector.
+Print or share `public/materials/game-scorecard.md`. Try each bug once: `pnpm snack up --bug <name>` for `memory-only`, `wrong-email`, `lost-confirmation`, `overpromise`, `console-error`, `none`; stopping `up` prints the reveal. Confirm `overpromise` and `console-error` pass `prove --solution` (they're meant to).
 
-Test the slide 6 reload illustration, slide 8 verification comparison (three advances, reverse, and both examples), slide 23 click-driven loop + stubborn toggle, and both Bouncer vs. Bluffer round timers. Timers start manually, pause on navigation, and require no backend. Arrow keys reveal teaching steps; control buttons do not advance the slide. The staged illustrations are not live model calls.
+Test the slide 6 reload illustration, the slide 8 comparison (three advances, reverse, and both examples), slide 11's six click reveals, slide 19's fallback recording, slide 25's reveal, and the round timer on slide 23. The timer starts manually, pauses on navigation, and needs no backend. Arrow keys reveal teaching steps; control buttons don't advance the slide.
 
 ## Failure plans
 
 | Failure | What you do |
 | --- | --- |
-| One attendee cannot run Chromium | Pair them with someone green; they become evidence reader/attacker. |
-| Room Wi-Fi or model outage | Continue local browser/policy work; replay captured Jev comparison. |
-| Jev unexpectedly approves bad copy | Keep it on screen. Read exact input, score, and criteria; it is a verifier failure worth teaching. |
-| SDK/model name changed | Fix and rehearse before class; freeze the lockfile and record actual model name. |
-| Exercise runs long | Offer one-file catch-up or `--solution`; preserve edits. |
-| Threshold demo exits 1 | Expected when it admits a bad case; point to the false-accept row. |
+| One attendee can't run Chromium | Pair them with someone green; they read the JSON and call the next command. |
+| `snack up` says it's already running | Use the running one, or `pnpm snack down` first. |
+| `doctor` says STALE | `pnpm snack reload`. |
+| The live agent stalls or goes off track | After 90 seconds, click through the fallback recording on slide 19. Say it's a recorded run. |
+| Room Wi-Fi or model outage | Everything except `judge` is local. Judge the copy as a human from the screenshot. |
+| Jev unexpectedly approves bad copy | Keep it on screen. Read the exact copy and scores; a verifier failure is worth teaching. |
+| The exercise runs long | `--solution` on `snack prove` and `lab:exercise`, or copy `lab/solution/prove.ts` after saving. |
 
 ## Before public release
 
-The source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done); clone it with `gh repo clone nicknisi/beyond-done` after confirming GitHub access. Confirm how attendees will receive access or an agreed source bundle, and test that path with an attendee account before class. A working instructor clone does not prove attendee access. Agree the event details and deployment destination with Nick; `class.config.json` still has a placeholder hostname. Do not publish `.env`, private examples, or `.lab-runs/`. The public Jev recording contains only fictional task text and responses.
+The source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). Confirm how attendees will receive access and test that path with an attendee account before class. A working instructor clone doesn't prove attendee access. Don't publish `.env` or `.lab-runs/`. The committed receipts and Jev recording contain only fictional text.
 
-The shipped tests do not prove every Windows/Linux setup or any production deployment. Rehearse on the same machine/network used on stage and time a full learner pass.
+The shipped tests don't prove every Windows/Linux setup. `snack up` defaults to a headed browser; on a Linux machine without a display it falls back to headless. Rehearse on the machine and network used on stage, and time a full learner pass.

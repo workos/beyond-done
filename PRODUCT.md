@@ -6,11 +6,11 @@ product
 
 ## Users
 
-JS/TS developers at AIE, working on laptops in a conference room while following a projected demonstration. No previous Playwright or Jev experience is required.
+JS/TS developers at AIE, working on laptops in a conference room while following a projected demonstration. No previous Playwright or Jev experience is required. Most bring a coding agent (Claude Code, Codex, Cursor, pi).
 
 ## Product Purpose
 
-Teach a practical verification and bounded repair loop in 60 minutes, led jointly by Nick Nisi and Zack Proser. Attendees leave with working code, adversarial cases, and a method for deciding when to accept, repair, or ask a human.
+Teach agents to verify their own work in 60 minutes, led jointly by Nick Nisi and Zack Proser. Attendees use an app-specific verification CLI (`pnpm snack`), write the proof that defines “done,” hand both to their own agent, and leave with a plan for the same lever in their own app.
 
 ## Brand Personality
 
@@ -18,14 +18,15 @@ Practical, playful, precise. Use WorkOS logo and branding, explicitly requested 
 
 ## Anti-references
 
-Do not retain Typed Void as the workshop identity. No fake model measurements or dashboards that obscure the three editable functions. The projected deck should be playful and visually expressive, with meaningful motion—not documentation pasted onto slides. See DESIGN.md.
+Do not retain Typed Void as the workshop identity. No fake model measurements or dashboards that obscure the one editable proof. The projected deck should be playful and visually expressive, with meaningful motion—not documentation pasted onto slides. See DESIGN.md.
 
 ## Design Principles
 
 - One shared task throughout: a browser-local waitlist for a sold-out workshop.
-- Distinguish observed facts, semantic inference, and policy.
+- Distinguish observed facts (`prove`), semantic judgment (`judge`), and the stop rule.
+- Evidence belongs to one revision; “can't tell” is never a pass.
 - Show a useful next action, including checkpoints for attendees who fall behind.
-- Make synthetic fixtures and real API calls unmistakable.
+- Make recorded runs and live calls unmistakable.
 
 ## Accessibility & Inclusion
 
@@ -34,6 +35,6 @@ Use semantic links, labelled form controls, visible keyboard focus, readable con
 ## User-facing checks
 
 - Attendee can find the preflight, sequential lessons, glossary, slides and take-home worksheet.
-- A new visitor can submit a test email in the local lab; the correct candidate preserves the email/status and confirmation across reload.
-- The memory-only defect visibly loses enrollment on reload.
-- Worker text is rendered as plain text, never executable HTML.
+- A new visitor can submit a test email in the local lab; the reference app preserves the email, status, and confirmation across reload.
+- The shipped attendee app visibly loses the record on reload.
+- Every `snack` error tells the reader what to run next.

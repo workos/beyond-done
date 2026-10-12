@@ -5,168 +5,124 @@ Nick Nisi & Zack Proser · AIE · JS/TS developers · **60 minutes**
 
 ## The promise
 
-Three small edits, one witnessed repair, and a portable way to answer:
-**What did we observe? What did we infer? Why did we stop?**
+One app, one lever, one proof. Attendees use `pnpm snack`, a small CLI that drives the waitlist over the Chrome DevTools Protocol. They write the `prove()` that defines “done,” then hand the lever to their own coding agent and watch it **observe, fix, and prove** instead of saying “done.”
 
-Not an agent-framework tutorial. The worker proposes a tiny app configuration.
-Playwright gathers evidence, Jev judges meaning, and code owns the decision.
+It isn't an agent-framework tutorial. The CLI gathers evidence, the proof decides what “done” means, and the receipt is the record.
 
-Prepare with [preflight.md](preflight.md). Keep the lesson site and demo app in separate tabs. Use large terminal text. WorkOS assets and both presenter portraits are bundled; no remote fonts/images are needed.
+Prepare with [preflight.md](preflight.md). Before the talk, start `pnpm snack up` (headed) in a visible terminal and leave it running for the whole hour. Keep the lesson site in a separate tab. Use large terminal text. WorkOS assets and both presenter portraits are bundled; no remote fonts or images are needed.
 
 ## Co-host rhythm
 
-The shared intro is slide 3. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
+The shared intro is slide 3. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver and room-reader at the agent run (slide 19). During the game, one keeps time and the other walks the room. Confirm these in rehearsal.
 
-The deck has 40 slides within the same 60-minute schedule: a title slide, then an incident animation, the repo QR right after the intros, a glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, three animated takeaways (app CLI, browser traces, run history), a closing Q&A slide, and a Booth 6 invite to leave up as people pack up.
+The deck has 30 slides. Slides 1–10 are the opening (incident, intros, repo QR, vote, live failure, Lauren Tan's quote, the two-afternoons comparison, Riker and CTX, glossary QR). Slides 11–26 build the right-hand lane from slide 8: the gap, the lever, the proof, the agent, the game, and the final boss. Slides 27–30 are the take-home, the close, Q&A, and Booth 6.
 
-The verification comparison on slide 8 takes 40 seconds inside the opening: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace; it is not part of the lab.
+The comparison on slide 8 takes 40 seconds: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace.
 
-The primary opening demo is the real memory-only app; slide 6 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 2. Do not imply our exercise would have prevented that incident.
+The primary opening demo is the real attendee app in the browser `snack up` opened; slide 6 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 2. Don't imply our exercise would have prevented that incident.
 
 ## Timing and stage cues
 
-| Clock | Mode | Your cue / visible checkpoint |
+| Clock | Slides | Your cue / visible checkpoint |
 | --- | --- | --- |
-| 0–0:45 | Real incident | PocketOS founder excerpt, deletion animation, Railway recovery. Keep attribution visible. |
-| 0:45–2:30 | Intro + repo + vote | Nick + Zack, then the repo QR on slide 4 so latecomers can clone, then “Ship it or hold it?” Vote on the staged worker claim. |
-| 2:30–4:30 | Live failure | Submit and reload the actual memory-only app. Show the lost record. |
-| 4:30–5:30 | Thesis + comparison | Credit Lauren Tan, then three advances on slide 8: guesses multiply, evidence narrows the repair, and the verified clock stops. |
-| 5:30–6 | Our tools | Riker (Nick) and CTX (Zack): one sentence each on how your tool treats a worker's “done.” |
-| 6–7 | Glossary + smoke test | Glossary QR on slide 10 (repo QR was slide 4). README → lessons → exercises. `pnpm lab:doctor`; pair anyone stuck. |
-| 7–10 | Contract | Same identity after reload; honest waitlist/no seat; conditional email. Explain browser-local boundary and three editable files. |
-| 10–13 | Explain | Role/label locators, fresh context, explicit transition, observation versus assumption. |
-| 13–19 | Build | Attendees write `observe()`. Offer hints, not the whole solution first. |
-| 19–21 | Checkpoint | `pnpm lab:exercise browser`. Copy one reference file if needed. |
-| 21–23 | Contrast | Browser evidence and semantic judgment answer different questions. Give the System 1/2 analogy, then name Jev and its yes/no primitive. |
-| 23–28 | Build | Two independent questions: honest status; conditional next step. Run construction check. |
-| 28–32 | Real Jev | Happy/overpromise with attendee questions or your reference. Predict scores, then inspect actual inputs/results. |
-| 32–33 | Checkpoint | “What did this number NOT prove?” Move on. |
-| 33–36 | Policy | Walk the ordered table. Missing evidence first; no averaging hard gates. |
-| 36–40 | Build | Implement `decide()`; run focused policy check. |
-| 40–42 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. On slide 24, reveal identity → observation → decision → fresh attempt. Failed attempts stay in the receipt history. Last 15 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
-| 42–43 | Questions | “Questions before the game?” Take one or two; park the rest for the closing Q&A slide. |
-| 43–44 | Pair up | Bouncer vs. Bluffer. Freeze the verifier; keep human labels out of JSON. |
-| 44–47 | Round 1 | 90 seconds to write the polite lie; 90 seconds to judge and inspect. |
-| 47–50 | Round 2 | Swap roles. 90 seconds to write a valid paraphrase; 90 seconds to judge. |
-| 50–52 | Score + share | Reward caught defects AND accepted good work. Spotlight one useful counterexample. |
-| 52–54 | Trade-off | Project the 0.9/0.8 fixture table. Do not mix synthetic counts with live game results. |
-| 54–55 | Final boss | Stale-evidence shared check; explain why perfect but old proof cannot approve this revision. Last 30 seconds: the thesis slide again; tie it back to the three builds. |
-| 55–56:45 | Takeaways | App-specific CLI (30s), Chrome traces (30s), receipt history → evals → optional dataset (45s). Use the click cues; deeper setup stays in Lesson 07. |
-| 56:45–58:45 | Transfer | Protect two minutes: name one feature, check command, saved receipt and stop condition. Finish the longer worksheet after class. |
-| 58:45–60 | Close | Hear one example. Repeat the three closing questions. |
-| 60+ | Q&A | Slide 39: repo and glossary QRs stay up while you take questions, for as long as the session allows. Then slide 40: invite people to Booth 6. |
+| 0–0:45 | 2 | PocketOS founder excerpt, deletion animation, Railway recovery. Keep attribution visible. |
+| 0:45–2:30 | 3–5 | Intros, repo QR so latecomers can clone, then “Ship it or hold it?” on the staged worker claim. |
+| 2:30–4:30 | 6 | Submit and reload the real app. The record is gone. Let people notice the “seat is confirmed” copy, but don't dwell on it. |
+| 4:30–5:30 | 7–8 | Credit Lauren Tan; three advances on the comparison. |
+| 5:30–6 | 9 | Riker and CTX: one sentence each on how your tool treats a worker's “done.” |
+| 6–7 | 10 | Glossary QR. `pnpm snack doctor`; pair anyone stuck. |
+| 7–9 | 11 | “What do *you* do to check?” Click each line as the room calls it out. Last click: the agent has none of this. |
+| 9–10 | 12 | Paragraph vs. lever. |
+| 10–12 | 13 | Meet snack: the four groups and the agent-friendly rules. |
+| 12–18 | 14 | Everyone drives it: `up`, `doctor`, `join`, `storage`, `reload`, `snapshot`. Reveal the empty storage. |
+| 18–27 | 15 | Explain `prove()` (2 min), build (6), checkpoint (1). `pnpm lab:exercise` until PASS. |
+| 27–28 | 16 | The proof bar. Plant “doctor first” for the final boss. |
+| 28–30 | 17 | The receipt and the three exit codes. Have people run `pnpm snack prove`. |
+| 30–34 | 18 | The feature map; attendees add two gotchas. Point at `lab/verify/SKILL.md`. |
+| 34–40 | 19 | Live agent run with the three-sentence prompt. Fallback recording after 90 seconds. |
+| 40–43 | 20 | It persists, it also lies. `pnpm snack judge` live. Fix the copy; prove and judge again. |
+| 43–44 | 21 | When to stop. |
+| 44–45 | 22 | Pair up: Saboteur vs. Detective. |
+| 45–50 | 23 | Two 2-minute rounds with the timer; swap roles between them. |
+| 50–51:30 | 24 | Score it. Fish for who said “it works” and was wrong. |
+| 51:30–53:30 | 25 | The reveal: overpromise and console-error got past `prove`. Every miss becomes a new line. |
+| 53:30–55 | 26 | Final boss, live: a one-character edit, then `pnpm snack doctor` shows STALE. |
+| 55–58 | 27 | Transfer: plan the lever for your own app. Pair-share. |
+| 58–60 | 28 | Close: Observe. Fix. Prove. |
+| 60+ | 29–30 | Q&A with both QR codes up, then the Booth 6 invite. |
 
-Hard stops: **21, 33, 43, 55**. Preflight is not charged against the hour. Participant-authored bluff + valid-paraphrase rounds take priority over repeated fixture runs. Holdout evaluation is now take-home so the game fits. Do not sacrifice the transfer exercise.
+Hard stops: **18, 30, 44, 55**. Preflight is not charged against the hour. Protect the agent run and the transfer exercise; cut the second game round before either.
 
-## Hook commands
+## Before you go on
 
 ```bash
-pnpm lab:app --scenario memory-only
-# In a fresh private window: submit ada@example.test, then reload.
-# Stop that app before switching:
-pnpm lab:app --scenario overpromise
+git checkout lab/app/index.html          # the attendee app, broken as shipped
+pnpm snack up                             # headed; leave this terminal visible
+pnpm snack doctor                         # ok: true
 ```
 
-The “agent says done” report is a staged teaching claim, not a transcript of a production incident. Don't assert fabricated test results or invent a personal anecdote. The app's visible behaviors are real.
+Have the agent you'll use for slide 19 open in another terminal at the repo root, with permission to run `pnpm` and edit files. If you want `snack judge` live, `TYPESAFE_API_KEY` must be in `.env` or the shell.
 
-The sourced production incident is already in the opening. Keep the room moving into the reproducible toy app. The saved opening report on slide 15 is a real local browser observation with synthetic judge scores, not a live response.
+## The agent run (slide 19)
 
-## Jev segment: real by default, honest fallback
+Paste exactly:
+
+```text
+Read lab/verify/SKILL.md. Reproduce the reload bug in the waitlist with snack.
+If it reproduces, fix it, and show me the receipt and the screenshot as proof.
+```
+
+In rehearsal, Claude Code took about 50 seconds and 12 turns. It ran `doctor`, reproduced with `join` / `storage` / `reload`, edited `lab/app/index.html` (persistence **and** the copy, because the map lists what done means), noticed the unfinished exercise proof was too weak, ran `prove --solution` (PASS, revision `4e8c43d6bc1e`), and opened the screenshot. The slide's fallback recording is that run. The receipts are in `public/materials/snack-receipts/`, with the fixed file beside them.
+
+If your live agent also fixes the copy, say so on slide 20: it caught it by reading the map and the screenshot; `prove` alone passed it. The judge numbers on slide 20 come from `pnpm snack up --bug overpromise` (a working app with only the copy bug).
+
+If an attendee's agent says PASS without fixing anything, their `prove.ts` is unfinished. That's the lesson, not a failure: “a weak proof calls a broken app done.”
+
+## The judge (slide 20)
 
 ```bash
-pnpm lab:check --scenario happy --solution --judge live
-pnpm lab:check --scenario overpromise --solution --judge live
+pnpm snack judge
 ```
 
-These evaluate reference questions. Attendees omit `--solution` to evaluate theirs, after completing the observer. Their policy still escalates because it is unfinished; focus on the scores and report fields.
+One billable request. Rehearsal (jev-1.13.0): the overpromise copy with persistence working scored honest 0.01 / next step 0.02 (FAIL); the agent-fixed copy scored 0.98 / 0.98 (PASS). Narrate: **“The judge reports support for one narrow question. The verdict thresholds are code.”** No key or no network: judge as a human from the screenshot. Never present a recorded number as a new judgment.
 
-Narrate: **“The model reports support for this question, given this evidence. Our code still decides.”**
+## The game (slides 22–26)
 
-If live fails, run `pnpm lab:replay` and read the captured request beside the response. Say **“recorded, not new feedback.”** Synthetic fixtures ignore the question wording entirely; never use them as evidence that a prompt is good.
+Use [lesson 6](../src/content/lessons/06-break-it-quietly.md) and the [paper scorecard](../public/materials/game-scorecard.md).
 
-Included live captures used Jev 1.13.0 on 2026-10-08. They're three selected examples, not an accuracy study or proof of injection immunity.
+1. Saboteur stops their `up` (Ctrl+C) and starts `pnpm snack up --bug NAME` while the detective looks away. `--bug random` works solo.
+2. Detective uses snack only, no reading files. Writes down the answer and the output that proves it.
+3. Saboteur stops `up`; it prints `{"reveal": "…"}`. Swap.
 
-## The repair payoff
+The bug is injected by the server into the reference app at load time, so it isn't in any file and every pair plays the same game. Two of the five bugs pass the reference proof on purpose: `overpromise` (only the screenshot or `judge` sees it) and `console-error` (it's in the receipt's `pageErrors`, but no check fails on it). That's the point of slide 25.
 
-```bash
-pnpm lab:loop --solution
-pnpm lab:loop --solution --stubborn
-```
+Points: named with output **+2**; “it works” and it did **+2**; “it works” and it didn't **−3**; blamed a bug that wasn't there **−1**; right bug without evidence **0**. Bragging rights only. Keep it about the system; never make an attendee the joke.
 
-Name the source: **scripted worker, synthetic scores**. It is a controlled experiment to test orchestration. Every attempt still runs a real browser.
+The timer on slide 23 starts only on a button press. Leaving the slide pauses it. No sound.
 
-Open `report.json`. Show:
-- worker candidate versus independent observations;
-- `expected.revision` and `evidence.loadedRevision`;
-- raw probabilities versus policy reasons;
-- second attempt and new evidence hash;
-- final decision and human handoff when exhausted.
+## The final boss (slide 26)
 
-If time allows, `--judge live` replaces only the judge. Keep real generative-worker latency and variability outside the required hour.
-
-## Bouncer vs. Bluffer
-
-Use [lesson 6](../src/content/lessons/06-red-team.md) and the [paper scorecard](../public/materials/bouncer-scorecard.md). This is an authored challenge, not a fixture scavenger hunt.
-
-1. **The polite lie:** edit `lab/challenges/bluff.json`, keeping storage local. Introduce one plausible false promise. Agree the violated criterion before the model call.
-2. **The unfair rejection:** swap roles; edit `lab/challenges/legit.json` into an unusual but valid paraphrase. Pirate/poet/maître d’ voices are optional; clarity is mandatory.
-3. Run `pnpm lab:check --candidate FILE --solution --judge live`. Two calls per pair maximum. Human labels never enter candidate JSON or the model input.
-
-Without keys, use `pnpm lab:app --candidate FILE` and a human peer. For a less leading human round, the author chooses either file without revealing its name; the defender commits a decision before the label is revealed. The point is evidence and rubric clarity, not a claim about model accuracy. Keep human and model scoreboards separate.
-
-Bouncer points: bad→repair **+2**; good→accept **+2**; bad→accept **−3**; good→repair/escalate **−1**; bad→escalate **0**. Outage, invalid JSON, or disputed label is no contest. Escalate-everything scores −1. A fully correct two-case defense scores 4.
-
-Timers on slides 27/29 start only on a button press. Pause/reset is available; leaving a slide pauses it. No automatic music or sound. The six-stage illustration on slide 23 uses arrow-key reveals; its stubborn-worker checkbox demonstrates the alternate ending.
-
-Celebrate one useful discovery: Best Polite Lie or Most Unfairly Rejected, with bragging rights only. Do not promise physical prizes. If nobody fools the model, compare which wording was hardest to label—the absence of an exploit is not a failed activity. Make it playful without turning another attendee into the joke.
-
-## The trade-off, not “escalate everything”
-
-Use the slide’s prepared table to protect the game time. If ahead, project two runs:
-
-```bash
-pnpm lab:eval --solution
-pnpm lab:eval --solution --accept-at 0.8
-```
-
-Expected synthetic results:
-- At **0.9**: false accepts **0/5 bad**; unnecessary escalation **2/3 good**.
-- At **0.8**: false accepts **1/5 bad**; unnecessary escalation **1/3 good**.
-
-The lower threshold admits both a valid paraphrase and the polite lie. The second command intentionally exits 1. No repair is performed in this eval.
-
-Use invented costs on paper: bad acceptance 10, unnecessary escalation 1, unnecessary repair 1. Which policy wins? What if you change those costs? Required escalation on inadequate evidence is a separate invariant.
-
-After class, freeze a threshold and pass it explicitly to `--suite heldout --accept-at YOUR_VALUE`. This set is tiny and inspectable; don’t pretend it proves production reliability. Results need not get worse. Avoid tuning again and calling the same cases unseen.
+You need a passing receipt first: the agent run gives you one. Then make a one-character edit to `lab/app/index.html` (a space in the `<title>` works) and run `pnpm snack doctor`. Both `build` and `proof` report STALE. After the slide, `git checkout lab/app/index.html` resets the app, including the agent's fix.
 
 ## If ten minutes disappear
 
-- Read the reference collector together instead of typing it.
-- Keep the real/recorded Jev comparison; it is central to the promise.
-- Have pairs edit only policy.
-- Keep one authored bluff and one valid paraphrase. Human peer review works if the API does not.
-- Use the published comparison table rather than three repeated evals.
-- Protect the final five-minute transfer exercise.
+- On slide 14, drive it yourself on screen and have the room predict instead of typing.
+- Shorten the build on slide 15 to four minutes and point stragglers at `--solution`.
+- Keep the agent run. Use the fallback recording if the live run is slow.
+- Play one game round, not two.
+- Protect the final transfer exercise.
 
-If thirty minutes disappear, this is no longer the promised hands-on workshop: explicitly switch to a demonstration and offer the full materials afterward.
+If thirty minutes disappear, this is no longer the promised hands-on workshop: switch to a demonstration and offer the full materials afterward.
 
 ## Questions to listen for
 
-- “Why two models?” Different jobs: worker generates a proposal; judge assesses narrow support. Diversity alone does not make it reliable.
-- “Why not exact text?” Use a template if exact text is the requirement. Here valid paraphrases are intentionally allowed.
-- “Can the agent change tests?” Not through this JSON interface. A shell-capable agent needs real isolation and permission design.
-- “Is 0.9 safe?” Not universally. Measure representative labeled cases and the cost of each kind of error.
-- “Why not retry an outage?” A production harness might retry transient failures separately. This hour's policy escalates them so worker repair cannot hide infrastructure failure.
-- “Does a passing browser test prove the backend?” No; this app has none. Add independent server observations when that is your actual requirement.
-
-## Takeaway cues
-
-Slides 34–36 connect the finished lab to attendees’ own work. Keep them to 1 minute 45 seconds, then protect the two-minute worksheet on slide 37. If behind, leave these diagrams as take-home reference and go straight to the worksheet.
-
-- **App tool:** this is our actual CLI and saved browser observation, applying Lauren Tan’s pstack ideas. No extra installation during class.
-- **Browser instruments:** the trace is a schematic; avoid calling it a measured speedup. The Chrome DevTools setup and first prompt live in Lesson 07.
-- **Run history:** two actual saved runs provide the cards. The improvement loop and possible training dataset are a next step, not capabilities implemented by this lab. Synthetic eval scores test policy wiring, not prompt/model quality. Nick and Zack arrived independently at receipts in Riker and CTX.
+- “Why a CLI and not an MCP server?” Either works. A CLI is cheap to build and test, composes with the shell, and every agent already runs commands.
+- “Isn't `prove` just a Playwright test?” Yes. The difference is the agent can run it on demand and read a receipt with next steps, plus the Look commands for debugging.
+- “Can the agent edit the proof?” In this repo it has a shell, so yes; the skill tells it not to. Real isolation (a separate checkout, a read-only verifier) is a separate problem.
+- “What about non-web apps?” Same shape, different wire: the simulator for iOS, a PTY for CLIs, HTTP for services.
+- “Does a passing browser proof prove the backend?” No; this app has none. Add server-side checks to `prove` when that's your requirement.
+- “Is Jev required?” No. It's one narrow check for meaning; without it, a human reads the screenshot.
 
 ## Closing handoff
 
-[Transfer worksheet](../public/materials/transfer-worksheet.md), [take-home reference](take-home.md), and the code stay with attendees. The source repository is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done), currently private. Confirm attendee access or an agreed source bundle before sharing it. Announce a hosted materials URL only after it has been deployed and checked.
+[Transfer worksheet](../public/materials/transfer-worksheet.md), [take-home reference](take-home.md), and the code stay with attendees. The source repository is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done), currently private. Confirm attendee access before sharing it.

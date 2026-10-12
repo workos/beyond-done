@@ -16,12 +16,12 @@ Bricolage Grotesque (already installed with the template) is the display voice: 
 
 ## Layout
 
-One dominant idea per slide. Alternate full-color punchlines, large typographic statements, ticket/browser evidence visuals, host photography, split comparisons, and three dedicated exercise canvases. Use an intentionally notched ticket silhouette; no decorative card grid. Shared intro gives both presenters equal visual weight, real existing photos, and names; no invented biographies.
+One dominant idea per slide. Alternate full-color punchlines, large typographic statements, ticket/browser evidence visuals, host photography, split comparisons, terminal and DevTools visuals for the CLI, and one dedicated exercise canvas. Use an intentionally notched ticket silhouette; no decorative card grid. Shared intro gives both presenters equal visual weight, real existing photos, and names; no invented biographies.
 
 ## Motion
 
-Slidev click-driven reveals are the teaching clock. An admission ticket shifts from DONE to missing proof; a visual loop progresses from candidate to evidence to judgment to decision and one repair. Slide transitions use short fade/translate; title stamp enters once. No endless floating, flashing, or spring effects. Reduced-motion uses instant state changes. The timer is explicitly started/paused/reset, not automatic; it pauses when the slide is inactive.
+Slidev click-driven reveals are the teaching clock. An admission ticket shifts from DONE to missing proof; the room's DevTools checks reveal one by one; the agent-run fallback reveals one command at a time; the game's reveal shows which bugs got past the proof. Slide transitions use short fade/translate; title stamp enters once. No endless floating, flashing, or spring effects. Reduced-motion uses instant state changes. The timer is explicitly started/paused/reset, not automatic; it pauses when the slide is inactive.
 
 ## Activity
 
-Bouncer vs. Bluffer: teams author one bad message and one good paraphrase, label before judging, freeze verifier settings during each round, switch roles, and score both catching failures and avoiding interruptions. New copy uses real Jev via explicit --judge live, or a human reviewer; synthetic fixtures never pretend to judge new copy. Timer and playful names support the activity, not extra framework work.
+Break it quietly: a saboteur starts the app with a hidden bug, a detective finds it with snack alone, then they swap. Scoring rewards naming a bug with evidence and correctly saying “it works,” and costs most for calling a broken app done. Timer and playful names support the activity, not extra framework work.
