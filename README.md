@@ -203,3 +203,9 @@ Run reports, screenshots, and human-review packets live under ignored `.lab-runs
 - [Template operations](.agents/skills/workshop/SKILL.md)
 
 The glossary is hand-authored/reviewed in `generated/glossary.json`; no implicit AI generation is needed. Cloudflare chat is off. Source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). No site was deployed and no billable key was provisioned. The placeholder hostname intentionally blocks deployment until an actual destination is agreed.
+
+## Deploying the site
+
+`pnpm run deploy:talks` publishes the class site, glossary, materials and slides to the Alto app `talks`. Once deployed, they're public (no sign-in) at <https://talks.workos.cloud/beyond-done/>, with the slides at `/beyond-done/slides/`. Before your first deploy, run `alto login` and `alto auth setup-git --host https://git.workos.cloud`. The deploy refuses a dirty working tree, so commit first: what ships is always a commit.
+
+The command builds the site, then clones `https://git.workos.cloud/talks.git`. It replaces that repo's contents with the shell in `deploy/talks/`, puts `dist/` in `public/beyond-done/` and writes the commit SHA to `revision.txt`. Then it commits, runs `alto deploy talks --push`, and waits until `https://talks.workos.cloud/beyond-done/revision.txt` serves that SHA anonymously. `pnpm run deploy:talks:dry-run` does the same staging into `.talks-build/app` and runs Alto's `npm ci`, build and Wrangler dry run there. It pushes nothing and accepts a dirty tree, writing `<sha>-dirty` as the revision.
