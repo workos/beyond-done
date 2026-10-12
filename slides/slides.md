@@ -1090,7 +1090,7 @@ clicks: 3
 <ReceiptHistory />
 
 <!--
-**ACT 5 · TAKE IT HOME · a history you can improve against** · 56:00–56:45 · three clicks
+**ACT 5 · TAKE IT HOME · a history you can improve against** · 56:00–56:30 · three clicks
 
 **Say / click:**
 - **0:** “Nick and I both ended up here: receipts are evidence now, and a history of the system over time. Keep the failure, the repair and the final outcome.”
@@ -1106,31 +1106,25 @@ clicks: 3
 -->
 
 ---
+class: night takeaway-slide
+clicks: 2
 ---
 
-<div class="split">
-<div><h1>Build a verifier<br>for your app.</h1><p class="lede">Pick one real feature.<br>Give an agent a way to reach it,<br>exercise it, and show proof.</p><p class="aside-note">Lesson 07: copyable prompts, real commands,<br>a receipt schema and a first-30-minutes plan.</p></div>
-<div class="ticket">
-<div class="ticket-top"><span>YOUR VERIFICATION RECEIPT</span><span>KEEP THIS</span></div>
-<p><strong>Feature + user path:</strong><br>_________________________</p><p><strong>Check command + saved receipt:</strong><br>_________________________</p><p><strong>When we stop / ask for help:</strong><br>_________________________</p>
-<div class="ticket-bottom"><span>ONE REAL TASK. ONE FIRST CHECK.</span></div>
-</div>
-</div>
+<VerifierExamples />
 
 <!--
-**ACT 5 · TAKE IT HOME** · 56:45–58:45 · protect the two-minute exercise
+**ACT 5 · TAKE IT HOME** · 56:30–58:45 · 15-second examples, then protect the two-minute exercise
 
-**Why this slide:** Transfer to their own work. The deliverable is one small check they’ll actually build first, not a framework.
+**Why this slide:** Give people concrete starting points for their own apps. Leave all three examples visible while they write one small check they will build first.
 
-**Say:**
-- “Pick one real feature in your own app, something an agent might call done when it isn’t. Fill in the receipt.”
-- “**Feature and user path**: what does a user actually do?”
-- “**Check command and receipt**: how does the agent exercise it, and where will each run’s evidence live?”
-- “**When do we stop**, or ask for help?”
-- “Then ask: where is a plain assertion enough, and where do you actually need a judgment about meaning? Usually it’s mostly assertions.”
-- “Name the first check you’ll build, the command to run it, and the record you’ll keep.”
+**Say / click:**
+- **0:** “A web filter survives reload. A native draft survives relaunch. Duplicate webhook delivery creates one job.”
+- **1:** “Wrap the tool that can reach the real system: browser automation, a native UI driver, or HTTP plus a database read.”
+- **2:** “Now name the assertion and the evidence you’ll save. These are ordinary, testable facts. Pick your own feature.”
 
-**Do:** Two minutes to write, then share with a partner. Stuck? Suggest a settings change, a support reply, or a dashboard filter. There’s a longer version in the worksheet at /materials/transfer-worksheet.md (Lesson 07).
+**Do:** At 56:45, give them two minutes to write: feature/user path, check command, receipt location, and when to stop or ask for help. Keep the examples visible. The worksheet and detailed versions of these recipes are in Lesson 07.
+
+**Careful:** These are illustrative blueprints, not three additional workshop apps. The `verify` commands are example wrappers attendees can build; they are not installed by this repository. Appium requires a driver for the target platform. A screenshot alone does not prove persistence, and a 200 response alone does not prove a job ran exactly once. For asynchronous jobs, wait for a defined completion signal within a deadline and inspect records for the test event ID.
 
 **Next →** “Let’s hear a couple.”
 -->

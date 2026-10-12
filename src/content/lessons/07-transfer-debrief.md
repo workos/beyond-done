@@ -56,6 +56,26 @@ A useful check is runnable again after the next change. Give it a clear command,
 
 ## Your first 30 minutes back in your repo
 
+### Three concrete verifiers to borrow
+
+These are **blueprints for your own apps**, not extra commands installed by this workshop. `verify filter`, `verify draft` and `verify webhook` below are example names for small wrappers you would build around your existing harness.
+
+| App / feature | Drive the real system | Assert independently | Keep with the run |
+| --- | --- | --- | --- |
+| Web app: a saved issue filter | Choose **Open** through the UI, wait for saving, reload the page | The selected filter is still Open **and** the displayed rows match a known test dataset | Browser trace, selected value, row IDs, app revision |
+| Native client: a saved draft | Enter **Ship it**, wait for the app's save completion, quit and relaunch without clearing its app data | Open the same draft ID and read its exact body from the UI; it must still be **Ship it** | UI hierarchy, screenshot, draft ID/body, app build and OS version |
+| API / worker: duplicate event handling | Deliver the same test event ID twice; wait for a defined processing-complete signal within a deadline | Query records by that event ID: exactly one completed job and one intended side effect | Both HTTP responses, job/side-effect records, event ID, server revision |
+
+For the web case, [Playwright](https://playwright.dev/docs/writing-tests) can drive the browser and assert visible state. For a native client, [Appium](https://appium.io/docs/en/latest/intro/) uses a platform-specific driver; choose a driver that supports your target app and OS, or reuse its existing native UI test harness. The agent needs a command that starts the test, waits for completion and returns evidence—not just access to screenshots. For HTTP, [Playwright's API testing](https://playwright.dev/docs/api-testing) is one option; reuse your service's integration-test client and readback hooks if you already have them.
+
+Make each wrapper accept test inputs, establish a known starting state, report assertion failures and missing prerequisites as nonzero exits, and print the path to a fresh receipt directory. Cleanup must preserve that receipt. Verify that it rejects a deliberately broken implementation and accepts a known-good one before trusting it.
+
+A native example prompt:
+
+> Build a `verify draft` command around this app's existing native UI test harness. Use an isolated test draft. Type “Ship it,” wait for confirmed saving, terminate and relaunch the app while preserving its data, reopen the draft by ID, and assert the exact body. Save the UI hierarchy, screenshot, assertion result, app build and OS version in a new run directory. If the simulator, driver or app build is missing, fail with the next setup action. Do not treat the first “Saved” label as proof that the draft survives relaunch.
+
+### Put the first check on a clock
+
 | Time | Do this | You leave with |
 | --- | --- | --- |
 | 0–5 | Choose one user journey and a plausible failure. Write the expected outcome before asking the agent to fix anything. | One feature-map row |

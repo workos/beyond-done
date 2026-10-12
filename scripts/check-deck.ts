@@ -24,10 +24,12 @@ const receiptSlide = slideFor('<RepairReceipt');
 const workbenchSlide = slideFor('<VerificationWorkbench');
 const browserProofSlide = slideFor('<BrowserProof');
 const historySlide = slideFor('<ReceiptHistory');
+const examplesSlide = slideFor('<VerifierExamples');
 const clickStates = new Map([
   [loopSlide, [0, 1, 2, 3, 4, 5]], [contrastSlide, [0, 1, 2, 3]],
   [receiptSlide, [0, 1, 2, 3]], [workbenchSlide, [0, 1, 2]],
   [browserProofSlide, [0, 1, 2]], [historySlide, [0, 1, 2, 3]],
+  [examplesSlide, [0, 1, 2]],
 ]);
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
@@ -70,7 +72,7 @@ try {
           }).map(element => ({ tag: element.tagName, text: element.textContent?.slice(0, 55) }));
       });
       if (outside.length) overflow.push({ slide, clicks, outside });
-      const diagramOverflow = await root.locator('.workbench-stage, .browser-stage, .history-stage, .repair-receipt').evaluateAll(stages => stages.flatMap(stage => {
+      const diagramOverflow = await root.locator('.workbench-stage, .browser-stage, .history-stage, .repair-receipt, .verifier-examples, .example-card').evaluateAll(stages => stages.flatMap(stage => {
         const bounds = stage.getBoundingClientRect();
         return [...stage.querySelectorAll(':scope > *,p,li,.receipt-paper,.attempt-history,.run-card')]
           .filter(element => element.getBoundingClientRect().bottom > bounds.bottom + 2)
@@ -108,6 +110,15 @@ try {
   await page.keyboard.press('ArrowLeft');
   await expect(history.getByRole('heading', { name: 'Climb on evidence.' })).toBeVisible();
   await expect(history.locator('.run-card')).toHaveCount(3);
+  const examples = await go(examplesSlide, 0);
+  await expect(examples.locator('.example-card')).toHaveCount(3);
+  await page.keyboard.press('ArrowRight');
+  await expect(examples.locator('.example-card.instrumented')).toHaveCount(3);
+  await page.keyboard.press('ArrowRight');
+  await expect(examples.locator('.example-card.evidenced')).toHaveCount(3);
+  await expect(examples.locator('.example-prompt')).toContainText('TWO MINUTES');
+  await page.keyboard.press('ArrowLeft');
+  await expect(examples.locator('.example-card.evidenced')).toHaveCount(0);
   const hostsTools = await go(slideFor('We hold our own tools to this.'));
   await expect(hostsTools.getByRole('link', { name: 'Read Zack’s CTX blueprint' })).toHaveAttribute('href', 'https://zackproser.com/blog/ctx-personal-context-engine');
   const contrast = await go(contrastSlide, 3);
@@ -156,6 +167,7 @@ try {
   for (const [slide, selector, clicks] of [
     [receiptSlide, '.receipt-paper', 3], [workbenchSlide, '.proof-result', 2],
     [browserProofSlide, '.hotspot', 2], [historySlide, '.history-focus', 3],
+    [examplesSlide, '.example-prompt', 2],
   ] as const) {
     const root = await go(slide, clicks);
     assert.equal(await root.locator(selector).evaluate(e => getComputedStyle(e).animationName), 'none');
