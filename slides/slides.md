@@ -410,6 +410,28 @@ Moved from footnote: Synthetic fixtures ignore your question wording entirely.
 -->
 
 ---
+class: indigo
+---
+
+# Name the source.<br>Every time.
+
+<div class="source-lines">
+<div><strong>Synthetic fixture</strong><span>Authored scores. Tests policy.</span></div>
+<div v-click><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
+<div v-click><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
+</div>
+
+<!--
+Teaching expectations:
+- Name what each result can establish: synthetic scores test policy, recordings show past responses, and live calls provide new but fallible judgments.
+- Prevent source confusion: neither a replay nor a fixture provides feedback on a learner's newly edited questions.
+- Label peer review as human judgment and keep its conclusions separate from claims about model performance.
+
+Transition at 33:00, or use as a callback whenever source confusion appears.
+No additional lecture block. Later, in the game's no-key rounds, name the fourth source plainly: a human peer.
+-->
+
+---
 ---
 
 <div class="small-label">Build 3 · Stop · 33–43 minutes</div>
@@ -676,28 +698,6 @@ class: night
 54:30–55:00, the last 30 seconds of the final boss. Same slide as before the game. No reveals: leave it up long enough for people to photograph it.
 Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
 Tie it back to the three builds: observe.ts recorded what happened, questions.ts asked what the evidence supports, decide.ts said when to stop.
--->
-
----
-class: indigo
----
-
-# Name the source.<br>Every time.
-
-<div class="source-lines">
-<div><strong>Synthetic fixture</strong><span>Authored scores. Tests policy.</span></div>
-<div v-click><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
-<div v-click><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
-</div>
-
-<!--
-Teaching expectations:
-- Name what each result can establish: synthetic scores test policy, recordings show past responses, and live calls provide new but fallible judgments.
-- Prevent source confusion: neither a replay nor a fixture provides feedback on a learner's newly edited questions.
-- Label peer review as human judgment and keep its conclusions separate from claims about model performance.
-
-Transition at 55:00, or use as a callback whenever source confusion appears.
-No additional lecture block. During no-key rounds, name the fourth source plainly: a human peer.
 -->
 
 ---
