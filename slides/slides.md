@@ -30,10 +30,21 @@ fonts:
 </div>
 
 <!--
-Teaching expectations:
-- Let the room settle on the workshop's title and hosts before the story starts.
+**ACT 1 · THE CLAIM** · on screen before 0:00 · nobody talks
 
-On screen while the room settles. Don't talk over it; advancing to the incident starts the clock at 0:00.
+**Why this slide:** Holding card while the room settles. Advancing to the incident starts the clock.
+
+**The whole hour in one line:** “‘Done’ is a claim. Ask for the receipt.” Every slide does one of three things: shows the problem, builds a piece of the receipt-checker, or tries to break it.
+
+**The arc (for you, not the room):**
+
+1. **The claim (0–6 min):** agents say “done.” A real incident shows the stakes. Our toy app shows the same gap in two minutes. A quote names the thesis, and a contrast shows why verification pays off.
+2. **The setup (6–10):** one small task, three acceptance criteria, three files, and a worker that can’t grade itself.
+3. **The build (10–43):** Observe → Infer → Stop. Each build answers one question: *What did we observe? What did we infer? Why did we stop?*
+4. **The game (43–55):** attendees try to fool the verifier both ways: sneak bad work in, get good work bounced.
+5. **Take it home (55–60):** apply it to one real feature in their own app.
+
+**If you need to fill time:** “Grab a seat. Get the repo cloning; the QR is two slides away.” The fake agent log on the right is the talk in miniature: five green checks, “Done.”, and “evidence: none.”
 -->
 
 ---
@@ -44,19 +55,25 @@ clicks: 2
 <IncidentOpener />
 
 <!--
-Teaching expectations:
-- Frame the goal: turn an agent's completion claim into a decision backed by independent evidence.
-- Preview the hands-on outcome: collect browser observations, judge meaning, and implement a bounded verification loop.
-- Set the scope: learn how to supervise a worker, not how to rank models or build an agent framework.
+**ACT 1 · THE CLAIM** · 0:00–0:45 · Nick
 
-0:00–0:45. Jer Crane's April 25 PocketOS account: nine seconds is the founder's reported duration, not our measurement.
-First advance: one authenticated API call deletes the production volume. Second: Railway recovered the data and changed deletion safeguards (April 29 follow-up).
-Do not treat the agent's later explanation as a trustworthy forensic account, or repeat the original claim that every backup was permanently lost.
-Say: "Agents can act faster than we can inspect. Production safety needs enforced permissions and recovery. Today: what evidence lets us accept an agent's result?"
-The animation is an explanation, not incident footage. Say so. The short source excerpt works offline. No live X login or video dependency.
-Say the setup: founder's account, Cursor + Claude Opus 4.6. Original post: https://x.com/lifeofjer/status/2048103471019434248
-Railway's follow-up (data recovered; API deletion safeguards changed): https://blog.railway.com/p/your-ai-wants-to-nuke-your-database
-Sources and the five-minute script: docs/opening.md. Both hosts introduce themselves next.
+**Why this slide:** Stakes first. A real, recent incident shows agents can act faster than we can inspect them. We use it to raise the question, then shrink it to something we can fix in the room.
+
+**Say:** “April 2026. Jer Crane, founder of PocketOS, had a Cursor agent running Claude Opus 4.6 on a routine staging task. The agent used a token stored on the machine, and that token could reach production. His words: ‘It took nine seconds.’”
+
+[click] **(click: deletion)** “One authenticated API call, and the production volume is gone. Instructions didn’t enforce that boundary. Only permissions do.”
+
+[click] **(click: recovery)** “The part that usually gets left out: a few days later, Railway recovered the data and changed how API deletion works. Recovery came from the system, not from the agent.”
+
+**Next →** “Production safety comes from permissions and recovery. We won’t solve that today. Today is the question one step earlier: when an agent says it’s done, what evidence lets you believe it? But first, who we are.”
+
+**Careful:**
+- Say it: the animation explains the sequence. It isn’t footage.
+- Nine seconds is his reported number, not ours.
+- Don’t repeat the early claim that every backup was lost. Don’t quote the agent’s own explanation as if it were forensics.
+- Don’t imply anything we teach today would have prevented this.
+
+Sources: [Jer’s post](https://x.com/lifeofjer/status/2048103471019434248) · [Railway follow-up](https://blog.railway.com/p/your-ai-wants-to-nuke-your-database) · full script in docs/opening.md.
 -->
 
 ---
@@ -81,15 +98,21 @@ clicks: 1
 </FriendsReveal>
 
 <!--
-Teaching expectations:
-- Introduce both co-instructors and give attendees a clear sense of who will guide the demo and help the room.
-- Establish the workshop rhythm: build a verifier together, then challenge it with participant-written examples.
-- Make skepticism constructive: we are testing the work, not trying to embarrass the worker or each other.
+**ACT 1 · THE CLAIM** · 0:45–1:15 · both, equal time
 
-0:45–1:15. Shared introduction, equal space for both instructors.
-Each give name + one real sentence about why you care about supervising agent work.
-Do not read a bio; do not invent experience. Save Riker and CTX for their own 30 seconds after the thesis. Nick drives the first demo; Zack watches the room.
-Switch driver/room-reader during Jev or policy as suits you. Confirm the exact handoff in rehearsal.
+**Why this slide:** Put two faces on the hour and set the tone. We’re skeptical of the *work*, not of the worker or each other. The caption is the deal for the hour: we build it, you break it.
+
+**Say:**
+- **Nick:** name, role, and one real sentence on why you care about checking agent work. Your own words, not a bio.
+- **Zack:** same.
+
+[click] **(click: “Co-instructor” becomes “Friends” + hearts)** Let the laugh land. Don’t explain it.
+
+Then read the caption: “Here’s the deal. For the next hour we build a verifier together. At the end, you try to fool it.”
+
+**Next →** “To build it, you need the code. Get it on your laptop now.”
+
+**Roles:** Nick drives the first demo and plays the overconfident worker. Zack calls the vote and watches the room. Swap during the Jev or policy build (confirm in rehearsal). Riker and CTX get their own slide later; don’t pitch them here.
 -->
 
 ---
@@ -101,9 +124,20 @@ Switch driver/room-reader during Jev or policy as suits you. Confirm the exact h
 </div>
 
 <!--
-1:15–1:45. Setup is prework. Doctor should already be green. Leave the QR up while late arrivals clone: the next demo asks them to run pnpm lab:app. If blocked after two minutes total, pair up.
-QR opens the source repo. README → Start here; pnpm dev prints the lesson URL. Learner files: lab/exercises. Reference checkpoints: lab/solution.
-Followers edit; observers predict results with a partner. No key is needed for browser/policy work. Project the live judge for people without keys.
+**ACT 1 · THE CLAIM** · 1:15–1:45 · Zack
+
+**Why this slide:** Logistics with a deadline. Two slides from now we ask people to run the broken app, so the clone needs to start now.
+
+**Say:**
+- “This repo is your workbench for the hour. Scan it or type the clone URL.”
+- “If you did the prework, `pnpm lab:doctor` is already green. Keep the README open beside the lesson site; every command lives there.”
+- “Your files are in `lab/exercises`. If you fall behind, reference answers are in `lab/solution`.”
+- “It’s private right now. If access fails, wave at one of us.”
+- “You don’t need an API key for most of this. When we get to the live model, we’ll project ours.”
+
+**Do:** Leave the QR up for about 30 seconds. Still blocked after two minutes? Pair with a neighbor. People without laptops: predict results with a partner.
+
+**Next →** “While that clones, let’s vote on something.”
 -->
 
 ---
@@ -121,14 +155,19 @@ class: lime
 </div>
 
 <!--
-Teaching expectations:
-- Surface the temptation to accept a confident completion report without checking the user's actual requirement.
-- Distinguish a worker's self-reported checklist from independently observed evidence.
-- Ask attendees to name a missing check before revealing the defect; success on submit alone leaves persistence untested.
+**ACT 1 · THE CLAIM** · 1:45–2:30 · Nick plays the worker, Zack calls the vote
 
-1:45–2:30. "Let's start with something we can actually break in this room." Vote with hands BEFORE the next slide. Zack calls the room's vote; Nick plays the overly confident worker.
-This is a staged report, not an actual agent transcript or a claim that a test suite ran.
-Ask what evidence is missing. Don't reveal the punchline until people commit.
+**Why this slide:** Make the room commit to trusting a confident report *before* they see it fail. The vote is the setup, and the next slide is the punchline. It only works if people commit.
+
+**Say:**
+- **Nick, in character:** “Waitlist signup: done. Form renders, submit works, success message shows. Ship it.”
+- **Zack:** “Hands up. Who ships it? Who holds it?” Say the split out loud.
+- **Zack, to the holders:** “What’s missing? What would you want to see?” Take one answer. Fish for “does it survive a reload?” but don’t confirm it.
+- Point at the ticket footer: “Self-reported. Every check on this ticket was written by the thing being checked.”
+
+**Next →** “Let’s find out. Here’s the actual app.”
+
+**Careful:** This report is a prop we wrote, not a real agent transcript or test run.
 -->
 
 ---
@@ -140,15 +179,28 @@ Ask what evidence is missing. Don't reveal the punchline until people commit.
 </div>
 
 <!--
-Teaching expectations:
-- Show the difference between a successful interaction and a durable result: the waitlist entry disappears after reload.
-- Teach that verification must exercise the transition where a requirement could fail, not stop at a success message.
-- Connect the failure to the next exercise: capture state on both sides of reload rather than trusting the worker's report.
+**ACT 1 · THE CLAIM** · 2:30–4:30 · Nick drives, Zack watches the room
 
-2:30–4:30. PRIMARY: switch to the already-open actual app from pnpm lab:app --scenario memory-only. Submit ada@example.test, show waitlisted and saved email, then reload and show none and an empty confirmation.
-Return to this slide. The right-hand illustration is a labelled fallback if the app fails to start, not the default proof. Its Reload button shows the same failure.
-No click here: land the punchline out loud. A passing submit check did not prove persistence.
-Thesis, out loud, in your own words: 'Done' is a claim. Ask for the receipt.
+**Why this slide:** The room sees the gap for itself. Every check on the worker’s ticket was *true*, and the feature still fails. The checks stopped one step before the requirement could fail. This is the problem we spend the hour solving.
+
+**Do** (switch to the already-open `pnpm lab:app --scenario memory-only` in a fresh window):
+
+1. Point at status `none`.
+2. Submit `ada@example.test`.
+3. Point at `waitlisted`, the saved email, and the confirmation. “Form renders, submit works, success message. All three checks: true.”
+4. Reload.
+5. Point at `none`, `—`, and the empty confirmation.
+
+Anyone with the repo running does it with you.
+
+**Say:**
+- “So it was done. Briefly.”
+- “None of the worker’s checks were lies. They just never tried the thing that could fail. Nobody reloaded.”
+- The thesis, in your own words: **“‘Done’ is a claim. Today we learn to ask for the receipt.”**
+
+**Next →** “Someone put this better than we can.”
+
+**Fallback:** If the app won’t start, use the illustrated browser on the right. Its Reload button shows the same failure. Say it’s an illustration.
 -->
 
 ---
@@ -174,13 +226,18 @@ class: night
 <p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · One waitlist, three edits, one verification loop.</p>
 
 <!--
-Teaching expectations:
-- State the core rule: completion is a claim to evaluate, not evidence that the task is complete.
-- Introduce the three ingredients of a useful verifier: observed facts, explicit acceptance criteria, and a stopping rule.
-- Explain why this enables delegation: code can accept supported work, request a bounded repair, or hand uncertainty to a human.
+**ACT 1 · THE CLAIM** · 4:30–4:50 · either host
 
-4:30–4:50. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
-Self-verification means exercising the real product against criteria, not asking the model whether it feels finished. Our implementation combines deterministic checks, a fallible semantic judge, and code-owned policy.
+**Why this slide:** An outside voice names the thesis, and the list on the right previews the shape of the hour. From here on, everything we build is one of those four steps.
+
+**Say:**
+- “Lauren Tan, in her guide to pstack: *if an agent can’t verify its own work, nothing else matters.*”
+- “‘Verify its own work’ doesn’t mean asking the model ‘are you sure?’ It means exercising the real product against criteria and keeping proof.”
+- Walk the list: “That’s the loop we’ll build. A check. A way for the agent to run it. Evidence we keep. A rule for when to stop. We’ll build a small version of each in this repo.”
+
+**Next →** “Why bother? Not just because it’s safer. It’s faster.”
+
+Her Part 1 covers reusable verification tools and feature maps. We come back to it at the transfer exercise.
 -->
 
 ---
@@ -191,11 +248,25 @@ clicks: 3
 <VerificationContrast />
 
 <!--
-4:50–5:30. Same opening time budget. Three advances: (1) guesses vs. a specific failure; (2) more retries vs. a repaired, rechecked result; (3) wasted elapsed time vs. a stopped clock.
-These are invented, compressed elapsed times, not measurements, an agent transcript, or a claimed speedup. A usable verifier can narrow the search; it does not guarantee a fast or successful repair.
-The waitlist example connects to our actual custom CLI: pnpm lab:check --scenario memory-only --solution. It drives a real browser through submit/reload and writes observations, checks, and a report. --solution uses the reference collector/questions/policy; default semantic scores are synthetic. Here we are illustrating the persistence check, not full semantic acceptance.
-The optional Slow UI button transfers the idea to Chrome DevTools: record the interaction, inspect the main-thread flame chart, identify expensive repeated work, then re-record with the same conditions and check the original performance budget. The trace is a schematic; the repo does not contain this performance task or a DevTools agent integration. Source: https://developer.chrome.com/docs/devtools/performance/overview
-Return to Waitlist before continuing. Arrow back resets each reveal; motion is finite and reduced-motion shows the same states without animation. The real loop later enforces a retry budget and escalates when the evidence is insufficient.
+**ACT 1 · THE CLAIM** · 4:50–5:30 · either host
+
+**Why this slide:** The payoff argument. Without a check, an agent guesses and stays confident. With one, it gets a specific failure, makes a targeted fix, and knows when it’s finished. Verification is what lets you stop babysitting.
+
+**Say:** “Same task, same agent: make the waitlist survive reload. On the left, no way to check. On the right, a CLI that drives a real browser.”
+
+[click] **(click 1)** “Left: ‘probably a timing issue.’ That’s a guess. Right: the check fails with something specific. Waitlisted before reload, none after.”
+
+[click] **(click 2)** “Left: ‘Fixed!’ Reload. Still gone. Right: persist, reload, run the same check again.”
+
+[click] **(click 3)** “Left is still going, still sure of itself. Right has stopped, because the check passed on fresh evidence. The clock stops when you have proof, not when the agent runs out of ideas.”
+
+**Land it:** “A good check doesn’t just catch bad work. It tells the agent what to fix and when it’s finished.”
+
+**Next →** “This isn’t a theory we made up for a workshop. We both build tools that run on this rule.”
+
+**Careful:** The clocks are invented for illustration. They aren’t measurements. A check narrows the search; it doesn’t guarantee a fast fix. The real version is `pnpm lab:check --scenario memory-only --solution`.
+
+**Optional:** The Slow UI button tells the same story with Chrome DevTools: record, find the hot path, fix, re-record against the budget. It’s a schematic, not part of the lab. Switch back to Waitlist before advancing.
 -->
 
 ---
@@ -209,14 +280,17 @@ Return to Waitlist before continuing. Arrow back resets each reveal; motion is f
 </div>
 
 <!--
-Teaching expectations:
-- Show that the thesis comes from the hosts' daily work: both tools refuse to treat a worker's "done" as proof.
-- Preview today's ideas in production form: independent checks, receipts bound to a revision, and code (not the worker) deciding completion.
+**ACT 1 · THE CLAIM** · 5:30–6:00 · one sentence each
 
-5:30–6:00. Credibility, not a product pitch. Each host: one sentence on what your tool does when a worker says "done".
-Nick: Riker hands work to a worker agent (Pi, Claude Code or Codex) in its own worktree, then runs the job's check itself. The output lands under ~/.riker/jobs/<id>/proof/, and Riker's own store records command, exit code, commit, timing and the output's sha256. A file the worker writes there proves nothing. The last PR to this deck came from a Riker job branch.
-Zack: CTX models work as a completion graph of observable final states. Executors report evidence, verifiers write receipts (release identity, authenticated browser smoke, GitHub merge state), the owner attests. Only CTX's evaluators mark a node satisfied, from current, unexpired observations.
-Both repos are private: describe them, don't promise links or access.
+**Why this slide:** Credibility, not a pitch. The thesis comes from our day jobs. Both tools refuse to treat a worker’s “done” as proof. Today’s build is a small version of both.
+
+**Say:**
+- **Nick:** “Riker runs coding agents for me. It never believes the agent’s status. It runs the job’s check itself and records the command, exit code, commit and a hash of the output. If there’s no check, the job is marked unverified.” Optional: “The last PR to this deck came out of a Riker job.”
+- **Zack:** “CTX models work as a graph of observable end states. A worker can claim whatever it likes; the claim is logged and ignored. Verifiers write receipts tied to the exact revision, and only CTX’s evaluators close a node.”
+
+**Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. One more tab first.”
+
+**Careful:** Both repos are private. Describe them; don’t promise links or access. Callbacks come on the receipt and final-boss slides.
 -->
 
 ---
@@ -228,8 +302,19 @@ Both repos are private: describe them, don't promise links or access.
 </div>
 
 <!--
-6:00–7:00. Open the glossary and search "evidence". Confirm doctor is green; pair anyone stuck. Its QR must point to the checked public deployment, never localhost or the template hostname. Local fallback: pnpm dev then /glossary/.
-Repo = source; local lesson site = instructions; lab:app = deliberately broken app. Three surfaces of this workshop.
+**ACT 2 · THE SETUP** · 6:00–7:00 · Zack talks, Nick walks the room
+
+**Why this slide:** The last logistics before the build. It gives people a safety net so jargon doesn’t lose them, and it sets the rhythm every build will follow.
+
+**Say:**
+- “Scan this one too. It’s the glossary: every term we use today, searchable, with examples. If we say a word you don’t know, look it up there instead of tuning out.” Search “evidence” live.
+- “Three surfaces today: the repo is the code, the lesson site is the instructions, and `lab:app` is the deliberately broken app.”
+- Walk the three steps: “Every build: read the lesson, edit-run-inspect, and **predict before you run**. Predicting is how you notice when the evidence surprises you.”
+- “Fall behind? Save your file and copy just that one reference file. Or add `--solution` to any command to run the reference.”
+
+**Next →** “OK. Here’s the app you’re going to make trustworthy.”
+
+**Do:** Check that `doctor` is green around the room. Pair anyone stuck. Local fallback: `pnpm dev`, then /glossary/.
 -->
 
 ---
@@ -246,14 +331,21 @@ Repo = source; local lesson site = instructions; lab:app = deliberately broken a
 </div>
 
 <!--
-Teaching expectations:
-- Translate the task into three checks: preserve email/status after reload, communicate waitlist-only membership without a guaranteed seat, and explain email only if a place opens.
-- Separate the prototype's actual behavior from its message: browser-local persistence does not establish organizer registration or email delivery.
-- Establish that the harness owns the acceptance criteria; the worker cannot redefine success to fit its output.
+**ACT 2 · THE SETUP** · 7:00–8:00
 
-7:00–8:00. The repo and glossary are open. Agree on the three observable acceptance criteria before building.
-The task is a browser-local prototype, not organizer-side registration. Keep that boundary honest.
-These criteria are held by the harness, not generated by the worker.
+**Why this slide:** Turn “make the waitlist work” into three things we can actually check. These criteria are the contract everything else gets graded against.
+
+**Say:**
+- “The Midnight Snack Lab is sold out. Fictional, unfortunately. You own the waitlist. ‘Done’ means three things.”
+- “One: same email and status after reload. That’s the bug we just saw.”
+- “Two: it says you’re on a waitlist, not that you have a seat.”
+- “Three: it says you’ll get an email *if* a place opens. If, not when.”
+- **The setup line:** “Notice that two and three are about what the page *says*, not what it *does*. Hold onto that. It’s why we’ll need two different kinds of checks.”
+- “These criteria belong to the harness. The worker doesn’t get to redefine ‘done’ to fit what it built.”
+
+**Next →** “Three criteria. Three files to edit.”
+
+**Careful:** Keep the boundary honest. This is browser-local storage. Nobody is registered with an organizer and no email is sent.
 -->
 
 ---
@@ -270,13 +362,19 @@ These criteria are held by the harness, not generated by the worker.
 <p class="footnote">Your files: lab/exercises/ · Checkpoints: lab/solution/ · Three small edits, not an agent framework.</p>
 
 <!--
-Teaching expectations:
-- Map the three learner edits to separate responsibilities: observe facts, ask semantic questions, and decide what happens next.
-- Explain how the outputs connect: observations become judgment inputs, and hard checks plus judgment feed policy.
-- Show where to work and how to catch up one file at a time without overwriting all of a learner's progress.
+**ACT 2 · THE SETUP** · 8:00–8:45
 
-8:00–8:45. Promise the game early. They are building the bouncer they will later challenge.
-All three files are on screen at once; walk them top to bottom. Catch-up is one file, not resetting a branch.
+**Why this slide:** The map of the build. Each file answers one question, and those three questions come back on the thesis slides and at the close. Promise the game here so people know why they’re building it.
+
+**Say:**
+- “You’ll edit three small files. Each answers one question.”
+- “`observe.ts`: what actually happened? Drive a real browser and write down facts.”
+- “`questions.ts`: what does that evidence support? Ask a model narrow questions about meaning.”
+- “`decide.ts`: so now what? Accept, repair once, or hand it to a human. Plain code.”
+- “They chain together. Observations feed the questions, and checks plus judgments feed the decision.”
+- “Then the fun part. In the last stretch, you try to fool the thing you built.”
+
+**Next →** “One rule before any code: who’s allowed to do what.”
 -->
 
 ---
@@ -300,14 +398,19 @@ type Candidate = {
 <p class="footnote">A deliberately narrow tool—not a sandbox against a shell-capable agent.</p>
 
 <!--
-Teaching expectations:
-- Explain the worker's narrow output: choose storage and propose confirmation text in a validated candidate schema.
-- Keep grading authority separate: the worker proposes changes but does not edit the checks, questions, policy, or contract through this interface.
-- Distinguish a constrained tool from a security sandbox; arbitrary shell access would require additional isolation.
-- Clarify that a scripted worker makes the teaching loop repeatable; a generative worker can use the same interface.
+**ACT 2 · THE SETUP** · 8:45–10:00
 
-8:45–10:00. Scripted worker for repeatable orchestration, optional generative worker uses the same schema.
-No hidden security claim: a worker with arbitrary shell access would need real isolation.
+**Why this slide:** Separation of powers. If the worker can edit the checks, the checks mean nothing. This is the trust boundary the rest of the hour relies on.
+
+**Say:**
+- “Our worker gets a pen, not the rulebook. All it can do is propose a candidate: which storage to use and what the confirmation says. That’s the whole interface.”
+- Point at the type: “It can’t touch the tests, the questions, the policy, or the acceptance criteria. Those live in code it can’t reach.”
+- “It proposes. It never grades itself.”
+- “In class the worker is scripted, so everyone sees the same thing. A real model could fill in the same schema.”
+
+**Next →** “So the worker proposes. Our first job is to find out what actually happened.”
+
+**Careful:** A narrow interface is not a sandbox. An agent with a shell needs real isolation, and that’s a separate problem. Say so if anyone asks.
 -->
 
 ---
@@ -335,16 +438,27 @@ await page.reload();
 <p class="footnote">Lesson 03 · lab/exercises/observe.ts · Check: browser exercise: PASS · Inspect observations in report.json.</p>
 
 <!--
-Teaching expectations:
-- Teach a repeatable observation sequence in a fresh browser: read initial state, submit an email, capture the result, reload, and capture again.
-- Use role/label locators and readiness assertions instead of arbitrary sleeps so observations follow completed UI transitions.
-- Collect all seven observation fields, including both confirmation messages; let the harness compare the submitted and reloaded email/status.
-- Distinguish an observed defect from a collector failure: record an empty state after reload rather than throwing because it is not waitlisted.
+**ACT 3 · THE BUILD · Build 1 of 3: Observe** · 10:00–21:00 (3 explain · 6 build · 2 checkpoint) · hard stop 21:00
 
-10:00–21:00. 3 minutes explain, 6 minutes build, 2 minutes checkpoint.
-The code is a scaffold, not the entire solution; see the lesson for all seven fields.
-Import expect; no sleeps. Wait for submit readiness; don't assert waitlisted AFTER reload and hide the known defect as an exception.
-Nick/Zack split: one narrates common mistakes, one watches for blocked pairs. At 21:00, offer the checkpoint.
+**Why this slide:** It answers *“What did we observe?”* We turn the reload bug from slide 6 into recorded facts. The key idea: an empty value after reload is a **finding to record**, not an error to throw.
+
+**Say (about 3 min):**
+- “Build one: catch the vanishing act. Do in code exactly what you did by hand: fresh browser, submit, read, reload, read again.”
+- Walk the code: “Find elements by role and label, the way a user would. `expect(...).toHaveText` waits until the page is actually ready. No sleeps. Sleeps flake and prove nothing.”
+- “The scaffold reads status after submit. Your turn: read status, email and confirmation again after reload. Seven fields in all; the lesson lists them.”
+- **The line that matters:** “An empty value is a finding, not an error. If the record vanished, write down that it vanished. Don’t throw, and don’t assert ‘waitlisted’ after reload. That turns a product bug into a broken test and hides it.”
+
+**Build (6 min):** `pnpm lab:exercise browser` until you see `PASS`. Mistakes to call out as you walk:
+- adding sleeps
+- reusing the first confirmation value instead of reading it again after reload
+- asserting `waitlisted` after reload
+- forgetting to import `expect`
+
+**Checkpoint (2 min):** Save first, then `cp lab/solution/observe.ts lab/exercises/observe.ts`, or add `--solution`.
+
+**Next →** “Let’s look at what that evidence looks like once it’s saved.”
+
+**Roles:** One host calls out common mistakes; the other walks the room for stuck pairs.
 -->
 
 ---
@@ -356,14 +470,19 @@ clicks: 2
 <EvidenceFlow />
 
 <!--
-Teaching expectations:
-- Explain why evidence must belong to this run, this attempt, and the candidate revision actually loaded by the browser.
-- Trace the link from candidate to browser evidence to judgment in report.json; an old yes cannot approve a new revision.
-- Describe hashes as local consistency/provenance checks, not protection against someone who controls the verifier's machine.
+**ACT 3 · THE BUILD · Build 1 payoff** · ~20:00, inside the checkpoint
 
-~20:00 checkpoint. Advance twice: observations → revision-bound evidence → failed mandatory checks. This is a saved real browser run using the reference solution, not a current live run. Its judge scores are synthetic.
-Open public/materials/opening-report.json or run pnpm lab:check --scenario memory-only with the learner collector. Their unfinished policy still escalates; inspect observations and checks. Local hashes establish consistency, not isolation from a shell-capable attacker.
-Moved from footnote: Reproduce: pnpm lab:check --scenario memory-only · Open the printed report.json path.
+**Why this slide:** The payoff of Build 1: the opening bug, now as a receipt instead of a demo. It also plants the idea that evidence belongs to one specific revision. The final boss pays that off.
+
+**Say:** “Remember the opening bug? Here it is as evidence. After submit: waitlisted, ada@example.test. After reload: none. That’s what your observe function just collected.”
+
+[click] **(click 1: revision)** “Every observation is stamped with the candidate revision the browser actually loaded, plus the attempt number. Evidence belongs to *this* run of *this* version. Change the code and the old evidence stops counting. Remember that; it comes back.”
+
+[click] **(click 2: hard check)** “Then plain code compares the two sides. Persistence check: fail. No model involved. Some things you can just assert.”
+
+**Next →** “So the browser catches that one. Here’s a version where the browser says everything is fine.”
+
+**Careful:** This is a saved real browser run (reference solution), not a live one. Its judge scores are synthetic. Hashes show local consistency; they don’t protect against someone who controls the machine. To reproduce: `pnpm lab:check --scenario memory-only` and open the printed report.json, or `public/materials/opening-report.json`.
 -->
 
 ---
@@ -379,13 +498,19 @@ class: coral
 <p class="aside-note">Same feature. Two different kinds of checking.</p>
 
 <!--
-Teaching expectations:
-- Contrast behavioral correctness with semantic correctness: a persisted waitlist status can coexist with a false seat confirmation.
-- Assign each tool its job: browser assertions check state; Jev assesses whether observed wording satisfies a narrow criterion.
-- Explain why semantic judgment is useful when valid paraphrases are allowed, and why a fixed template is simpler when they are not.
+**ACT 3 · THE BUILD · the turn** · 21:00–23:00
 
-21:00–23:00. This is Jev's job: assess support for a narrow criterion, not replace the browser.
-If a fixed approved message meets the product need, use a template. We allow paraphrases on purpose.
+**Why this slide:** The pivot of the talk. Behavior and meaning are different questions. A browser assertion can tell you the record persisted. It can’t tell you whether the message is honest. That’s why we need a second kind of check, and why Build 2 exists.
+
+**Say:**
+- “The storage is fixed. The record survives reload. Browser check: pass.”
+- “Now read the confirmation: ‘Your seat is confirmed.’ There is no seat. It’s a waitlist. That breaks criterion two.”
+- “Why not just grep for ‘waitlist’? Picture: ‘You’re on the waitlist, no seat guaranteed. But your seat is confirmed!’ The keywords pass. The meaning fails.”
+- “If your product has one approved message, use a template and an exact match. It’s simpler. We let the copy be paraphrased on purpose, so we need something that checks meaning.”
+
+**Next →** “That’s a different kind of job, so it needs a different kind of tool.”
+
+**Optional:** Show it live with `pnpm lab:app --scenario overpromise`.
 -->
 
 ---
@@ -403,9 +528,20 @@ If a fixed approved message meets the product need, use a template. We allow par
 <p class="footnote"><a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noopener noreferrer">TypeSafe’s fast/slow framing</a> · <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener noreferrer">Generator/evaluator architecture: Anthropic</a></p>
 
 <!--
-21:30–23:00, inside the existing two-minute contrast segment. System 1/2 is a design analogy, not a diagnosis of a model's cognition or a claim that speed guarantees correctness.
-TypeSafe calls its fast structured model Jev. Our judge will use it for meaning; deterministic browser assertions remain the tool for persistence.
-Anthropic's planner/generator/evaluator harness is one broader example. Our class worker is scripted for repeatability: it is not a live System 2 model. The optional generative worker is an extension after class.
+**ACT 3 · THE BUILD · bridge to Build 2** · ~22:00, same two-minute block
+
+**Why this slide:** Explains why we use a small, fast judge model instead of asking the worker or a big model, and introduces Jev before we use it. It also restates who owns what: the browser owns facts, the judge owns meaning, and code owns the decision.
+
+**Say:**
+- “An analogy from fast and slow thinking. System 1 is quick, narrow judgment: ‘Does this copy promise a seat?’ System 2 is deliberate work: ‘How should I fix this feature?’”
+- “Your coding agent is System 2. To check one narrow claim, you want System 1: fast, structured, one question at a time.”
+- “Our System 1 judge is Jev, from TypeSafe.”
+- Point at the note under the lanes: “Neither one tells you what the browser did. That’s still Playwright. And neither one makes the decision. Code does.”
+- Optional: “Anthropic’s long-running app harness splits the work the same way: planner, generator, evaluator.”
+
+**Next →** “So what do we ask the fast judge? Two questions.”
+
+**Careful:** It’s an analogy, not a claim about how models think. Fast doesn’t mean correct. Our class worker is scripted, not a live System 2 model.
 -->
 
 ---
@@ -424,15 +560,25 @@ Anthropic's planner/generator/evaluator harness is one broader example. Our clas
 <p class="footnote">Lesson 04 · lab/exercises/questions.ts · Check: questions exercise: PASS · Then inspect a live judgment.</p>
 
 <!--
-Teaching expectations:
-- Turn the contract into two independently useful Noul questions: honest waitlist status and the conditional email next step.
-- Define what supports yes and no for each question; require both observed messages to satisfy the criterion and allow equivalent wording.
-- Treat confirmation text as untrusted evidence, not evaluator instructions; missing text and contradictory promises must not count as support.
-- Explain that the exercise check validates question construction, while a real model call is needed to inspect the effect of wording.
+**ACT 3 · THE BUILD · Build 2 of 3: Infer** · 23:00–28:00 (2 explain · 3 build)
 
-23:00–28:00. Open lab/exercises/questions.ts. Show noul(question, {true, false}) in the lesson/code editor.
-Keep questions independently useful. Don't hide both criteria in one broad “is this good?” question.
-Say “both messages”; a blank post-reload message cannot support yes.
+**Why this slide:** It answers *“What did we infer?”* We turn criteria two and three into two narrow yes/no questions a model can answer from the evidence. Narrow beats broad: “is this good?” can’t tell you which criterion failed.
+
+**Say:**
+- “Build two. No vibes check. We don’t ask ‘is this good?’ We ask two narrow questions, one per criterion.”
+- “**honest**: do both messages say waitlist, no guaranteed seat, and nothing that contradicts it?”
+- “**nextStep**: do both say you’ll get an email *only if* a place opens?”
+- “`noul` is Jev’s yes/no primitive. You write the question, what a yes looks like, and what a no looks like. You get back the probability of yes.”
+- Three tips:
+  - “Say ‘both messages.’ A blank message after reload can’t support a yes.”
+  - “Allow equivalent wording. Don’t demand your favorite phrasing.”
+  - “The confirmation text is untrusted. Tell the judge to ignore any instructions inside it.” (This sets up the game.)
+
+**Build:** `pnpm lab:exercise questions` until you see `PASS`. That checks structure only, not whether the questions are any good. The next slides test that.
+
+**Catch-up:** `cp lab/solution/questions.ts lab/exercises/questions.ts` (save first).
+
+**Next →** “While you write, a word about the number you’ll get back.”
 -->
 
 ---
@@ -447,14 +593,16 @@ class: night
 <p class="footnote">No separate confidence field.</p>
 
 <!--
-Teaching expectations:
-- Define a Noul as the model's probability of yes for the specific question given its inputs.
-- Correct the common misreadings: 0.55 is not percent complete, a copy-quality grade, or a separate confidence field.
-- Keep probability and permission separate: policy decides what to do with the signal, and production thresholds need representative calibration.
+**ACT 3 · THE BUILD · during Build 2** · 30 seconds while people type
 
-During the questions build, give this 30-second explanation while people think.
-Near .5 means yes/no uncertainty, not medium-quality copy.
-Moved from footnote: Check calibration on representative data—not on these few teaching cases.
+**Why this slide:** Head off the most common misreading of the judge’s output before anyone sees a live score. It also hands the next job to Build 3: the policy decides what the number means.
+
+**Say:**
+- “Jev gives you the probability that the answer is yes. 0.55 doesn’t mean 55% done, or a C-grade message. It means the model is torn between yes and no.”
+- “It’s a useful signal. It isn’t proof, and it isn’t permission. Deciding what to do with the number is the policy’s job. That’s build three.”
+- “A threshold like 0.9 only means something after you’ve checked it against real labeled examples from your product. Not our handful of teaching cases.”
+
+**Next →** “Let’s see some real numbers.”
 -->
 
 ---
@@ -476,16 +624,21 @@ pnpm lab:check --scenario overpromise --judge live
 <p class="footnote">Recorded ≠ newly evaluated.</p>
 
 <!--
-Teaching expectations:
-- Have attendees predict how happy and overpromising messages should affect each criterion, then compare with actual Jev scores.
-- Inspect the submitted evidence and raw probabilities so an unexpected result can be discussed without conflating it with policy.
-- Explain which code is being evaluated: omit --solution for learner questions; the reference flag switches all three exercise implementations.
-- Distinguish live feedback from recorded responses and synthetic fixtures; neither fallback evaluates newly edited questions.
+**ACT 3 · THE BUILD · Build 2 payoff** · 28:00–33:00 · one host drives, the other runs predictions
 
-28:00–33:00. One host drives, the other asks the room to predict which criterion drops.
-Instructor uses --solution for the reference. Learners' still-unfinished policy escalates; focus on probabilities.
-15-second request cap; then explicit replay fallback. Do not waste the room waiting on Wi-Fi.
-Moved from footnote: Synthetic fixtures ignore your question wording entirely.
+**Why this slide:** The first real model call. People test their own questions against live Jev. The habit we’re teaching: **predict, then inspect.**
+
+**Say:**
+- “Predict first. Happy path: both scores high? Overpromise, the ‘seat confirmed’ copy: which question should drop?” Get a guess from the room.
+- Run `pnpm lab:check --scenario happy --judge live`, then `--scenario overpromise --judge live`. Show the raw honest and nextStep scores and the evidence that was sent.
+- “Your policy isn’t written yet, so the final decision will say escalate. Ignore that for now. Look at the scores.”
+- If a result surprises you: “Before blaming the model, read the exact evidence and the exact question wording.”
+
+**Next →** “Which raises a question to ask about every score you see today: where did it come from?”
+
+**Flags:** Learners omit `--solution` to test their own questions. The instructor uses `--solution` for the reference.
+
+**Fallback:** Give each call 15 seconds at most, then `pnpm lab:replay`. Say “recorded, not new feedback.” Don’t make the room wait on Wi-Fi. Synthetic fixtures ignore question wording entirely, so never use them to judge a prompt.
 -->
 
 ---
@@ -501,13 +654,19 @@ class: indigo
 </div>
 
 <!--
-Teaching expectations:
-- Name what each result can establish: synthetic scores test policy, recordings show past responses, and live calls provide new but fallible judgments.
-- Prevent source confusion: neither a replay nor a fixture provides feedback on a learner's newly edited questions.
-- Label peer review as human judgment and keep its conclusions separate from claims about model performance.
+**ACT 3 · THE BUILD · closes Build 2** · ~33:00 (also a callback whenever sources get mixed up)
 
-Transition at 33:00, or use as a callback whenever source confusion appears.
-No additional lecture block. Later, in the game's no-key rounds, name the fourth source plainly: a human peer.
+**Why this slide:** One habit that prevents a lot of self-deception: always say what kind of result you’re looking at. We use these labels for the rest of the hour, including in the game.
+
+**Say:**
+- “You’ll see three kinds of scores today.”
+- “**Synthetic fixture**: we wrote the numbers by hand. Good for testing the policy. Says nothing about your questions.”
+- “**Recorded response**: a real Jev call from earlier. Real, but not feedback on what you just wrote.”
+- “**Live Jev**: a fresh judgment of your words. Still fallible.”
+- “When someone shows you an eval, ask which of these it is.”
+- “In the game there’s a fourth source: your partner. That’s human judgment. Keep it separate too.”
+
+**Next →** “So we have facts and we have judgments. Now: what do we do with them?”
 -->
 
 ---
@@ -525,14 +684,25 @@ No additional lecture block. Later, in the game's no-key rounds, name the fourth
 <p class="footnote">Lesson 05 · lab/exercises/decide.ts · Check: policy exercise: PASS · Then run pnpm lab:loop.</p>
 
 <!--
-Teaching expectations:
-- Implement the policy in order: invalid or unavailable evidence/judgment escalates before considering product repair.
-- Treat hard failures and any probability at or below 0.2 as repair candidates, but escalate if the one-repair budget is already spent.
-- Escalate remaining probabilities below 0.9; accept only when all hard checks pass and both semantic criteria clear the threshold.
-- Validate probabilities, thresholds, and repair count; never average away a hard failure or treat uncertainty as a known defect.
+**ACT 3 · THE BUILD · Build 3 of 3: Stop** · 33:00–40:00 (3 explain · 4 build)
 
-33:00–40:00. Walk the rules top to bottom; then write decide(). Validate probabilities, thresholds, and repair count.
-“Ask a human” is escalate in code, not an automatic rejection. After the one repair, a known failure escalates too.
+**Why this slide:** It answers *“Why did we stop?”* This is where the decision lives: in plain code, not in the worker and not in the judge. The order of the rules is the lesson.
+
+**Say:**
+- “Build three: the bouncer’s rulebook. Read it top to bottom. Order matters.”
+- “**Row 1:** evidence missing, stale or invalid, or the judge is down? Ask a human. We can’t judge, so we don’t guess, and we don’t blame the product.”
+- “**Row 2:** a hard check failed, or any score is 0.2 or lower? That’s a known defect. Repair, once. If the repair is already used, ask a human.”
+- “**Row 3:** anything else below 0.9? Uncertain. Ask a human.”
+- “**Row 4:** everything clear? Let it in.”
+- Two rules people break:
+  - “You can’t average away a hard failure. A 0.99 on the copy doesn’t rescue a lost record.”
+  - “‘Ask a human’ isn’t ‘reject.’ It means ‘here’s the evidence, you decide.’”
+
+**Build:** Implement `decide()`, then `pnpm lab:exercise policy` until you see `PASS`. Validate that probabilities are 0–1, thresholds are sane, and the repair count is a non-negative integer. Then `pnpm lab:loop`.
+
+**Catch-up:** `cp lab/solution/decide.ts lab/exercises/decide.ts` (save first).
+
+**Next →** “Let’s watch all three pieces run together.”
 -->
 
 ---
@@ -544,16 +714,29 @@ clicks: 5
 <LoopMachine />
 
 <!--
-Teaching expectations:
-- Trace proposal → browser evidence → judgment → policy → repair → re-check, keeping observation, inference, and action distinct.
-- Show both stopping outcomes after repair: accept a corrected candidate or escalate a stubborn failure with reasons for human review.
-- Require fresh browser evidence and a new judgment for the repaired revision; a previous score is not reusable approval.
-- Make the budget concrete: one repair permits at most two candidate evaluations, not an open-ended retry loop.
+**ACT 3 · THE BUILD · the payoff** · 40:00–41:00 · arrow keys through six stages
 
-40:00–42:00. Advance through the visual loop with arrow keys. This is a labelled illustration, not a live model call.
-At the end, toggle “Make the worker stubborn” and show the escalation branch. Toggle doesn't rerun anything.
-Then briefly run pnpm lab:loop (or --solution) for actual browser-backed repair → accept; --stubborn for escalation.
-Fresh observations and judgment are required for the repaired revision. One repair = at most two candidate evaluations.
+**Why this slide:** All three builds running as one loop, including the repair. It shows the two ways a bounded loop can end: accept fixed work, or stop and hand it to a human.
+
+**Say:** “Attempt one. The worker proposes: ‘Your seat is confirmed.’ Plausible. Wrong.”
+
+[click] **(click 1: browser)** “Browser: the record survives reload. Pass. But that says nothing about the seat promise.”
+
+[click] **(click 2: judge)** “Judge: honest 0.01, next step 0.03. Not supported. Policy says it’s a known defect. Repair.”
+
+[click] **(click 3: repair)** “One repair. The worker gets the failed criteria, not permission to rewrite them. And look at the trail: the old proof is dead. New revision, new evidence required.”
+
+[click] **(click 4: re-check)** “Attempt two: ‘Waitlist only, no guaranteed seat.’ Fresh browser run, fresh judgment. Both pass.”
+
+[click] **(click 5: decision)** “Now you can call it done. And we accept the *repaired* revision, not the original promise.”
+
+Then tick **Make the worker stubborn**: “Same loop, with a worker that won’t fix it. Attempt two still promises a seat. The budget’s spent, so a human gets it, evidence attached. One repair means two attempts at most. No infinite retry loop.”
+
+**Next →** “That was the cartoon. Here’s the actual receipt.”
+
+**Do:** If time allows, run `pnpm lab:loop` (or `--solution`) for the real browser-backed run, and `--stubborn` for the escalation.
+
+**Careful:** This animation is an illustration with synthetic scores. The toggle doesn’t rerun anything.
 -->
 
 ---
@@ -568,11 +751,23 @@ class: indigo
 <div class="command">pnpm lab:loop<br>pnpm lab:loop --stubborn</div>
 
 <!--
-This belongs to the same three-minute payoff as the previous animation. Run the completed learner loop, or --solution for the reference. Open report.json and match its fields to this saved reference run.
-Point to the different candidate revisions AND evidence hashes. A new candidate does not inherit the old judgment. --stubborn must end repair → escalate.
-Captured report: public/materials/repair-report.json. This slide is not a live model response. If short on time, inspect the saved report and protect the game.
-Moved from footnote: Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.
-In our tools: Riker keeps this same kind of receipt for every job check (command, exit code, commit, output sha256). CTX binds each verifier receipt to an exact job, attempt and graph revision. Same idea as expected.revision + the evidence hash here.
+**ACT 3 · THE BUILD · the receipt** · 41:00–41:30
+
+**Why this slide:** It closes the loop on the thesis. This is what “ask for the receipt” looks like: a real report from a real run, where each attempt has its own revision and its own evidence.
+
+**Say:**
+- “This is report.json from a real run. Attempt one: repair. Attempt two: accept.”
+- Point at the rows: “Different candidate revision. Different evidence hash. Attempt two didn’t inherit attempt one’s judgment. It earned its own.”
+- “That’s a receipt: what was checked, against which version, with what result, and why we stopped.”
+- Optional callback, one line each:
+  - Nick: “Riker keeps exactly this for every job: command, exit code, commit, output hash.”
+  - Zack: “CTX ties every receipt to an exact job, attempt and graph revision.”
+
+**Do:** If people ran `pnpm lab:loop`, have them open their own report.json and find `expected.revision`, `evidence.loadedRevision`, the probabilities, and the decision reasons.
+
+**Next →** “So what did we actually build?”
+
+**Careful:** It’s a saved run (`public/materials/repair-report.json`) with a scripted worker and synthetic scores, though every attempt ran a real browser. Short on time? Skip the live run and protect the game.
 -->
 
 ---
@@ -586,9 +781,22 @@ class: night
 </div>
 
 <!--
-41:30–42:00, the last 30 seconds of the payoff. No reveals: leave it up long enough for people to photograph it.
-Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
-42:00–43:00. Questions pause. Ask: "Questions before the game?" Take one or two, park the rest for the Q&A slide at the end. Hard stop at 43:00.
+**ACT 3 · THE BUILD · summary** · 41:30–43:00 · hard stop 43:00
+
+**Why this slide:** The photo slide. It sums up the build as three questions, and those questions are the takeaway. A short Q&A pause follows before the game.
+
+**Say:**
+- “Three questions to ask of any agent’s ‘done.’”
+- “What did we **observe**? Your browser evidence.”
+- “What did we **infer**? The judge’s read on meaning.”
+- “Why did we **stop**? Your policy.”
+- **“‘Done’ is a claim. Ask for the receipt.”**
+
+Pause long enough for phones.
+
+Then: “Questions before the game?” Take one or two. Park the rest for the Q&A at the end.
+
+**Next →** “You built the bouncer. Let’s see if it holds.”
 -->
 
 ---
@@ -607,15 +815,20 @@ class: indigo
 <p class="footnote">A good verifier doesn’t just say no to everything.</p>
 
 <!--
-Teaching expectations:
-- Define both jobs of a useful verifier: catch invalid work and allow valid work through.
-- Explain the two complementary tests: a plausible false promise probes false acceptance; an unusual truth probes unnecessary rejection.
-- Freeze questions and thresholds and agree labels before judging so the comparison is not changed to fit the result.
-- Keep peer-reviewed and live-model rounds explicitly distinct; synthetic fixtures cannot judge newly authored text.
+**ACT 4 · THE GAME** · 43:00–44:00
 
-43:00–44:00. Pair up; pick first roles. The game now involves authored attacks, not just executing our fixtures.
-Freeze the verifier and thresholds for the round. Label each candidate on the scorecard BEFORE judging, not inside its JSON.
-No keys: same creative task, peer-review mode. Never pretend a fixture scored new text.
+**Why this slide:** It tests both ways a verifier can fail: letting bad work in, and keeping good work out. A verifier that rejects everything is useless, and the scoring will show that.
+
+**Say:**
+- “Pair up. One of you is the Bouncer, defending the verifier. The other is the Bluffer.”
+- “Round one: the Bluffer writes a convincing lie, a confirmation that breaks the contract but sounds great.”
+- “Round two: swap. Write an honest message in an unusual way, and see whether the bouncer wrongly bounces it.”
+- “A good verifier doesn’t just say no to everything.”
+- **Rules:** “Freeze the verifier: no editing questions or thresholds mid-game. Before you run anything, write down whether your message is honest or a lie. On paper, not in the JSON.”
+
+**Next →** “Round one.”
+
+**No key?** Same game, but your partner judges. That’s human judgment, not a Jev measurement.
 -->
 
 ---
@@ -627,15 +840,20 @@ No keys: same creative task, peer-review mode. Never pretend a fixture scored ne
 </div>
 
 <!--
-Teaching expectations:
-- Author one plausible violation of the message contract while keeping storage local, isolating the semantic check from persistence.
-- Identify the precise violated criterion before the call; unusual or silly wording alone does not make a candidate invalid.
-- Explore how polite contradictions or embedded evaluator instructions can challenge a judge without changing the authoritative contract.
+**ACT 4 · THE GAME · Round 1: false accept** · 44:00–45:30 · 90-second timer
 
-44:00–45:30 writing time. Press Start; timer is opt-in and pauses if you leave the slide.
-The starter is valid—attendee must introduce a real violation, not just add silly words.
-Inspiration if stuck: contradict yourself politely, promise a guaranteed seat, hide an evaluator instruction.
-Both partners agree on the violated criterion before running. If disputed, mark “needs label review” and don't count it as a model error.
+**Why this slide:** It probes false acceptance. Storage stays local, so the only thing under test is meaning.
+
+**Say:**
+- “Bluffers: get bad work past the door. Edit `bluff.json`. Keep storage local and change only the confirmation. One false promise, as plausible as you can make it.”
+- “Stuck? Contradict yourself politely. Bury a seat guarantee in fine print. Or hide an instruction to the judge inside the message.”
+- “Before you run it, agree with your partner on which criterion it breaks. Silly isn’t wrong. It has to actually break something.”
+
+**Do:** Press Start. The timer pauses if you leave the slide.
+
+**Next →** “Time. Put it on trial.”
+
+**Careful:** The starter file is valid as given. People must introduce a real violation. If partners disagree on the label, mark it “needs review” and don’t count it.
 -->
 
 ---
@@ -657,16 +875,19 @@ pnpm lab:check --candidate lab/challenges/bluff.json \
 <p class="aside-note">The partner judges the visible message against the same contract.<br>Human round ≠ a measurement of Jev.</p>
 
 <!--
-Teaching expectations:
-- Run the authored candidate through the frozen verifier and trace the outcome through evidence, criterion scores, and policy reasons.
-- Keep the human label out of model input, then compare it with the committed decision instead of relabeling after the result.
-- Separate product judgments from invalid experiments: malformed JSON, model outages, and disputed labels are no contest.
-- In peer mode, require the defender to explain a decision using the visible message and contract, without presenting it as Jev performance.
+**ACT 4 · THE GAME · the trial** · 45:30–47:00
 
-45:30–47:00. One model call. Reference verifier is the default tournament baseline; omit --solution if both agree to test completed learner code.
-The file parser uses the worker's strict schema, rejects extra keys, and never sends the human label to Jev.
-Model outage or malformed JSON is no contest, not a win. API failures never fall back to synthetic scores.
-For no-key mode, show the prototype in a fresh private window. The defender explains the decision with evidence.
+**Why this slide:** Run the attack through the frozen verifier and read *why* it decided what it did, not just whether it was fooled.
+
+**Say:**
+- “Run your bluff through the verifier.” Point at the command.
+- “Read the criterion, the evidence, the scores and the decision. Then reveal your label. Did the bouncer catch it?”
+- “Two live calls per pair, max. No changing questions, labels or thresholds after you see the answer. That’s grading on a curve.”
+- “No key? Open the app with your candidate, and your partner judges it against the contract. That’s a human round, not a measurement of Jev.”
+
+**Next →** “Swap roles.”
+
+**Details if asked:** `--solution` means everyone tests against the same reference verifier. Drop it if both partners finished their code and want to test their own. A model outage or broken JSON is no contest, not a win. The parser rejects extra keys, and the human label never reaches Jev. API failures never fall back to synthetic scores.
 -->
 
 ---
@@ -679,15 +900,18 @@ class: lime
 </div>
 
 <!--
-Teaching expectations:
-- Write a genuinely valid paraphrase that preserves waitlist-only membership, no guaranteed seat, and email only if a place opens.
-- Teach that a verifier should recognize supported meaning rather than demand the reference wording or a particular tone.
-- Use the same frozen verifier after swapping roles; a needless repair or escalation on valid text is a cost worth measuring.
+**ACT 4 · THE GAME · Round 2: false reject** · 47:00–48:30 write · 48:30–50:00 judge
 
-47:00–48:30 write; 48:30–50:00 judge using the same command and legit.json.
-Try a pirate, a poet, or an overly formal maître d'—but still clearly say waitlist-only, no seat guaranteed, email if room opens.
-Humor is optional, clarity isn't. Human labels are agreed before judgment and kept outside JSON.
-A valid but rejected paraphrase exposes unnecessary interruption. Switching roles keeps the activity from becoming only jailbreak hunting.
+**Why this slide:** It probes the opposite failure: honest work that gets bounced. That costs a human interruption every time, and interruptions add up.
+
+**Say:**
+- “Swap roles. Now get good work in. Edit `legit.json`. Say it differently but keep every promise honest: waitlist only, no guaranteed seat, email if a place opens.”
+- “Try a pirate, a poet, a very formal maître d’. Funny is optional. Clear is required.”
+- “If the bouncer rejects an honest message, that’s a real cost: someone gets pulled in for nothing.”
+
+**Do:** Press Start. When time’s up, run the same trial command with `legit.json`.
+
+**Next →** “Let’s score it.”
 -->
 
 ---
@@ -707,17 +931,24 @@ A valid but rejected paraphrase exposes unnecessary interruption. Switching role
 <p class="footnote">Human-reviewed rounds and live-model rounds use separate scoreboards.</p>
 
 <!--
-Teaching expectations:
-- Classify outcomes against the pre-agreed label: correct repair, correct acceptance, false acceptance, or unnecessary interruption.
-- Explain the asymmetric scoring: admitting bad work is costly, but refusing all good work is not a successful defense.
-- Use one counterexample to identify what failed—the question, the evidence, the policy, or the human rubric—rather than celebrate trickery alone.
-- Keep outages and disputed labels unscored, and keep human-review results separate from live-model results.
+**ACT 4 · THE GAME · scoring** · 50:00–52:00
 
-50:00–52:00. Invite one pair's funniest USEFUL counterexample. Needn't be a successful model trick to learn something.
-Zack/Nick can act as the label-review jury if a message is ambiguous; don't quietly move the label to fit the model.
-Escalate-everything scores -1 across a bad+good pair, not a perfect defense. Max score is 4.
-Keep the competition about the system, never about embarrassing a participant. No promised physical prize.
-Count hands: how many polite lies got past the door? How many honest rewrites got bounced? Say the room's numbers before the next slide. They're the only real data in the deck.
+**Why this slide:** The scoring encodes the lesson: false accepts cost the most, but refusing everything isn’t a win. Then pull one useful counterexample from the room and get the room’s real numbers.
+
+**Say:**
+- Walk the card: “Catch bad work: plus two. Let good work in: plus two. Let bad work in: minus three, the expensive mistake. Bounce good work: minus one. Escalate bad work: zero, safe but no credit.”
+- “A bouncer that escalates everything scores minus one across the two rounds. Max is four.”
+- Count hands: “How many polite lies got through? How many honest rewrites got bounced?” **Say the numbers out loud. They’re the only real data in the deck.**
+- Ask one pair for their most *useful* counterexample, not necessarily a successful one. Then ask: “What failed: the question, the evidence, the policy, or your label?”
+
+**Next →** “You just felt a trade-off. Here it is in numbers.”
+
+**Rules:**
+- An outage or a disputed label is no contest.
+- The hosts are the label jury. Don’t move a label to fit the model.
+- Human and live rounds go on separate scoreboards.
+- Bragging rights only, no physical prize.
+- Keep it about the system. Never embarrass a participant.
 -->
 
 ---
@@ -732,15 +963,21 @@ Count hands: how many polite lies got past the door? How many honest rewrites go
 <p class="aside-note" style="margin-top: 24px">Synthetic policy fixtures—not measured Jev accuracy. Same cases, different policy.</p>
 
 <!--
-Teaching expectations:
-- Read both sides of the threshold trade-off: lowering acceptance from 0.9 to 0.8 reduces interruptions but admits a bad candidate.
-- Explain the denominators separately: bad candidates accepted out of five, good candidates interrupted out of three.
-- Attribute these counts to synthetic policy fixtures, not measured Jev accuracy or outcomes after a repair loop.
-- Connect threshold choice to error costs and representative labeled evaluation rather than treating 0.9 as universally safe.
+**ACT 4 · THE GAME · the trade-off** · 52:00–54:00
 
-52:00–54:00. Use this precomputed table, or pnpm lab:eval --solution followed by --accept-at 0.8 if ahead.
-Lowering the threshold admits the valid paraphrase AND the polite lie. The second command intentionally exits 1.
-These are single-candidate decisions; no repairs executed. Do not mix them with the live game scores.
+**Why this slide:** It turns the game’s tension into a design decision. Every threshold trades interruptions for false confidence. You choose based on which mistake costs more in your product.
+
+**Say:**
+- “Same cases, two thresholds. At 0.9: zero of five bad candidates get in, but two of three good ones interrupt a human.”
+- “Drop to 0.8: one fewer interruption, and one bad candidate walks in.”
+- “The honest paraphrase that 0.8 lets in? The polite lie comes in with it.”
+- “So which is right? It depends on what each mistake costs you. A false seat promise, or a person reading one extra message. Decide with labeled examples, not vibes. 0.9 isn’t magic.”
+
+**Next →** “One last case. It’s the sneakiest.”
+
+**Careful:** These are synthetic policy fixtures, not measured Jev accuracy. They’re single-candidate decisions with no repairs. Don’t mix them with the game scores.
+
+**If ahead:** `pnpm lab:eval --solution`, then `--accept-at 0.8`. The second run exits 1 on purpose.
 -->
 
 ---
@@ -756,16 +993,24 @@ class: night
 <p class="footnote">After class: freeze your policy, then reveal --suite heldout. Keep unseen cases unseen.</p>
 
 <!--
-Teaching expectations:
-- Recognize stale evidence as a provenance failure even when its contents look like a perfect pass.
-- Explain why this policy escalates: the current revision lacks valid proof, which is not itself a known product defect for the worker to repair.
-- Introduce the take-home discipline: freeze policy before revealing held-out cases, and do not tune on them while calling them unseen.
+**ACT 4 · THE GAME · final boss** · 54:00–54:30
 
-54:00–55:00. One quick shared fixture: stale evidence is an injected harness fault, not a generated worker config.
-A one-sentence evidence explanation earns the room's final point. Cut this live command if behind, not the transfer exercise.
-Heldout evaluation moves to take-home to protect time for participant-authored attacks.
-Nick: Riker's rule for this. A file a worker writes into the proof folder proves nothing, and a log changed since the check shows as changed, not as proof. When a job adds tests, Riker also runs them against the job's base: tests that pass there too don't prove the fix. If there's a real story behind that rule, tell it here.
-Zack: CTX evaluates every node from current, unexpired observations. Failed or untrusted receipts never satisfy a gate.
+**Why this slide:** A callback to the revision stamp on slide 15. Evidence can be perfect and still worthless if it’s for a different version. Provenance is part of the receipt.
+
+**Say:**
+- “The final boss: a perfect receipt. Every check green. For the wrong revision. It passed yesterday, on yesterday’s code.”
+- Run `pnpm lab:check --scenario stale-evidence --solution` (cut it if behind).
+- Ask: “What should the policy do?” Let someone answer in one sentence and give them the room’s final point.
+
+[click] **(click: answer)** “Escalate. Don’t guess. And don’t send it back to the worker. Nothing is known to be wrong with the product; what’s missing is proof. That’s a human call.”
+
+**Story beat (optional):**
+- **Nick:** Riker’s rule: a file the worker writes into the proof folder proves nothing, and a log that changed after the check shows up as changed, not as proof. When a job adds tests, Riker also runs them against the base. Tests that pass there too don’t prove the fix. If you have a real story behind that rule, tell it here. Don’t invent one.
+- **Zack:** CTX evaluates every node from current, unexpired observations. Failed or untrusted receipts never satisfy a gate.
+
+**Next →** “Which brings us back to the three questions.”
+
+**Careful:** Stale evidence is a fault we inject into the harness, not something the worker produced. Take-home from the footnote: freeze your policy *before* running `--suite heldout`, and don’t tune on cases you’re calling unseen.
 -->
 
 ---
@@ -779,9 +1024,18 @@ class: night
 </div>
 
 <!--
-54:30–55:00, the last 30 seconds of the final boss. Same slide as before the game. No reveals: leave it up long enough for people to photograph it.
-Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
-Tie it back to the three builds: observe.ts recorded what happened, questions.ts asked what the evidence supports, decide.ts said when to stop.
+**ACT 4 · THE GAME · bookend** · 54:30–55:00
+
+**Why this slide:** The same slide as before the game, but now each question has been attacked and held. It’s a second chance for photos, and it closes the build-and-break arc.
+
+**Say:**
+- “Same three questions. Now you’ve attacked them.”
+- “**Observe**: `observe.ts` recorded what happened, including the record that vanished.”
+- “**Infer**: `questions.ts` asked what the evidence supports, and you tested whether it could be fooled.”
+- “**Stop**: `decide.ts` made the call, including when to hand it to a human, like the stale proof just now.”
+- **“‘Done’ is a claim. Ask for the receipt.”**
+
+**Next →** “Now take it home.”
 -->
 
 ---
@@ -797,15 +1051,21 @@ Tie it back to the three builds: observe.ts recorded what happened, questions.ts
 </div>
 
 <!--
-Teaching expectations:
-- Transfer the pattern to one real project task by naming a plausible but misleading completion claim.
-- Choose independent evidence that would expose the failure, using a hard assertion where sufficient and semantic judgment only where useful.
-- Define a concrete stop condition: what earns acceptance, what can be repaired, and when a human must take over.
-- Leave with one small verification check to implement first, not a proposal for a whole new agent framework.
+**ACT 5 · TAKE IT HOME** · 55:00–58:00 · protect this, even if behind
 
-55:00–58:00. Two-minute write, then brief pair-share. If stuck: settings change, support reply, dashboard filter.
-Ask where a hard assertion is sufficient and where a semantic judgment is actually helpful.
-Moved from footnote: 55–58 minutes · Lesson 07 · /materials/transfer-worksheet.md · Launch → drive → observe → decide.
+**Why this slide:** Transfer to their own work. The deliverable is one small check they’ll actually build first, not a framework.
+
+**Say:**
+- “Pick one real feature in your own app, something an agent might call done when it isn’t. Fill in the receipt.”
+- “**Feature and user path**: what does a user actually do?”
+- “**Launch, check, proof**: how does an agent start it, exercise it, and show you evidence?”
+- “**When do we stop**, or ask for help?”
+- “Then ask: where is a plain assertion enough, and where do you actually need a judgment about meaning? Usually it’s mostly assertions.”
+- “Lauren’s pstack Part 1 goes deep on this: reusable verification tools and a map of your app’s features.”
+
+**Do:** Two minutes to write, then share with a partner. Stuck? Suggest a settings change, a support reply, or a dashboard filter. There’s a longer version in the worksheet at /materials/transfer-worksheet.md (Lesson 07).
+
+**Next →** “Let’s hear a couple.”
 -->
 
 ---
@@ -817,13 +1077,16 @@ class: indigo
 <p class="footnote">Your agents can keep saying “done.” Now you can ask for the receipt.</p>
 
 <!--
-Teaching expectations:
-- Reinforce the distinction between observed facts, model inferences, and the policy decision to stop.
-- Ask attendees to explain their project example through all three questions, including the evidence behind acceptance or escalation.
-- Close on the portable habit: keep the worker's claim separate from proof, re-check repairs, and bound the loop.
+**ACT 5 · TAKE IT HOME · close** · 58:00–60:00 · both hosts
 
-58:00–60:00. Take one or two real project examples. Close together.
-Credit both co-instructors; leave the pattern, the code, and one next action—not another reading list.
+**Why this slide:** Close the story by running a real example from the room through the three questions.
+
+**Say:**
+- Take one or two examples. For each, ask: “What would you observe? What would you need to infer? When would you stop?”
+- Close together: “Your agents will keep saying ‘done.’ Now you know how to ask for the receipt.”
+- Credit each other. “The repo, the glossary and the worksheet all stay with you.”
+
+Leave them one next action (build that first check), not a reading list.
 -->
 
 ---
@@ -836,8 +1099,19 @@ class: night
 </div>
 
 <!--
-After 60:00, for as long as the session allows. Leave this up during Q&A so people can scan the repo and glossary while others ask.
-Likely questions and short answers: "Questions to listen for" in docs/facilitator.md.
+**AFTER THE HOUR · Q&A** · 60:00+
+
+**Why this slide:** Leave the QR codes up while people ask questions.
+
+**Likely questions (short answers):**
+- **Why two models?** Different jobs. The worker proposes; the judge checks one narrow claim.
+- **Why not check exact text?** If exact text is the requirement, use a template. We allowed paraphrases on purpose.
+- **Can the agent change the tests?** Not through this interface. An agent with a shell needs real isolation.
+- **Is 0.9 safe?** Not universally. Measure on labeled cases, weighted by what each mistake costs you.
+- **Does a passing browser test prove the backend?** No. This app has no backend. Add server-side observations when that’s your requirement.
+- **Why escalate an outage instead of retrying?** A production harness might retry transient failures separately. Here we escalate so a repair can’t hide an infrastructure failure.
+
+More in docs/facilitator.md, under “Questions to listen for.”
 -->
 
 ---
@@ -856,6 +1130,9 @@ class: lime
 </div>
 
 <!--
-After Q&A, or as soon as the room has to clear. Leave it up while people pack up.
-Invite people to bring their own agent's "done" and the verifier they started in the transfer exercise.
+**AFTER THE HOUR · booth** · while the room clears
+
+**Say:** “Not done talking? Neither are we. Find us at Booth 6. Bring the agent that swears it’s done, or the verifier you started today.”
+
+Leave it up while people pack.
 -->

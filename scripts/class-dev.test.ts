@@ -54,7 +54,7 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
           const notes = await fetch(`${url}/__slidev/slides/1.json`);
           assert.equal(notes.status, 200, "Presenter notes endpoint");
           const slide = z.object({ note: z.string(), noteHTML: z.string() }).parse(await notes.json());
-          assert.match(slide.note, /Teaching expectations:/);
+          assert.match(slide.note, /Why this slide:/);
           assert.match(slide.noteHTML, /<li>/);
           for (const path of ["/slides/@vite/client", "/slides/@slidev/setups/main"]) {
             const response = await fetch(`${site}${path}`);
