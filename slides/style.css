@@ -48,11 +48,12 @@
 .split { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 42px; }
 .split.equal { grid-template-columns: 1fr 1fr; }
 .center-stage { display: flex; height: 100%; flex-direction: column; justify-content: center; }
-.hero-stage { display: grid; grid-template-columns: 1.12fr 1fr; align-items: center; height: 425px; gap: 25px; }
-.hero-stage h1 { margin: 0 0 24px; font-size: 88px; line-height: .94; font-weight: 800; }
-.hero-stage .subtitle { font-size: 24px; max-width: 420px; }
-.hero-stage .credits { font-size: 16px; margin-top: 24px; }
-.hero-stage .hero-ticket { transform: rotate(7deg); margin-left: 22px; }
+.title-stage .small-label { color: var(--snack-lime); }
+.title-stage h1 { font-size: 104px; margin-bottom: 18px; }
+.title-stage .lede { font-size: 30px; }
+.title-stage .credits { font-size: 20px; color: var(--deck-muted); margin-top: 28px; }
+.questions-close { height: 100%; }
+.questions-close .qr-pair { display: flex; justify-content: center; gap: 32px; }
 .ticket { position: relative; background: #fff; color: var(--snack-ink); padding: 28px; border-radius: 10px; }
 .ticket::before, .ticket::after { content: ""; position: absolute; width: 24px; height: 24px; border-radius: 50%; background: var(--deck-bg); top: 64%; }
 .ticket::before { left: -12px; } .ticket::after { right: -12px; }
@@ -135,7 +136,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .comparison > div { padding: 25px; }
 .comparison > div:first-child { background: #e5e2ff; }
 .comparison > div:last-child { background: #ffdcd2; }
-.comparison blockquote { border: 0; margin: 0; padding: 0; font-size: 28px; font-family: "Bricolage Grotesque Variable", sans-serif; font-weight: 600; line-height: 1.3; }
+.comparison blockquote { border: 0; margin: 0; padding: 0; background: none; font-size: 28px; font-family: "Bricolage Grotesque Variable", sans-serif; font-weight: 600; line-height: 1.3; }
 .comparison .comparison-label { margin-top: 20px; font-size: 18px; }
 .question-pair { display: grid; gap: 20px; margin-top: 26px; }
 .question-pair > div { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 22px; border-bottom: 1px solid #d7d3e7; padding-bottom: 20px; }
