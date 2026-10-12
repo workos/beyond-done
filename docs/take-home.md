@@ -70,7 +70,7 @@ Automated tests use a fake Jev transport; the live calls were smoke-tested, and 
 
 Keep failed attempts, repairs, escalation and accepted work under distinct run/attempt IDs. Include the task, exact artifact revision, observations, verifier version, outcome and reasons. Add model/tool versions, environment, wall time and cost in your own system; snack doesn't record those. Hashes bind records to bytes, not to truth.
 
-snack writes the latest receipt to `.lab-runs/snack/receipt.json`, appends every receipt to `.lab-runs/snack/receipts/`, and saves `proof-<revision>.png`. That directory is gitignored local scratch. Archive the records and underlying artifacts you want to keep; don't assume they are uploaded or durable elsewhere.
+snack writes the latest receipt to `.lab-runs/snack/receipt.json`, appends every receipt to `.lab-runs/snack/receipts/`, and saves one `proof-<revision>-<time>.png` per run. That directory is gitignored local scratch. Archive the records and underlying artifacts you want to keep; don't assume they are uploaded or durable elsewhere.
 
 A curated archive can support regression cases, tool/prompt comparisons and eventually fine-tuning. Labels must come from independent evaluation; split by task family, remove sensitive data, and preserve a separate evaluation set. Failed traces can be useful cases without being good training targets. The [lesson’s improvement-loop recipe](../src/content/lessons/07-transfer-debrief.md#turn-the-history-into-an-improvement-loop) includes budgets, promotion and rollback. No training is implemented in this workshop.
 

@@ -52,7 +52,9 @@ async function readSession(): Promise<Session> {
   try { session = JSON.parse(await readFile(SESSION, "utf8")); } catch {
     throw new SnackError("No app is running.", "Start one in its own terminal and leave it running: pnpm snack up");
   }
-  if (!alive(session.pid)) {
+  // A live pid alone could be a reused one: the session is ours only if its app server still answers.
+  const answers = alive(session.pid) && await fetch(new URL("/favicon.ico", session.appUrl)).then(() => true, () => false);
+  if (!answers) {
     await rm(SESSION, { force: true });
     throw new SnackError("The app from the last `up` is no longer running.", "Start it again: pnpm snack up");
   }
@@ -234,7 +236,8 @@ async function prove(solution: boolean) {
   const { prove } = await import(solution ? "./solution/prove.js" : "./exercises/prove.js") as { prove: Prove };
   const receipt = await withPage(async (_page, browser, session) => {
     const revision = await currentRevision(session.appUrl);
-    return runProof(browser, session.appUrl, prove, join(DIR, `proof-${revision}.png`));
+    // One screenshot per run, so each saved receipt keeps the image it was proved with.
+    return runProof(browser, session.appUrl, prove, join(DIR, `proof-${revision}-${Date.now()}.png`));
   });
   const json = JSON.stringify(receipt, null, 2);
   await writeFile(RECEIPT, json); // latest, for doctor

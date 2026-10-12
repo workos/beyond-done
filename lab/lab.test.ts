@@ -100,7 +100,7 @@ test("judge maps probabilities to PASS / FAIL / ASK A HUMAN and never invents a 
 test("snack CLI: up, doctor, drive, look, prove, and down against a real Chrome over CDP", async () => {
   const dir = await mkdtemp(join(tmpdir(), "snack-"));
   const env = { ...process.env, SNACK_DIR: dir };
-  const cli = new URL("./snack.ts", import.meta.url).pathname;
+  const cli = fileURLToPath(new URL("./snack.ts", import.meta.url));
   const run = async (...args: string[]) => {
     const result = await promisify(execFile)("npx", ["tsx", cli, ...args], { env }).catch(error => error);
     return { code: result.code ?? 0, json: JSON.parse(result.stdout || result.stderr) };
@@ -139,7 +139,7 @@ test("snack CLI: up, doctor, drive, look, prove, and down against a real Chrome 
 
 test("snack up: a held lock refuses a second start, and a failed start exits and cleans up", async () => {
   const dir = await mkdtemp(join(tmpdir(), "snack-"));
-  const cli = new URL("./snack.ts", import.meta.url).pathname;
+  const cli = fileURLToPath(new URL("./snack.ts", import.meta.url));
   const run = async (env: NodeJS.ProcessEnv) => {
     const result = await promisify(execFile)("npx", ["tsx", cli, "up", "--headless"], { env: { ...process.env, SNACK_DIR: dir, ...env }, timeout: 20_000 })
       .catch(error => error);
@@ -156,6 +156,12 @@ test("snack up: a held lock refuses a second start, and a failed start exits and
     assert.equal(failed.killed, false, "a failed start exits instead of hanging on the app server");
     assert.equal(failed.code, 2);
     assert.equal(existsSync(join(dir, "up.lock")), false);
+    assert.equal(existsSync(join(dir, "session.json")), false);
+    // A leftover session whose pid now belongs to someone else (here: this test runner) is stale, never signalled.
+    await writeFile(join(dir, "session.json"), JSON.stringify({ pid: process.pid, appUrl: "http://127.0.0.1:9", cdpUrl: "http://127.0.0.1:9" }));
+    const down = await promisify(execFile)("npx", ["tsx", cli, "down"], { env: { ...process.env, SNACK_DIR: dir } }).catch(error => error);
+    assert.equal(down.code, 2);
+    assert.match(JSON.parse(down.stderr).error, /no longer running/);
     assert.equal(existsSync(join(dir, "session.json")), false);
   } finally {
     await rm(dir, { recursive: true, force: true });

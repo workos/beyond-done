@@ -94,7 +94,7 @@ pnpm snack help <command>    # one command
 
 - `up` serves `lab/app/index.html` (re-read on every request, so edits show on reload) and launches Chromium with a remote-debugging port. Other commands attach over CDP, do one thing, and detach. `up` records console, page errors, and responses to `.lab-runs/snack/events.jsonl`. Headed by default; `--headless` (or CI / no display) runs without a window. `SNACK_DIR` moves the session files, so a second instance can run alongside.
 - Every page carries a **revision**: a hash of the HTML that was served. `doctor` compares it with the source on disk (STALE means reload) and reports whether the last receipt is for the current source.
-- `prove` opens a fresh browser context (no storage), runs the proof, and writes `.lab-runs/snack/receipt.json` (the latest, which `doctor` reads), appends a copy to `.lab-runs/snack/receipts/`, and saves `proof-<revision>.png`. Exit codes: **0** PASS, **1** FAIL, **2** can't tell (no session, the proof threw, or the source changed mid-run).
+- `prove` opens a fresh browser context (no storage), runs the proof, and writes `.lab-runs/snack/receipt.json` (the latest, which `doctor` reads), appends a copy to `.lab-runs/snack/receipts/`, and saves one `proof-<revision>-<time>.png` per run. Exit codes: **0** PASS, **1** FAIL, **2** can't tell (no session, the proof threw, or the source changed mid-run).
 - `--bug` serves the reference app with one bug injected at load time: `none`, `memory-only`, `wrong-email`, `lost-confirmation`, `overpromise`, `console-error`, or `random`. Stopping `up` prints `{"reveal": …}`. `--solution` serves the fixed reference app.
 - pnpm prints a `$ tsx …` header on stderr; stdout is pure JSON.
 
