@@ -17,6 +17,7 @@ const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 3)));
           <div class="small-label">Riker · Nick · runs coding agents for you</div>
           <blockquote>“Status comes from records, not model prose.”</blockquote>
           <p class="comparison-label">Riker runs the job’s check itself and keeps the command, exit code, commit and output hash. No check: reported unverified.</p>
+          <p class="host-reading"><a href="https://nicknisi.com/posts/riker/" target="_blank" rel="noopener noreferrer">Read Nick’s Riker post ↗</a></p>
         </div>
         <div class="ctx-card">
           <div class="small-label">CTX · Zack · context + verification control plane</div>
