@@ -15,13 +15,17 @@ The loop:  **observe → ask → decide → bounded repair**
 
 Inspired by [Lauren Tan's pstack verification workflow](https://x.com/poteto/status/2094457600259842065). Give an agent a repeatable way to launch the app, exercise one real user path, and show proof.
 
-| Feature + user path | Launch command / URL | Verification tool + evidence | Stop / ask for help |
+| Feature + user path | Launch command / URL | Check command + receipt location | Stop / ask for help |
 | --- | --- | --- | --- |
 | | | | |
 
 Which command can you rerun after a repair? _____________________________
 
-Finish the more detailed plan below after class.
+**My first next action:** ______________________________________________
+
+**Owner / when:** _____________________________________________________
+
+Finish the more detailed plan below after class. Lesson 07 has the first-30-minutes plan and copyable prompts for an app verifier and Chrome DevTools.
 
 ### 1. The "done" that lies
 What shallow "green" do people trust that doesn't mean what they think?
@@ -73,7 +77,34 @@ _______________________________________________________________________
 
 ---
 
-### Don't overstate what you built
+### 8. The receipt I will preserve
+
+- Task / run / attempt IDs: ___________________________________________
+- Exact artifact revision + verifier version: _________________________
+- Inputs, actions and observed outputs: _______________________________
+- Decision, reasons and independent outcome label: ____________________
+- Trace / screenshot / report location: _______________________________
+- Model/tool/environment versions + time/cost: _________________________
+
+Keep failures and escalations too. Use fresh evidence after each change. A hash identifies bytes; it does not prove the check was correct.
+
+### 9. The first comparison
+
+**One failure to turn into a labeled case:** ____________________________
+
+**One thing I will change (tool / prompt / policy):** ____________________
+
+**Frozen cases + grader:** ____________________________________________
+
+**Measure (bad accepts, interruptions, time, cost):** ____________________
+
+**Untouched cases to check before promotion:** _________________________
+
+**Experiment budget / promotion owner / rollback:** ____________________
+
+Later, curated and permitted runs can support fine-tuning. Review labels, redact sensitive data, and separate related task families across training and evaluation. Saving logs alone does not train or improve a system.
+
+### Don’t overstate what you built
 
 - [ ] A Noul is the probability of yes — not confidence, not proof.
 - [ ] Synthetic scores are fixtures — not live measurements or model accuracy.

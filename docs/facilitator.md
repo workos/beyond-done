@@ -17,7 +17,7 @@ Prepare with [preflight.md](preflight.md). Keep the lesson site and demo app in 
 
 The shared intro is slide 3. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
 
-The deck has 37 slides within the same 60-minute schedule: a title slide, then an incident animation, the repo QR right after the intros, a glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, a closing Q&A slide, and a Booth 6 invite to leave up as people pack up.
+The deck has 40 slides within the same 60-minute schedule: a title slide, then an incident animation, the repo QR right after the intros, a glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, three animated takeaways (app CLI, browser traces, run history), a closing Q&A slide, and a Booth 6 invite to leave up as people pack up.
 
 The verification comparison on slide 8 takes 40 seconds inside the opening: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace; it is not part of the lab.
 
@@ -43,7 +43,7 @@ The primary opening demo is the real memory-only app; slide 6 has a labelled ill
 | 32–33 | Checkpoint | “What did this number NOT prove?” Move on. |
 | 33–36 | Policy | Walk the ordered table. Missing evidence first; no averaging hard gates. |
 | 36–40 | Build | Implement `decide()`; run focused policy check. |
-| 40–42 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 24. Last 30 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
+| 40–42 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. On slide 24, reveal identity → observation → decision → fresh attempt. Failed attempts stay in the receipt history. Last 15 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
 | 42–43 | Questions | “Questions before the game?” Take one or two; park the rest for the closing Q&A slide. |
 | 43–44 | Pair up | Bouncer vs. Bluffer. Freeze the verifier; keep human labels out of JSON. |
 | 44–47 | Round 1 | 90 seconds to write the polite lie; 90 seconds to judge and inspect. |
@@ -51,9 +51,10 @@ The primary opening demo is the real memory-only app; slide 6 has a labelled ill
 | 50–52 | Score + share | Reward caught defects AND accepted good work. Spotlight one useful counterexample. |
 | 52–54 | Trade-off | Project the 0.9/0.8 fixture table. Do not mix synthetic counts with live game results. |
 | 54–55 | Final boss | Stale-evidence shared check; explain why perfect but old proof cannot approve this revision. Last 30 seconds: the thesis slide again; tie it back to the three builds. |
-| 55–58 | Transfer | Map one feature to launch command, user path, evidence, and stop condition. Pair-share; finish the longer worksheet after class. |
-| 58–60 | Close | One or two examples. Repeat the three closing questions. |
-| 60+ | Q&A | Slide 36: repo and glossary QRs stay up while you take questions, for as long as the session allows. Then slide 37: invite people to Booth 6. |
+| 55–56:45 | Takeaways | App-specific CLI (30s), Chrome traces (30s), receipt history → evals → optional dataset (45s). Use the click cues; deeper setup stays in Lesson 07. |
+| 56:45–58:45 | Transfer | Protect two minutes: name one feature, check command, saved receipt and stop condition. Finish the longer worksheet after class. |
+| 58:45–60 | Close | Hear one example. Repeat the three closing questions. |
+| 60+ | Q&A | Slide 39: repo and glossary QRs stay up while you take questions, for as long as the session allows. Then slide 40: invite people to Booth 6. |
 
 Hard stops: **21, 33, 43, 55**. Preflight is not charged against the hour. Participant-authored bluff + valid-paraphrase rounds take priority over repeated fixture runs. Holdout evaluation is now take-home so the game fits. Do not sacrifice the transfer exercise.
 
@@ -157,6 +158,14 @@ If thirty minutes disappear, this is no longer the promised hands-on workshop: e
 - “Is 0.9 safe?” Not universally. Measure representative labeled cases and the cost of each kind of error.
 - “Why not retry an outage?” A production harness might retry transient failures separately. This hour's policy escalates them so worker repair cannot hide infrastructure failure.
 - “Does a passing browser test prove the backend?” No; this app has none. Add independent server observations when that is your actual requirement.
+
+## Takeaway cues
+
+Slides 34–36 connect the finished lab to attendees’ own work. Keep them to 1 minute 45 seconds, then protect the two-minute worksheet on slide 37. If behind, leave these diagrams as take-home reference and go straight to the worksheet.
+
+- **App tool:** this is our actual CLI and saved browser observation, applying Lauren Tan’s pstack ideas. No extra installation during class.
+- **Browser instruments:** the trace is a schematic; avoid calling it a measured speedup. The Chrome DevTools setup and first prompt live in Lesson 07.
+- **Run history:** two actual saved runs provide the cards. The improvement loop and possible training dataset are a next step, not capabilities implemented by this lab. Synthetic eval scores test policy wiring, not prompt/model quality. Nick and Zack arrived independently at receipts in Riker and CTX.
 
 ## Closing handoff
 

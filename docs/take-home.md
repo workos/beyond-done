@@ -6,6 +6,16 @@ You built a loop that stops trusting "done" and starts checking it:
 
 Keep this. Everything below is portable to your real projects.
 
+## Start with one feature this week
+
+The [transfer lesson](../src/content/lessons/07-transfer-debrief.md) has the complete **first-30-minutes plan**, a copyable prompt for building an app-specific verifier, Chrome DevTools setup and a receipt-field map.
+
+1. Map one real user path to a repeatable check. Reuse your existing browser, HTTP or CLI harness.
+2. Prove the check rejects a known-broken case and accepts a known-good one. Keep every attempt’s evidence and decision.
+3. Turn a failure into a labeled evaluation case. Freeze the grader, change one thing, compare with a baseline, then confirm on untouched cases.
+
+Nick’s Riker and Zack’s CTX independently converged on receipts: evidence for a decision now, and a history you can evaluate later. See the public [CTX blueprint](https://zackproser.com/blog/ctx-personal-context-engine) and [verification retrospective](https://zackproser.com/blog/what-survived-the-experiments).
+
 ## The pattern
 
 1. **Observe** real behaviour independently — don't trust the agent's claim.
@@ -58,6 +68,14 @@ Fill this in for a system you actually ship. (Printable copy:
 | `pnpm lab:test` | Reference/unit/browser regression — no keys, no cost |
 
 Real Jev (`--judge live`) is part of lesson 4 via your key or the facilitator’s demonstration. The generative worker (`--worker live --judge live`) is optional after class. Automated tests use fake API transports; live Jev examples and a repair loop were smoke-tested, but results may change. `pnpm lab:replay` displays actual recorded responses, not feedback on edited questions. The `--accept-at 0.8` fixture eval intentionally exits 1 when it admits a false accept.
+
+## Preserve the run, not just the final green
+
+Keep failed attempts, repairs, escalation and accepted work under distinct run/attempt IDs. Include the task, exact artifact revision, observations, verifier version, outcome and reasons. Add model/tool versions, environment, wall time and cost in your own system; the lab does not yet record all of those. Hashes bind records to bytes, not to truth.
+
+The lab writes `.lab-runs/<id>/report.json` and eval summaries to `.lab-runs/<id>/evaluation.json`. That directory is gitignored local scratch. Archive the records and underlying artifacts you want to keep; don't assume they are uploaded or durable elsewhere.
+
+A curated archive can support regression cases, tool/prompt comparisons and eventually fine-tuning. Labels must come from independent evaluation; split by task family, remove sensitive data, and preserve a separate evaluation set. Failed traces can be useful cases without being good training targets. The [lesson’s improvement-loop recipe](../src/content/lessons/07-transfer-debrief.md#turn-the-history-into-an-improvement-loop) includes budgets, promotion and rollback. No training is implemented in this workshop.
 
 ## Keep your game discoveries
 

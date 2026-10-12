@@ -71,11 +71,13 @@ The deck, lessons, and CLI all follow the Midnight Snack Lab waitlist. Open the 
 | Two questions | 04 · Honest questions | `lab/exercises/questions.ts` · `pnpm lab:exercise questions` | Construction passes; compare live scores to assess meaning |
 | The bouncer's rulebook | 05 · Policy and repair | `lab/exercises/decide.ts` · `pnpm lab:exercise policy` | Policy passes; `pnpm lab:loop` repairs then accepts with fresh evidence |
 | Bouncer vs. Bluffer | 06 · Red team | `lab/challenges/*.json` | Compare your label with a live judge or human peer |
-| Build a verifier for your app | 07 · Transfer | `public/materials/transfer-worksheet.md` | One feature, its user path, a repeatable check, and a stop condition |
+| App CLI → browser traces → receipt history → your verifier | 07 · Transfer | `public/materials/transfer-worksheet.md` | One feature, a repeatable check, a saved receipt, and a first evaluation case |
 
 Setup is prework. During class, predict the result, edit the named file, run its check, and inspect the evidence. If blocked, pair with someone or save your work and copy one file from `lab/solution/`. `--solution` switches all three files to the reference.
 
 The opening repo QR links here. The glossary QR uses `class.config.json`'s hostname; the placeholder deliberately shows **link pending**. `pnpm slides:qr`, `pnpm slides`, `pnpm dev`, and class builds refresh the local SVGs without an external QR service. Agree, deploy, and check the public glossary URL before sharing that code. The repo is currently private: attendee access must be arranged.
+
+Lesson 07 includes a first-30-minutes plan, copyable agent prompts, Chrome DevTools references, receipt fields, and a bounded improvement-loop recipe. The animated takeaways connect those steps to the existing lab commands and saved reports.
 
 [Opening script and primary sources](docs/opening.md) connect the PocketOS incident, Lauren Tan's pstack verification advice, and our exercise. Saved browser reports live in `public/materials/opening-report.json` and `repair-report.json`; their semantic scores are explicitly synthetic.
 
@@ -160,7 +162,7 @@ Each start uses a new port. A new port is a new browser origin, so localStorage 
 | `pnpm lab:test` | **Required.** Lab tests (`lab/*.test.ts`): unit, fake-transport, and real-browser reference tests; no model costs |
 | `pnpm test` | **Required.** Template and script regression tests (`scripts/*.test.ts`) |
 | `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
-| `pnpm slides:check` | Check 37 slides, verification comparison, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
+| `pnpm slides:check` | Check 40 slides, verification comparison, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
 
 **Run both `pnpm test` and `pnpm lab:test`.** Each covers only its own folder: `pnpm test` runs the script tests and `pnpm lab:test` runs the lab tests. Passing one says nothing about the other.
 
