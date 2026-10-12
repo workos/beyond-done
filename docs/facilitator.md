@@ -17,7 +17,11 @@ Prepare with [preflight.md](preflight.md). Keep the lesson site and demo app in 
 
 The shared intro is slide 3. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
 
-The deck has 35 slides within the same 60-minute schedule: a title slide, then an incident animation, repo/glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, and a closing Q&A slide. The primary opening demo is the real memory-only app; slide 5 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 2. Do not imply our exercise would have prevented that incident.
+The deck has 36 slides within the same 60-minute schedule: a title slide, then an incident animation, repo/glossary QR handoff, actual saved evidence, a 30-second look at the hosts' own tools (Riker and CTX), a short architecture bridge, and a closing Q&A slide.
+
+The verification comparison on slide 6 takes 40 seconds inside the opening: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace; it is not part of the lab.
+
+The primary opening demo is the real memory-only app; slide 5 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 2. Do not imply our exercise would have prevented that incident.
 
 ## Timing and stage cues
 
@@ -26,9 +30,9 @@ The deck has 35 slides within the same 60-minute schedule: a title slide, then a
 | 0–0:45 | Real incident | PocketOS founder excerpt, deletion animation, Railway recovery. Keep attribution visible. |
 | 0:45–2 | Intro + vote | Nick + Zack, then “Ship it or hold it?” Vote on the staged worker claim. |
 | 2–4 | Live failure | Submit and reload the actual memory-only app. Show the lost record. |
-| 4–4:30 | Thesis | Credit Lauren Tan: verification tools and evidence make completion checkable. |
-| 4:30–5 | Our tools | Riker (Nick) and CTX (Zack): one sentence each on how your tool treats a worker's “done.” |
-| 5–7 | Resources + smoke test | Repo QR on slide 8; glossary on 9. README → lessons → exercises. `pnpm lab:doctor`; pair anyone stuck. |
+| 4–5 | Thesis + comparison | Credit Lauren Tan, then three advances on slide 6: guesses multiply, evidence narrows the repair, and the verified clock stops. |
+| 5–5:30 | Our tools | Riker (Nick) and CTX (Zack): one sentence each on how your tool treats a worker's “done.” |
+| 5:30–7 | Resources + smoke test | Repo QR on slide 8; glossary on 9. README → lessons → exercises. `pnpm lab:doctor`; pair anyone stuck. |
 | 7–10 | Contract | Same identity after reload; honest waitlist/no seat; conditional email. Explain browser-local boundary and three editable files. |
 | 10–13 | Explain | Role/label locators, fresh context, explicit transition, observation versus assumption. |
 | 13–19 | Build | Attendees write `observe()`. Offer hints, not the whole solution first. |
