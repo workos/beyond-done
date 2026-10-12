@@ -13,7 +13,7 @@ Attendees don't build an agent framework. They use and extend a **lever**: `pnpm
 1. **Drive it** like an agent would: `join`, `reload`, `storage`, `snapshot`, `console`.
 2. **Write the proof**: `lab/exercises/prove.ts`, the one coding exercise. `pnpm snack prove` runs it on a fresh visitor and writes a receipt bound to the exact code revision.
 3. **Hand it to your agent**: add gotchas to the feature map, then give your own coding agent [`lab/verify/SKILL.md`](lab/verify/SKILL.md) and one prompt: “repro it, fix it, show me proof.” `pnpm snack judge` asks Jev whether the copy is honest.
-4. **Break it quietly**: a saboteur starts the app with a hidden `--bug`; a detective finds it with snack alone. Every miss becomes a new check. A stale receipt is the final boss.
+4. **Break it quietly**: everyone plays solo: `--bug random` starts the app with a hidden bug (or none), and you find it with snack alone. Every miss becomes a new check. A stale receipt is the final boss.
 
 This is a **browser-local prototype**, not real organizer registration, email delivery, or payment.
 
@@ -53,7 +53,7 @@ Linux may need `pnpm exec playwright install --with-deps chromium`.
 | 10–18 | Meet snack; everyone reproduces the bug | The bug, named with JSON evidence |
 | 18–30 | Write `prove()`; read the receipt | A proof that fails broken apps and passes a correct one |
 | 30–44 | Feature map, then your agent repros, fixes and proves; the copy that still lies; when to stop | An agent that shows proof instead of saying “done” |
-| 44–55 | Break it quietly: two rounds, the reveal, the stale-receipt boss | Know what your proof misses, and what to add |
+| 44–55 | Break it quietly: one solo round, the reveal, the stale-receipt boss | Know what your proof misses, and what to add |
 | 55–60 | Transfer exercise | A plan for the lever in your own app |
 
 [Lessons](src/content/lessons/) · [Facilitator guide](docs/facilitator.md) · [Preflight](docs/preflight.md) · [Take-home](docs/take-home.md)
@@ -67,7 +67,7 @@ Linux may need `pnpm exec playwright install --with-deps chromium`.
 | Make `prove` refuse “looks done” | 04 · Build the proof | `lab/exercises/prove.ts` · `pnpm lab:exercise` | `prove exercise: PASS`; `pnpm snack prove` says FAIL on the attendee app |
 | “Repro it. Fix it. Show me proof.” | 05 · Hand it to your agent | `lab/verify/SKILL.md` + your agent | A PASS receipt for a new revision, plus a screenshot |
 | It persists. It also lies. | 05 · Hand it to your agent | `pnpm snack judge` | FAIL on “Your seat is confirmed”; PASS after the copy is fixed |
-| Break it quietly | 06 · Break it quietly | `pnpm snack up --bug …` | The detective names the bug with output |
+| Break it quietly | 06 · Break it quietly | `pnpm snack up --bug …` | You name the bug with output |
 | Browser traces → receipt history → your verifier | 07 · Transfer | `public/materials/transfer-worksheet.md` | One feature, a repeatable check, a saved receipt, and a first evaluation case |
 
 If blocked, pair with someone, or add `--solution` to `snack prove` / `lab:exercise` to use the reference proof without overwriting yours. To catch up, save your edits, then `cp lab/solution/prove.ts lab/exercises/prove.ts`. To reset the app after an agent edits it: `git checkout lab/app/index.html`.

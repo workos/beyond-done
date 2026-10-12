@@ -38,6 +38,6 @@ onBeforeUnmount(() => { stop(); document.removeEventListener("visibilitychange",
       <button type="button" @click="toggle">{{ running ? "Pause timer" : remaining === props.seconds * 1000 ? "Start " + props.seconds + "-second round" : remaining === 0 ? "Start another round" : "Resume timer" }}</button>
       <button type="button" class="quiet-button" @click="reset">Reset timer</button>
     </div>
-    <p role="status">{{ remaining === 0 ? "Pens down. Swap roles." : "Name the bug. Show the output." }}</p>
+    <p role="status">{{ remaining === 0 ? "Pens down. Ctrl+C to reveal." : "Name the bug. Show the output." }}</p>
   </div>
 </template>
