@@ -23,12 +23,7 @@
     "create-companion": "bash scripts/create-companion.sh",
     "typecheck": "astro check && tsc --noEmit --pretty false",
     "test": "tsx --test scripts/*.test.ts",
-    "lab:doctor": "tsx lab/cli.ts doctor",
-    "lab:replay": "tsx lab/cli.ts replay",
-    "lab:app": "tsx lab/cli.ts app",
-    "lab:check": "tsx lab/cli.ts check",
-    "lab:loop": "tsx lab/cli.ts loop",
-    "lab:eval": "tsx lab/cli.ts eval",
+    "snack": "tsx lab/snack.ts",
     "lab:exercise": "tsx lab/test-exercise.ts",
     "lab:test": "tsx --test lab/*.test.ts"
   },

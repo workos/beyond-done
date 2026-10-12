@@ -33,3 +33,7 @@ Use Node 24 and pnpm 12.4.1 (`mise install` installs the pinned tools). Run comm
 - Do not print, commit, or put credentials in client code. Deployment and provisioning change remote resources and may create a billable key; run them only within the user's requested scope, using the agreed hostname, budget, and expiry.
 - Do not hand-edit `dist/`, `.astro/`, `.talks-build/`, or generated Slidev cache files. Deploy the class through `deploy:talks`, not the legacy companion's root `wrangler.jsonc`.
 - Run relevant checks and inspect affected pages. Report what passed, what was not verified, and whether anything was actually deployed or provisioned.
+
+## The waitlist lab app
+
+To change, debug, or verify the attendee app in `lab/app/`, follow [lab/verify/SKILL.md](lab/verify/SKILL.md). It drives the app with `pnpm snack` and defines what counts as proof.

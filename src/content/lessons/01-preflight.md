@@ -1,6 +1,6 @@
 ---
 title: "Preflight — before the hour"
-description: Install the tools, run a no-key smoke test, and choose your Jev access path.
+description: Install the tools, check them with snack doctor, and pick the coding agent you'll bring.
 order: 1
 prework: true
 duration: "About 15 minutes before class · not part of the 60"
@@ -8,15 +8,13 @@ duration: "About 15 minutes before class · not part of the 60"
 
 ## Arrive ready to experiment
 
-Bring an editor and a terminal, **Node 24**, **pnpm 12.4.1**, and this repository. No Playwright or Jev experience is required. Allow roughly 500 MB for Chromium, plus dependencies. Installation is **before** the 60-minute teaching hour.
+Bring an editor, a terminal, **Node 24**, **pnpm 12.4.1**, and this repository. No Playwright experience is required. Allow roughly 500 MB for Chromium, plus dependencies. Installation happens **before** the 60-minute teaching hour.
 
-You do not need a coding-agent subscription. The default worker is scripted; a live generative worker is an after-class extension.
+Bring the **coding agent you already use**, if you have one: Claude Code, Codex, Cursor, pi, or anything else that can run terminal commands. In lesson 5 you hand it the verifier you build. No agent? Pair with someone, or follow the hosts' run on screen.
 
 ## Install and check
 
 The source is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). It is currently private: confirm your GitHub account has access before class. A 404 while signed in can mean missing access; ask an instructor before spending time on installation.
-
-Clone it with Git and your usual GitHub authentication (or use `gh repo clone nicknisi/beyond-done` if you have GitHub CLI):
 
 ```bash
 git clone https://github.com/nicknisi/beyond-done.git
@@ -28,8 +26,6 @@ If using mise, review the repository's `mise.toml`, then trust this checkout and
 ```bash
 mise trust
 mise install
-mise exec -- node --version
-mise exec -- pnpm --version
 ```
 
 Activate mise in your shell as usual, or prefix the commands below with `mise exec --`. If Node 24 and pnpm 12.4.1 are already installed, skip the mise steps.
@@ -39,50 +35,38 @@ From the repository root:
 ```bash
 pnpm install
 pnpm exec playwright install chromium
-pnpm lab:doctor
-pnpm lab:loop --solution
+pnpm snack doctor
+pnpm lab:exercise --solution
 ```
 
 Linux may require `pnpm exec playwright install --with-deps chromium`; this installs system packages and may request administrator privileges.
 
-**Success:** doctor prints `PASS: Node, Chromium, and localhost listener`. The loop prints **REPAIR → ACCEPT**, then a `.lab-runs/<id>/report.json` path. It used a scripted worker and synthetic policy scores, not a model.
+**Success:**
 
-Doctor reports key presence without testing keys; check `pnpm --version` separately.
+- `snack doctor` shows `node` and `chromium` as ok. The `session` check fails with “No app is running.” That's expected: you start the app in class.
+- `lab:exercise --solution` runs the reference proof against four versions of the app in a real browser and ends with `prove exercise: PASS`.
 
-## Choose your Jev path
+## Optional: a Jev key
 
-In lesson 4 we test real Jev questions. Either:
-
-- **Run your own:** obtain a key from [TypeSafe](https://console.typesafe.ai/), copy `.env.example` to `.env`, and fill in `TYPESAFE_API_KEY`. Then test:
-  ```bash
-  pnpm lab:check --scenario happy --solution --judge live
-  ```
-  This sends fictional task/confirmation text to TypeSafe and makes one billable request. No event-provided credits are assumed. Keep keys out of screenshots and Git. The CLI reads `.env`; existing shell values win.
-- **Watch the facilitator:** write the same questions and inspect the live results on screen. No personal key required.
-- **Outage fallback:** `pnpm lab:replay` displays actual captured Jev responses, with exact inputs in [the recording](/materials/jev-recording.json). Replay does **not** evaluate your edits.
-
-A live result can differ from the recording. Synthetic policy fixtures and recorded real responses are two different things.
+One slide in lesson 5 asks a small, fast judge model (Jev, from TypeSafe) whether the app's copy is honest. The hosts run it on screen, so you don't need a key. To run it yourself, get a key from [TypeSafe](https://console.typesafe.ai/), copy `.env.example` to `.env`, and fill in `TYPESAFE_API_KEY`. Each `pnpm snack judge` sends the app's fictional confirmation text to TypeSafe and makes one billable request. Keep keys out of screenshots and Git.
 
 ## Two different local servers
 
-- `pnpm dev` → lessons, glossary, and slides.
-- `pnpm lab:app --scenario memory-only` → the fictional waitlist app. Use a new private window for a fresh visitor. Stop with Ctrl+C.
-
-Use the URLs printed by the commands; do not assume a port.
+- `pnpm dev` serves the lessons, glossary, and slides.
+- `pnpm snack up` serves the fictional waitlist app and opens a Chrome window that snack can drive. Leave it running in its own terminal; stop it with Ctrl+C.
 
 ## If setup is stuck
 
 | Symptom | Next action |
 | --- | --- |
 | mise says the config is not trusted | Review `mise.toml`, then run `mise trust` in this checkout before `mise install`. |
-| Wrong Node/pnpm | Run `mise install` after trusting the config; activate mise in your shell or use `mise exec -- pnpm …`. Check both versions. |
-| Chromium cannot launch on Linux | Install the system dependencies as above. |
+| Wrong Node/pnpm | Run `mise install` after trusting the config; activate mise in your shell or use `mise exec -- pnpm …`. |
+| `chromium` not ok in doctor | `pnpm exec playwright install chromium` (Linux: add `--with-deps`). |
 | Download blocked | Use an approved network or pair with someone whose setup works. |
-| `lab:exercise` fails | Expected until that exercise is implemented; use `--solution` to check the reference. |
-| Missing key, timeout, or quota error | Use the facilitator's demo or replay. Do not change the policy to accept. |
+| `lab:exercise` (without `--solution`) fails | Expected until you write the proof in lesson 4. |
 
-After two minutes of setup trouble during class, **pair up**. A checkpoint cannot fix a missing browser, but another working laptop can. There is no promised hosted development environment.
+After two minutes of setup trouble during class, **pair up**. There is no promised hosted development environment.
 
 ## Ready?
 
-Open the next lesson. Your first question is not “which model?” It is **“what would count as evidence?”**
+Open the next lesson. Your first question isn't “which model?” It's **“what would count as proof?”**
