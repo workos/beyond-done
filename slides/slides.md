@@ -143,8 +143,23 @@ Teaching expectations:
 - Introduce the three ingredients of a useful verifier: observed facts, explicit acceptance criteria, and a stopping rule.
 - Explain why this enables delegation: code can accept supported work, request a bounded repair, or hand uncertainty to a human.
 
-4:00–4:30. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
+4:00–4:20. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
 Self-verification means exercising the real product against criteria, not asking the model whether it feels finished. Our implementation combines deterministic checks, a fallible semantic judge, and code-owned policy.
+-->
+
+---
+class: night contrast-slide
+clicks: 3
+---
+
+<VerificationContrast />
+
+<!--
+4:20–5:00. Same opening time budget. Three advances: (1) guesses vs. a specific failure; (2) more retries vs. a repaired, rechecked result; (3) wasted elapsed time vs. a stopped clock.
+These are invented, compressed elapsed times, not measurements, an agent transcript, or a claimed speedup. A usable verifier can narrow the search; it does not guarantee a fast or successful repair.
+The waitlist example connects to our actual custom CLI: pnpm lab:check --scenario memory-only --solution. It drives a real browser through submit/reload and writes observations, checks, and a report. --solution uses the reference collector/questions/policy; default semantic scores are synthetic. Here we are illustrating the persistence check, not full semantic acceptance.
+The optional Slow UI button transfers the idea to Chrome DevTools: record the interaction, inspect the main-thread flame chart, identify expensive repeated work, then re-record with the same conditions and check the original performance budget. The trace is a schematic; the repo does not contain this performance task or a DevTools agent integration. Source: https://developer.chrome.com/docs/devtools/performance/overview
+Return to Waitlist before continuing. Arrow back resets each reveal; motion is finite and reduced-motion shows the same states without animation. The real loop later enforces a retry budget and escalates when the evidence is insufficient.
 -->
 
 ---
@@ -162,7 +177,7 @@ Teaching expectations:
 - Show that the thesis comes from the hosts' daily work: both tools refuse to treat a worker's "done" as proof.
 - Preview today's ideas in production form: independent checks, receipts bound to a revision, and code (not the worker) deciding completion.
 
-4:30–5:00. Credibility, not a product pitch. Each host: one sentence on what your tool does when a worker says "done".
+5:00–5:30. Credibility, not a product pitch. Each host: one sentence on what your tool does when a worker says "done".
 Nick: Riker hands work to a worker agent (Pi, Claude Code or Codex) in its own worktree, then runs the job's check itself. The output lands under ~/.riker/jobs/<id>/proof/, and Riker's own store records command, exit code, commit, timing and the output's sha256. A file the worker writes there proves nothing. The last PR to this deck came from a Riker job branch.
 Zack: CTX models work as a completion graph of observable final states. Executors report evidence, verifiers write receipts (release identity, authenticated browser smoke, GitHub merge state), the owner attests. Only CTX's evaluators mark a node satisfied, from current, unexpired observations.
 Both repos are private: describe them, don't promise links or access.
@@ -177,7 +192,7 @@ Both repos are private: describe them, don't promise links or access.
 </div>
 
 <!--
-5:00–6:00. Setup is prework. Doctor should already be green. If blocked after two minutes total, pair up.
+5:30–6:00. Setup is prework. Doctor should already be green. If blocked after two minutes total, pair up.
 QR opens the source repo. README → Start here; pnpm dev prints the lesson URL. Learner files: lab/exercises. Reference checkpoints: lab/solution.
 Followers edit; observers predict results with a partner. No key is needed for browser/policy work. Project the live judge for people without keys.
 -->

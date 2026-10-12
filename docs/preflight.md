@@ -38,7 +38,7 @@ Nick and Zack share the intro slide. Confirm the supplied existing portraits are
 
 Print or share `public/materials/bouncer-scorecard.md`. Test both `lab/challenges/*.json` starters and the `--candidate` CLI route. Budget no more than two live calls per pair. Without attendee keys, use human peer review for the room and one selected live example on the projector.
 
-Test the slide 5 reload illustration, slide 22 click-driven loop + stubborn toggle, and both Bouncer vs. Bluffer round timers. Timers start manually, pause on navigation, and require no backend. Arrow keys reveal teaching steps; control buttons do not advance the slide. The staged illustrations are not live model calls.
+Test the slide 5 reload illustration, slide 6 verification comparison (three advances, reverse, and both examples), slide 22 click-driven loop + stubborn toggle, and both Bouncer vs. Bluffer round timers. Timers start manually, pause on navigation, and require no backend. Arrow keys reveal teaching steps; control buttons do not advance the slide. The staged illustrations are not live model calls.
 
 ## Failure plans
 
