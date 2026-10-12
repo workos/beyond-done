@@ -12,6 +12,7 @@ function slideFor(marker: string) {
   assert.ok(index >= 0, `Missing slide: ${marker}`);
   return index + 1;
 }
+const incidentSlide = slideFor('<IncidentOpener');
 const hostSlide = slideFor('class="people"');
 const reloadSlide = slideFor('<ReloadReveal');
 const loopSlide = slideFor('<LoopMachine');
@@ -58,9 +59,7 @@ try {
       });
       if (outside.length) overflow.push({ slide, clicks, outside });
     }
-    if ([1, 2, 4, 5, 6, 7, 11, 12, 14, 15, 18, 20, 21, 22, 24, 26, 29, 30, 31, 32].includes(slide)) {
-      await page.screenshot({ path: `.lab-runs/deck-review/${String(slide).padStart(2, "0")}.png` });
-    }
+    await page.screenshot({ path: `.lab-runs/deck-review/${String(slide).padStart(2, "0")}.png` });
   }
   assert.deepEqual(overflow, [], "Slide content must fit at initial and fully revealed states");
   const intro = await go(hostSlide);
@@ -83,11 +82,11 @@ try {
   await expect(loop.getByRole("heading", { name: "A human takes it from here." })).toBeVisible();
 
   await page.emulateMedia({ reducedMotion: "reduce" });
-  const cover = await go(1);
-  assert.equal(await cover.locator(".incident-record").first().evaluate(e => getComputedStyle(e).transitionDuration), "0s");
-  await go(1, 1);
+  const incident = await go(incidentSlide);
+  assert.equal(await incident.locator(".incident-record").first().evaluate(e => getComputedStyle(e).transitionDuration), "0s");
+  await go(incidentSlide, 1);
   await expect(page.locator('.incident-opener[data-phase="1"]')).toBeVisible();
-  await go(1, 2);
+  await go(incidentSlide, 2);
   await expect(page.getByText("Data later recovered.", { exact: true })).toBeVisible();
   await go(evidenceSlide, 2);
   await expect(page.locator('.evidence-flow .proof-failure')).toContainText("Waitlist survives reload");

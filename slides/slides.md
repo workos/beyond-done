@@ -7,9 +7,27 @@ exportFilename: beyond-done-slides
 colorSchema: light
 transition: fade-out
 class: night
-clicks: 2
 fonts:
   provider: none
+---
+
+<div class="center-stage title-stage">
+<p class="small-label">AIE · Workshop</p>
+<h1 class="display">Beyond “Done”</h1>
+<p class="lede">Building verification loops for AI agents</p>
+<p class="credits">Nick Nisi · Zack Proser · WorkOS</p>
+</div>
+
+<!--
+Teaching expectations:
+- Let the room settle on the workshop's title and hosts before the story starts.
+
+On screen while the room settles. Don't talk over it; advancing to the incident starts the clock at 0:00.
+-->
+
+---
+class: night
+clicks: 2
 ---
 
 <IncidentOpener />
@@ -24,7 +42,9 @@ Teaching expectations:
 First advance: one authenticated API call deletes the production volume. Second: Railway recovered the data and changed deletion safeguards (April 29 follow-up).
 Do not treat the agent's later explanation as a trustworthy forensic account, or repeat the original claim that every backup was permanently lost.
 Say: "Agents can act faster than we can inspect. Production safety needs enforced permissions and recovery. Today: what evidence lets us accept an agent's result?"
-The animation is an explanation, not incident footage. The short source excerpt works offline; links are optional. No live X login or video dependency.
+The animation is an explanation, not incident footage. Say so. The short source excerpt works offline. No live X login or video dependency.
+Say the setup: founder's account, Cursor + Claude Opus 4.6. Original post: https://x.com/lifeofjer/status/2048103471019434248
+Railway's follow-up (data recovered; API deletion safeguards changed): https://blog.railway.com/p/your-ai-wants-to-nuke-your-database
 Sources and the five-minute script: docs/opening.md. Both hosts introduce themselves next.
 -->
 
@@ -38,8 +58,8 @@ clicks: 2
 <FriendsReveal v-slot="{ friends }">
 <div class="people">
 <div class="host">
-<img class="host-photo" src="/people/nick-nisi.webp" alt="Nick Nisi speaking at a conference">
-<div><h2>Nick<br>Nisi</h2><p>Engineering Manager,<br>DX/AI</p><p>WorkOS</p><span class="host-label">{{ friends ? "Friends" : "Co-instructor" }}</span></div>
+<img class="host-photo" src="/people/nick-nisi.webp" alt="Nick Nisi">
+<div><h2>Nick<br>Nisi</h2><p>Engineering Manager,<br>Developer and Agent Experiences</p><p>WorkOS</p><span class="host-label">{{ friends ? "Friends" : "Co-instructor" }}</span></div>
 </div>
 <div class="host">
 <img class="host-photo" src="/people/zack-proser.jpg" alt="Zack Proser">
@@ -57,7 +77,7 @@ Teaching expectations:
 
 0:45–1:15. Shared introduction, equal space for both instructors.
 Each give name + one real sentence about why you care about supervising agent work.
-Do not read a bio; do not invent experience. Nick drives the first demo; Zack watches the room.
+Do not read a bio; do not invent experience. Save Riker and CTX for their own 30 seconds after the thesis. Nick drives the first demo; Zack watches the room.
 Switch driver/room-reader during Jev or policy as suits you. Confirm the exact handoff in rehearsal.
 -->
 
@@ -123,8 +143,29 @@ Teaching expectations:
 - Introduce the three ingredients of a useful verifier: observed facts, explicit acceptance criteria, and a stopping rule.
 - Explain why this enables delegation: code can accept supported work, request a bounded repair, or hand uncertainty to a human.
 
-4:00–5:00. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
+4:00–4:30. Credit Lauren's short quote. Her Part 1 develops reusable verification tools and feature maps; we will build a small instance of that idea.
 Self-verification means exercising the real product against criteria, not asking the model whether it feels finished. Our implementation combines deterministic checks, a fallible semantic judge, and code-owned policy.
+-->
+
+---
+---
+
+# We hold our own tools to this.
+
+<div class="comparison">
+<div><div class="small-label">Riker · Nick · runs coding agents for you</div><blockquote>“A worker saying it’s done is not proof.”</blockquote><p class="comparison-label">Riker runs the job’s check itself and keeps the command, exit code, commit and output hash. No check: reported unverified.</p></div>
+<div><div class="small-label">CTX · Zack · context + verification control plane</div><blockquote>“A bare executor claim is kept in the ledger but ignored.”</blockquote><p class="comparison-label">Verifiers write receipts bound to the exact revision. Only CTX’s evaluators close a node.</p></div>
+</div>
+
+<!--
+Teaching expectations:
+- Show that the thesis comes from the hosts' daily work: both tools refuse to treat a worker's "done" as proof.
+- Preview today's ideas in production form: independent checks, receipts bound to a revision, and code (not the worker) deciding completion.
+
+4:30–5:00. Credibility, not a product pitch. Each host: one sentence on what your tool does when a worker says "done".
+Nick: Riker hands work to a worker agent (Pi, Claude Code or Codex) in its own worktree, then runs the job's check itself. The output lands under ~/.riker/jobs/<id>/proof/, and Riker's own store records command, exit code, commit, timing and the output's sha256. A file the worker writes there proves nothing. The last PR to this deck came from a Riker job branch.
+Zack: CTX models work as a completion graph of observable final states. Executors report evidence, verifiers write receipts (release identity, authenticated browser smoke, GitHub merge state), the owner attests. Only CTX's evaluators mark a node satisfied, from current, unexpired observations.
+Both repos are private: describe them, don't promise links or access.
 -->
 
 ---
@@ -472,7 +513,7 @@ Teaching expectations:
 - Require fresh browser evidence and a new judgment for the repaired revision; a previous score is not reusable approval.
 - Make the budget concrete: one repair permits at most two candidate evaluations, not an open-ended retry loop.
 
-40:00–43:00. Advance through the visual loop with arrow keys. This is a labelled illustration, not a live model call.
+40:00–42:00. Advance through the visual loop with arrow keys. This is a labelled illustration, not a live model call.
 At the end, toggle “Make the worker stubborn” and show the escalation branch. Toggle doesn't rerun anything.
 Then briefly run pnpm lab:loop (or --solution) for actual browser-backed repair → accept; --stubborn for escalation.
 Fresh observations and judgment are required for the repaired revision. One repair = at most two candidate evaluations.
@@ -482,7 +523,7 @@ Fresh observations and judgment are required for the repaired revision. One repa
 class: indigo
 ---
 
-<p class="small-label">40–43 MINUTES · THE ACTUAL SAVED RUN</p>
+<p class="small-label">40–42 MINUTES · THE ACTUAL SAVED RUN</p>
 
 # Open the receipt.
 
@@ -494,6 +535,7 @@ This belongs to the same three-minute payoff as the previous animation. Run the 
 Point to the different candidate revisions AND evidence hashes. A new candidate does not inherit the old judgment. --stubborn must end repair → escalate.
 Captured report: public/materials/repair-report.json. This slide is not a live model response. If short on time, inspect the saved report and protect the game.
 Moved from footnote: Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.
+In our tools: Riker keeps this same kind of receipt for every job check (command, exit code, commit, output sha256). CTX binds each verifier receipt to an exact job, attempt and graph revision. Same idea as expected.revision + the evidence hash here.
 -->
 
 ---
@@ -507,8 +549,9 @@ class: night
 </div>
 
 <!--
-42:30–43:00, the last 30 seconds of the payoff. No reveals: leave it up long enough for people to photograph it.
+41:30–42:00, the last 30 seconds of the payoff. No reveals: leave it up long enough for people to photograph it.
 Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
+42:00–43:00. Questions pause. Ask: "Questions before the game?" Take one or two, park the rest for the Q&A slide at the end. Hard stop at 43:00.
 -->
 
 ---
@@ -684,7 +727,8 @@ Teaching expectations:
 54:00–55:00. One quick shared fixture: stale evidence is an injected harness fault, not a generated worker config.
 A one-sentence evidence explanation earns the room's final point. Cut this live command if behind, not the transfer exercise.
 Heldout evaluation moves to take-home to protect time for participant-authored attacks.
-Nick: one story of your own here: an agent that handed you a perfect-looking receipt that wasn't real (e.g. touching the proof file instead of running the tests).
+Nick: Riker's rule for this. A file a worker writes into the proof folder proves nothing, and a log changed since the check shows as changed, not as proof. When a job adds tests, Riker also runs them against the job's base: tests that pass there too don't prove the fix. If there's a real story behind that rule, tell it here.
+Zack: CTX evaluates every node from current, unexpired observations. Failed or untrusted receipts never satisfy a gate.
 -->
 
 ---
@@ -743,4 +787,18 @@ Teaching expectations:
 
 58:00–60:00. Take one or two real project examples. Close together.
 Credit both co-instructors; leave the pattern, the code, and one next action—not another reading list.
+-->
+
+---
+class: night
+---
+
+<div class="split questions-close">
+<div><h1 class="display">Questions?</h1><p class="lede">Nick Nisi · Zack Proser</p><p class="aside-note">“Done” is a claim. Ask for the receipt.</p></div>
+<div class="qr-pair"><ResourceQr resource="repo" compact /><ResourceQr resource="glossary" compact /></div>
+</div>
+
+<!--
+After 60:00, for as long as the session allows. Leave this up during Q&A so people can scan the repo and glossary while others ask.
+Likely questions and short answers: "Questions to listen for" in docs/facilitator.md.
 -->

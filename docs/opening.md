@@ -4,7 +4,9 @@ Keep this sequence inside the existing first five minutes. The excerpt and anima
 
 ## 0:00–0:45 — PocketOS
 
-Slide 1 quotes five words from Jer Crane's [original April 25, 2026 account](https://x.com/lifeofjer/status/2048103471019434248): “It took 9 seconds.” He reported that a Cursor agent using Claude Opus 4.6 deleted production data through Railway's API. The duration is his report, not our measurement. First advance shows deletion; second shows recovery.
+Slide 1 is the title. Leave it up while the room settles; advancing to the incident starts the clock.
+
+Slide 2 quotes five words from Jer Crane's [original April 25, 2026 account](https://x.com/lifeofjer/status/2048103471019434248): “It took 9 seconds.” He reported that a Cursor agent using Claude Opus 4.6 deleted production data through Railway's API. The duration is his report, not our measurement. First advance shows deletion; second shows recovery.
 
 [Railway's April 29 follow-up](https://blog.railway.com/p/your-ai-wants-to-nuke-your-database) confirms that an agent used a locally stored token to delete a production volume. It also says Railway recovered the database and changed the API deletion path. Include that recovery in the spoken account. The animation explains the sequence; it is not footage or a recreation of the real UI. Do not repeat the initial claim that every backup was permanently destroyed or treat a model's post-hoc explanation as a forensic record.
 
@@ -14,7 +16,7 @@ Our browser-local exercise does not simulate production infrastructure or establ
 
 ## 0:45–2:00 — Introductions and a smaller claim
 
-Introduce both hosts on slide 2. Then ask the room to vote on the staged completion report. “Let's start with something we can actually break in this room.” The report is a teaching prop, not an actual worker transcript.
+Introduce both hosts on slide 3. Then ask the room to vote on the staged completion report. “Let's start with something we can actually break in this room.” The report is a teaching prop, not an actual worker transcript.
 
 ## 2:00–4:00 — Run the actual app
 
@@ -30,13 +32,17 @@ pnpm lab:app --scenario memory-only
 4. Reload the actual page. Point to `none`, `—`, and the empty confirmation.
 5. Ask which acceptance criterion the original completion report omitted.
 
-Slide 4's illustration is only the fallback if the app cannot start. Name it as such. The later evidence slide reads the captured local run in `public/materials/opening-report.json`; its browser observations are real and its semantic scores are synthetic fixtures.
+Slide 5's illustration is only the fallback if the app cannot start. Name it as such. The later evidence slide reads the captured local run in `public/materials/opening-report.json`; its browser observations are real and its semantic scores are synthetic fixtures.
 
-## 4:00–5:00 — Lauren Tan's thesis
+## 4:00–4:30 — Lauren Tan's thesis
 
-Slide 5 credits the short quote from [pstack Part 2](https://x.com/poteto/status/2097732320606507506). Explain that checking one's work means driving the actual product and preserving evidence. Asking the same model whether it is finished is insufficient.
+Slide 6 credits the short quote from [pstack Part 2](https://x.com/poteto/status/2097732320606507506). Explain that checking one's work means driving the actual product and preserving evidence. Asking the same model whether it is finished is insufficient.
 
 [Part 1](https://x.com/poteto/status/2094457600259842065) develops reusable verification tools and feature maps. Our CLI is a small example of a repeatable tool; our three exercises separate observations, meaning, and policy. At the close, participants map a feature in their own app to its user journey and observable success condition.
+
+## 4:30–5:00 — Our own tools
+
+Slide 7 shows that the hosts live by this rule. Nick: Riker runs the job's check itself and keeps the command, exit code, commit and output hash; a worker's "done" is not proof. Zack: CTX ignores bare executor claims; only its evaluators close a node, from receipts bound to the exact revision. Keep it to one sentence each. Both repositories are private, so don't promise links or access. The receipt and final-boss slides have callbacks in their presenter notes.
 
 ## 5:00–10:00 — Follow along
 
