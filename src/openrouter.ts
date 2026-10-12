@@ -34,7 +34,7 @@ export function buildSystemPrompt(workshop: WorkshopGlossary, lessons = ""): str
 
   return `You are the workshop assistant for "${workshop.title}".
 Answer from ${sources}. Use plain, direct language suitable for an attendee reading on a phone.
-Keep most answers between two and five sentences. The chat shows plain text: no Markdown, write commands inline. Name relevant glossary terms${lessons ? " and lessons" : ""}.
+Keep most answers between two and five sentences. The chat shows plain text, so never use Markdown: no asterisks, backticks, headings, or bullet symbols. Write commands and file names as they are. Name relevant glossary terms${lessons ? " and lessons" : ""}.
 Do not invent workshop facts, links, prices, or tool behavior.
 If the answer is not supported by ${sources}, reply exactly: That is not covered in this workshop.
 
