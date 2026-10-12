@@ -215,7 +215,7 @@
           ],
           "demo": "none",
           "sourcePath": "slides.md",
-          "slide": 5
+          "slide": 6
         },
         {
           "id": "shallow-check",
@@ -295,7 +295,7 @@
           ],
           "demo": "verification-gate",
           "sourcePath": "slides.md",
-          "slide": 7
+          "slide": 8
         },
         {
           "id": "verification-receipt",
@@ -316,7 +316,7 @@
           ],
           "demo": "none",
           "sourcePath": "slides.md",
-          "slide": 9
+          "slide": 10
         },
         {
           "id": "pstack",
