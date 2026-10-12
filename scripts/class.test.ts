@@ -198,7 +198,8 @@ test("class builds publish slides only when enabled and never overwrite the glos
       assert.match(home, /Workshop instructor/);
       assert.equal(home.includes("Developers &lt;new&gt; to the topic"), publish);
       assert.equal(home.includes('class="class-audience"'), publish);
-      assert.equal(home.includes('href="/slides/"'), publish && link);
+      assert.equal(home.includes('href="/beyond-done/slides/"'), publish && link);
+      assert.doesNotMatch(home, /(?:href|src)="\/(?!beyond-done\/)/, "every root link is under the base path");
       const lesson = await readFile(join(directory, "dist/lessons/04-honest-questions/index.html"), "utf8");
       assert.match(lesson, /Test the questions with real Jev/);
       const glossaryPage = await readFile(join(directory, "dist/glossary/index.html"), "utf8");
@@ -210,8 +211,8 @@ test("class builds publish slides only when enabled and never overwrite the glos
       assert.equal(lesson.includes('class="pill lesson-complete"'), publish);
       const built = await readFile(join(directory, "dist/glossary.json"), "utf8");
       if (publish) {
-        assert.match(await readFile(join(directory, "dist/slides/index.html"), "utf8"), /\/slides\//);
-        if (link) assert.match(built, /\/slides\/#/);
+        assert.match(await readFile(join(directory, "dist/slides/index.html"), "utf8"), /\/beyond-done\/slides\//);
+        if (link) assert.match(built, /"\/beyond-done\/slides\/#"/);
         else assert.doesNotMatch(built, /\/slides|private-deck|previous\.example/);
       } else {
         await assert.rejects(readFile(join(directory, "dist/slides/index.html")), { code: "ENOENT" });

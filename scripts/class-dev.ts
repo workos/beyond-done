@@ -32,12 +32,15 @@ export default function classDev(): Plugin {
         },
       });
       // Slidev's client calls its notes and server-state endpoints at the root, whatever the base.
+      // Astro strips its base from request.url; Slidev's own base includes it, so route on the original URL.
       server.middlewares.use((request, response, next) => {
-        const path = request.url?.split("?")[0];
+        const url = request.originalUrl ?? request.url;
+        const path = url?.split("?")[0];
         if (path === base.slice(0, -1)) {
           response.writeHead(302, { Location: base });
           response.end();
         } else if (path?.startsWith(base) || path?.startsWith("/__slidev/") || path?.startsWith("/@server-reactive/") || path?.startsWith("/@server-ref/")) {
+          request.url = url;
           slides.middlewares(request, response, next);
         } else next();
       });
