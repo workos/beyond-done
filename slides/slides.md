@@ -275,7 +275,6 @@ clicks: 2
 # The opening bug.<br>Now with evidence.
 
 <EvidenceFlow />
-<p class="footnote">Reproduce: pnpm lab:check --scenario memory-only · Open the printed report.json path.</p>
 
 <!--
 Teaching expectations:
@@ -285,6 +284,7 @@ Teaching expectations:
 
 ~20:00 checkpoint. Advance twice: observations → revision-bound evidence → failed mandatory checks. This is a saved real browser run using the reference solution, not a current live run. Its judge scores are synthetic.
 Open public/materials/opening-report.json or run pnpm lab:check --scenario memory-only with the learner collector. Their unfinished policy still escalates; inspect observations and checks. Local hashes establish consistency, not isolation from a shell-capable attacker.
+Moved from footnote: Reproduce: pnpm lab:check --scenario memory-only · Open the printed report.json path.
 -->
 
 ---
@@ -487,12 +487,12 @@ class: indigo
 
 <RepairReceipt />
 <div class="command">pnpm lab:loop<br>pnpm lab:loop --stubborn</div>
-<p class="footnote">Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.</p>
 
 <!--
 This belongs to the same three-minute payoff as the previous animation. Run the completed learner loop, or --solution for the reference. Open report.json and match its fields to this saved reference run.
 Point to the different candidate revisions AND evidence hashes. A new candidate does not inherit the old judgment. --stubborn must end repair → escalate.
 Captured report: public/materials/repair-report.json. This slide is not a live model response. If short on time, inspect the saved report and protect the game.
+Moved from footnote: Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.
 -->
 
 ---
@@ -711,7 +711,6 @@ Tie it back to the three builds: observe.ts recorded what happened, questions.ts
 <div class="ticket-bottom"><span>ONE REAL TASK. ONE FIRST CHECK.</span></div>
 </div>
 </div>
-<p class="footnote">55–58 minutes · Lesson 07 · /materials/transfer-worksheet.md · Launch → drive → observe → decide.</p>
 
 <!--
 Teaching expectations:
@@ -722,6 +721,7 @@ Teaching expectations:
 
 55:00–58:00. Two-minute write, then brief pair-share. If stuck: settings change, support reply, dashboard filter.
 Ask where a hard assertion is sufficient and where a semantic judgment is actually helpful.
+Moved from footnote: 55–58 minutes · Lesson 07 · /materials/transfer-worksheet.md · Launch → drive → observe → decide.
 -->
 
 ---
