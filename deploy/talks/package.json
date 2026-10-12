@@ -6,7 +6,7 @@
     "build": "wrangler deploy --dry-run --outdir dist"
   },
   "devDependencies": {
-    "wrangler": "4.132.0"
+    "wrangler": "4.149.0"
   },
   "dependencies": {
     "@workos/alto": "0.14.0"
