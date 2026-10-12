@@ -23,6 +23,6 @@ test("the class system prompt grounds answers in the glossary and lessons", asyn
   const { classSystemPrompt } = await import("./dev-chat.js");
   const prompt = await classSystemPrompt();
   assert.match(prompt, /Answer from the glossary and lessons below/);
-  assert.match(prompt, /- Bounded repair:/);
+  assert.match(prompt, /- Stale proof:/);
   assert.match(prompt, /===== SOURCE: 03-drive-the-app\.md =====/);
 });

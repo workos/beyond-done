@@ -140,7 +140,7 @@ Receipts, screenshots, and event logs live under ignored `.lab-runs/`. Only fict
 - [Implementation contract](docs/lab-contract.md)
 - [Template operations](.agents/skills/workshop/SKILL.md)
 
-`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, then corrected by hand against the lessons. Regenerating replaces those corrections. Source is hosted privately at [workos/beyond-done](https://github.com/workos/beyond-done).
+`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, after the solo-game and Riker slide changes, then corrected by hand (links to `/materials/` files and Nick's Riker post). Regenerating replaces those corrections. Source is hosted privately at [workos/beyond-done](https://github.com/workos/beyond-done).
 
 ## Deploying the site
 

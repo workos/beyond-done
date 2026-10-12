@@ -11,11 +11,11 @@ duration: "10 minutes (live 0:00–10:00)"
 
 You can say why “the agent said it was done” isn't evidence, name the checks you'd run by hand, and explain why a small CLI beats a paragraph of instructions.
 
-## The hook: incident → live failure (0:00–6:00)
+## The hook: incident → live failure (0:00–5:30)
 
 The hosts open with PocketOS founder Jer Crane's [account of an agent deleting production data](https://x.com/lifeofjer/status/2048103471019434248). [Railway's follow-up](https://blog.railway.com/p/your-ai-wants-to-nuke-your-database) says the database was recovered and deletion safeguards changed. Production permissions and recovery are part of that story; this class's browser prototype doesn't reproduce it or claim to prevent it.
 
-After the host intros, the repo QR goes up so you can clone while we talk. Then the deck shows a **staged worker report**: the waitlist form renders, submits, and shows a success message. It's a teaching prop, not a real agent transcript. **Vote:** is the feature done?
+After the host intros, the repo QR goes up so you can clone while we talk, followed by the glossary QR. Then the deck shows a **staged worker report**: the waitlist form renders, submits, and shows a success message. It's a teaching prop, not a real agent transcript. **Vote:** is the feature done?
 
 Then break it yourself:
 
@@ -25,7 +25,13 @@ pnpm snack up
 
 A Chrome window opens on the app. Leave the terminal running. Submit `ada@example.test`, read the confirmation, then reload. The record vanishes. A submit check didn't establish persistence. (Read the confirmation carefully, too. It comes back in lesson 5.)
 
+## Why a check pays off (5:30–8:00)
+
 Lauren Tan's [pstack Part 2](https://x.com/poteto/status/2097732320606507506) makes verification central to agent work: “if an agent can't verify its own work, nothing else matters.” [Part 1](https://x.com/poteto/status/2094457600259842065) describes reusable verification tools and feature maps. The rest of the hour builds a small version of that idea.
+
+A check isn't only safer; it's faster. Without one, an agent guesses, says “fixed,” and stays confident. With one, it gets a specific failure, makes a targeted fix, and stops when the same check passes on fresh evidence.
+
+The hosts hold their own tools to this rule. Nick's Riker runs coding agents and never takes a worker's status as proof: it runs the job's check itself and keeps the command, exit code, commit and a hash of the log. Zack's CTX logs a worker's claim and ignores it; only a verifier's receipt for the exact revision closes the work. Both tools are private, but both hosts have written about them: Nick's [Riker post](https://nicknisi.com/posts/riker/), and the CTX write-ups linked in lesson 7.
 
 ## The fictional task
 
@@ -37,7 +43,7 @@ You're prototyping the **Midnight Snack Lab** waitlist for a sold-out (fictional
 
 > **This is a browser-local prototype.** It stores state in the browser only. Nobody is registered with a real organizer, no email is sent, and no money is charged.
 
-## What would you check? (6:00–10:00)
+## What would you check? (8:00–10:00)
 
 Before shipping that waitlist, a careful person would reload the page, open DevTools to look at local storage and the console, maybe check the network tab, and read what the page actually promises.
 

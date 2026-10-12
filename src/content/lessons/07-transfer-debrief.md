@@ -122,7 +122,7 @@ A flamechart is evidence to investigate, not proof that a proposed cause is corr
 
 Nick and Zack arrived at this independently in Riker and CTX: preserve what the system did, what was checked and why a decision followed. A receipt is a record of an evaluation, not a synonym for a passing result. A hash identifies the recorded bytes; it cannot establish that the observation, criterion or judge was correct.
 
-Zack’s public [CTX blueprint](https://zackproser.com/blog/ctx-personal-context-engine) describes the context engine. His later [verification retrospective](https://zackproser.com/blog/what-survived-the-experiments) explains the work graph and gates that re-read the real system. The [pt retrospective](https://zackproser.com/blog/pt-attention-first-terminal) connects preserved work ledgers to a possible training dataset. These are public write-ups; the implementations remain private.
+Nick’s [Riker post](https://nicknisi.com/posts/riker/) describes an agent that hands work to other agents and checks the result itself. Zack’s public [CTX blueprint](https://zackproser.com/blog/ctx-personal-context-engine) describes the context engine. His later [verification retrospective](https://zackproser.com/blog/what-survived-the-experiments) explains the work graph and gates that re-read the real system. The [pt retrospective](https://zackproser.com/blog/pt-attention-first-terminal) connects preserved work ledgers to a possible training dataset. These are public write-ups; the implementations remain private.
 
 ### What to put in the record
 
@@ -169,7 +169,7 @@ A run archive can become a dataset of tasks, tool interactions, artifacts and in
 
 - A receipt belongs to **one revision**. After any edit, the old receipt proves nothing.
 - “Can't tell” (exit 2) is **not** a product failure, and it never becomes a pass.
-- A Noul is the **probability of yes**, not a separate confidence or a proof.
+- A judge's score (Jev's Noul) is the **probability of yes**, not a separate confidence or a proof.
 - The prototype is **browser-local**: no real enrollment, email, or payment.
 - The revision hash is local provenance, **not** isolation from an agent with a
   shell.

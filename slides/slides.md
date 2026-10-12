@@ -324,7 +324,7 @@ clicks: 3
 
 **Next →** **Nick:** “Here’s what that looks like on a real job of mine.”
 
-**Careful:** The implementations are private. The CTX links are public writing: the original context-engine blueprint and the later retrospective about verification gates. Nick and Zack arrived at receipts independently. Return to that shared idea on the receipt and run-history slides; don’t imply either article exposes the private implementation.
+**Careful:** The implementations are private. The card links are public writing: Nick’s Riker post, Zack’s original context-engine blueprint, and his later retrospective about verification gates. Nick and Zack arrived at receipts independently. Return to that shared idea on the receipt and run-history slides; don’t imply either article exposes the private implementation.
 -->
 
 ---

@@ -17,7 +17,7 @@ const incidentSlide = slideFor('<IncidentOpener');
 const hostSlide = slideFor('class="people"');
 const reloadSlide = slideFor('<ReloadReveal');
 const agentSlide = slideFor('agent session · fallback recording');
-const roundSlide = slideFor('Round 1 · then swap');
+const roundSlide = slideFor('One round · 2 minutes');
 const missSlide = slideFor('Every miss is a new line');
 const contrastSlide = slideFor('<VerificationContrast');
 const receiptSlide = slideFor('<RepairReceipt');
@@ -131,6 +131,7 @@ try {
   await expect(examples.locator('.example-card.evidenced')).toHaveCount(0);
   const hostsTools = await go(ctxSlide);
   await expect(hostsTools.getByRole('link', { name: 'Read Zack’s CTX blueprint' })).toHaveAttribute('href', 'https://zackproser.com/blog/ctx-personal-context-engine');
+  await expect(hostsTools.getByRole('link', { name: 'Read Nick’s Riker post' })).toHaveAttribute('href', 'https://nicknisi.com/posts/riker/');
   await page.keyboard.press('ArrowRight');
   await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
   for (const step of [2, 3]) {
@@ -255,7 +256,7 @@ try {
   await expect(round.getByRole("timer")).toHaveText("2:00");
   await round.getByRole("button", { name: "Start 120-second round" }).click();
   await page.clock.fastForward(121_000);
-  await expect(round.getByRole("status")).toHaveText("Pens down. Swap roles.");
+  await expect(round.getByRole("status")).toHaveText("Pens down. Ctrl+C to reveal.");
   await expect(round.getByRole("timer")).toHaveText("0:00");
   assert.deepEqual(errors, [], "No deck runtime errors");
   console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; Riker check clock; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; reload reveal; agent-run fallback reveals; game reveal; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
