@@ -34,17 +34,17 @@ pnpm lab:app --scenario memory-only
 
 Slide 5's illustration is only the fallback if the app cannot start. Name it as such. The later evidence slide reads the captured local run in `public/materials/opening-report.json`; its browser observations are real and its semantic scores are synthetic fixtures.
 
-## 4:00–4:30 — Lauren Tan's thesis
+## 4:00–5:00 — Lauren Tan's thesis
 
 Slide 6 credits the short quote from [pstack Part 2](https://x.com/poteto/status/2097732320606507506). Explain that checking one's work means driving the actual product and preserving evidence. Asking the same model whether it is finished is insufficient.
 
 [Part 1](https://x.com/poteto/status/2094457600259842065) develops reusable verification tools and feature maps. Our CLI is a small example of a repeatable tool; our three exercises separate observations, meaning, and policy. At the close, participants map a feature in their own app to its user journey and observable success condition.
 
-## 4:30–5:00 — Our own tools
+## 5:00–5:30 — Our own tools
 
 Slide 8 shows that the hosts live by this rule. Nick: Riker runs the job's check itself and keeps the command, exit code, commit and output hash; a worker's "done" is not proof. Zack: CTX ignores bare executor claims; only its evaluators close a node, from receipts bound to the exact revision. Keep it to one sentence each. Both repositories are private, so don't promise links or access. The receipt and final-boss slides have callbacks in their presenter notes.
 
-## 5:00–10:00 — Follow along
+## 5:30–10:00 — Follow along
 
 The next two slides introduce the repo and interactive glossary. Source lives at `github.com/nicknisi/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm lab:doctor` as the smoke test. Pair people who are blocked.
 
