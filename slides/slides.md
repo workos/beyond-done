@@ -270,14 +270,12 @@ clicks: 3
 -->
 
 ---
+title: We hold our own tools to this.
+class: ctx-slide
+clicks: 3
 ---
 
-# We hold our own tools to this.
-
-<div class="comparison">
-<div><div class="small-label">Riker · Nick · runs coding agents for you</div><blockquote>“Status comes from records, not model prose.”</blockquote><p class="comparison-label">Riker runs the job’s check itself and keeps the command, exit code, commit and output hash. No check: reported unverified.</p></div>
-<div><div class="small-label">CTX · Zack · context + verification control plane</div><blockquote>“A bare executor claim is kept in the ledger but ignored.”</blockquote><p class="comparison-label">Verifiers write receipts bound to the exact revision. Only CTX’s evaluators close a node.</p><p class="host-reading"><a href="https://zackproser.com/blog/ctx-personal-context-engine" target="_blank" rel="noopener noreferrer">Read Zack’s CTX blueprint ↗</a><br><a href="https://zackproser.com/blog/what-survived-the-experiments" target="_blank" rel="noopener noreferrer">The verification lesson ↗</a></p></div>
-</div>
+<CtxWalkthrough />
 
 <!--
 **ACT 1 · THE CLAIM** · 5:30–6:00 · one sentence each
@@ -287,6 +285,12 @@ clicks: 3
 **Say:**
 - **Nick:** “Riker runs coding agents for me. It never believes the agent’s status. It runs the job’s check itself and records the command, exit code, commit and a hash of the output. If there’s no check, the job is marked unverified.” Optional: “The last PR to this deck came out of a Riker job.”
 - **Zack:** “CTX models work as a graph of observable end states. A worker can claim whatever it likes; the claim is logged and ignored. Verifiers write receipts tied to the exact revision, and only CTX’s evaluators close a node.”
+
+**Click walkthrough · Zack:** Use the images as a quick visual example in the hour; expand these prompts during rehearsal or questions. No additional slide advances are needed between images. Left arrow retraces every state.
+
+1. **CTX spotlight:** The CTX card lifts and Riker recedes. “Here’s what that means in my system.”
+2. **Architecture overlay:** Start at the agent session, then trace work → verifier → gate → outcome. A **run** is one execution attempt, including its inputs, actions and artifacts; it is not the task’s completion status. **Inputs** bind the work to the things in scope. A **verification** is the required condition, such as all scoped PRs being merged. A **verifier** is the connector that queries the real system and returns an observation/receipt. A worker’s prose cannot satisfy the gate. On failure the task stays open; on success the evaluator can close it. Keep the ledger over time for evaluation and improvement; a training corpus is a possible curated use, not automatic learning.
+3. **App overlay:** Walk left to right: “Pull requests in scope” is the input set; “All pull requests merged” is the verification; “Re-check with GitHub” invokes the verifier; the scoped PR and observed merged state support the satisfied gate. Point out **Latest run: No run attached**: this screenshot shows the task’s verification state, not a run-detail view. Do not imply that the captured check has an attached run. The recording of a run and the requirement for completion are different concepts.
 
 **Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. One more tab first.”
 

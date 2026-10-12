@@ -25,11 +25,13 @@ const workbenchSlide = slideFor('<VerificationWorkbench');
 const browserProofSlide = slideFor('<BrowserProof');
 const historySlide = slideFor('<ReceiptHistory');
 const examplesSlide = slideFor('<VerifierExamples');
+const ctxSlide = slideFor('<CtxWalkthrough');
 const clickStates = new Map([
   [loopSlide, [0, 1, 2, 3, 4, 5]], [contrastSlide, [0, 1, 2, 3]],
   [receiptSlide, [0, 1, 2, 3]], [workbenchSlide, [0, 1, 2]],
   [browserProofSlide, [0, 1, 2]], [historySlide, [0, 1, 2, 3]],
   [examplesSlide, [0, 1, 2]],
+  [ctxSlide, [0, 1, 2, 3]],
 ]);
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
@@ -119,8 +121,25 @@ try {
   await expect(examples.locator('.example-prompt')).toContainText('TWO MINUTES');
   await page.keyboard.press('ArrowLeft');
   await expect(examples.locator('.example-card.evidenced')).toHaveCount(0);
-  const hostsTools = await go(slideFor('We hold our own tools to this.'));
+  const hostsTools = await go(ctxSlide);
   await expect(hostsTools.getByRole('link', { name: 'Read Zack’s CTX blueprint' })).toHaveAttribute('href', 'https://zackproser.com/blog/ctx-personal-context-engine');
+  await page.keyboard.press('ArrowRight');
+  await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
+  for (const step of [2, 3]) {
+    await page.keyboard.press('ArrowRight');
+    await expect(hostsTools.locator('.ctx-walkthrough')).toHaveAttribute('data-step', String(step));
+    await expect(hostsTools.locator('.ctx-comparison')).toHaveCount(0);
+    const screenshot = hostsTools.locator('.ctx-image-frame img');
+    await expect(screenshot).toBeVisible();
+    await expect.poll(() => screenshot.evaluate(img => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    await expect(screenshot).toHaveAttribute('alt', step === 2 ? /CTX architecture/ : /No run attached/);
+  }
+  await page.keyboard.press('ArrowLeft');
+  await expect(hostsTools.locator('.architecture-view')).toBeVisible();
+  await page.keyboard.press('ArrowLeft');
+  await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
+  await page.keyboard.press('ArrowLeft');
+  await expect(hostsTools.locator('.ctx-comparison')).not.toHaveClass(/focused/);
   const contrast = await go(contrastSlide, 3);
   await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('36:00');
   await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
@@ -168,6 +187,7 @@ try {
     [receiptSlide, '.receipt-paper', 3], [workbenchSlide, '.proof-result', 2],
     [browserProofSlide, '.hotspot', 2], [historySlide, '.history-focus', 3],
     [examplesSlide, '.example-prompt', 2],
+    [ctxSlide, '.ctx-overlay', 3],
   ] as const) {
     const root = await go(slide, clicks);
     assert.equal(await root.locator(selector).evaluate(e => getComputedStyle(e).animationName), 'none');
@@ -210,7 +230,7 @@ try {
   await expect(round.getByRole("status")).toHaveText("Pens down. Swap roles.");
   await expect(round.getByRole("timer")).toHaveText("0:00");
   assert.deepEqual(errors, [], "No deck runtime errors");
-  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; CTX link; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
+  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
   console.log("Visual samples: .lab-runs/deck-review/");
 } finally {
   await browser.close();
