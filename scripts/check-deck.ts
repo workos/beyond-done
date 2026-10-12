@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir } from "node:fs/promises";
 import { dev } from "astro";
 import { chromium, expect } from "@playwright/test";
+import { classConfig } from "../src/class-config.js";
 import { collectWorkshopSource } from "./source.js";
 
 const source = await collectWorkshopSource("slides/slides.md");
@@ -21,7 +22,8 @@ const evidenceSlide = slideFor('<EvidenceFlow');
 const contrastSlide = slideFor('<VerificationContrast');
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
-const base = process.env.DECK_URL ?? `http://127.0.0.1:${site!.address.port}/`;
+// DECK_URL is the class site root, e.g. https://talks.workos.cloud/beyond-done/. The deck is at slides/ below it.
+const base = (process.env.DECK_URL ?? `http://127.0.0.1:${site!.address.port}${classConfig.basePath}`).replace(/\/?$/, "/");
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });

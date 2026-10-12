@@ -69,7 +69,7 @@ test("mise tasks orchestrate scripts without live API calls", { skip: !mise }, a
       await f.run("generate");
       await f.run("deploy");
       await f.run("chat:setup");
-      assert.deepEqual(await f.calls(), [["glossary"], ["deploy"], ["chat:setup"]]);
+      assert.deepEqual(await f.calls(), [["glossary"], ["run", "deploy:talks"], ["chat:setup"]]);
     } finally { await f.cleanup(); }
   });
 

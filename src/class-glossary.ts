@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { CORE_GLOSSARY_SECTION } from "./core-glossary.js";
-import { classConfig, type ClassConfig } from "./class-config.js";
+import { classConfig, withBase, type ClassConfig } from "./class-config.js";
 import { workshopGlossarySchema, type WorkshopGlossary } from "./schema.js";
 
 // The starter works without model access. Generation replaces this with reviewed content.
@@ -34,10 +34,12 @@ export function prepareClassGlossary(input: WorkshopGlossary, config: ClassConfi
   const linkSlides = config.slides.publish && config.slides.link;
   Object.assign(workshop, {
     slug: config.slug, title: config.title, event: config.event, credit: config.credit,
-    theme: config.theme, slidesUrl: linkSlides ? "/slides/#" : "",
+    theme: config.theme, slidesUrl: linkSlides ? withBase("/slides/#", config.basePath) : "",
   });
+  // Reviewed content links class-root-relative ("/materials/…"). Serve those under the base path.
+  for (const resource of workshop.resources) resource.url = withBase(resource.url, config.basePath);
   if (!linkSlides) {
-    const slideBases = ["/slides", oldSlidesUrl].filter(Boolean).map((url) => new URL(url, `https://${config.hostname}`));
+    const slideBases = ["/slides", oldSlidesUrl].filter(Boolean).map((url) => new URL(withBase(url, config.basePath), `https://${config.hostname}`));
     workshop.resources = workshop.resources.filter((resource) => {
       if (!resource.url) return false;
       try {

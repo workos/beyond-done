@@ -16,9 +16,10 @@ export default function classDev(): Plugin {
 
       if (!classConfig.slides.publish) return;
       await generateSlidesQr();
-      const options = await resolveOptions({ entry: "slides/slides.md", base: "/slides/", routerMode: "hash" }, "dev");
+      const base = `${classConfig.basePath}/slides/`;
+      const options = await resolveOptions({ entry: "slides/slides.md", base, routerMode: "hash" }, "dev");
       const slides = await createServer(options, {
-        base: "/slides/",
+        base,
         server: {
           middlewareMode: true,
           ws: { server: server.httpServer!, path: "__slidev_hmr" },
@@ -30,12 +31,16 @@ export default function classDev(): Plugin {
           return { ...loaded, themeMeta, config: { ...parser.resolveConfig(loaded.headmatter, themeMeta, options.entry), routerMode: "hash" } };
         },
       });
+      // Slidev's client calls its notes and server-state endpoints at the root, whatever the base.
+      // Astro strips its base from request.url; Slidev's own base includes it, so route on the original URL.
       server.middlewares.use((request, response, next) => {
-        const path = request.url?.split("?")[0];
-        if (path === "/slides") {
-          response.writeHead(302, { Location: "/slides/" });
+        const url = request.originalUrl ?? request.url;
+        const path = url?.split("?")[0];
+        if (path === base.slice(0, -1)) {
+          response.writeHead(302, { Location: base });
           response.end();
-        } else if (path?.startsWith("/slides/") || path?.startsWith("/__slidev/") || path?.startsWith("/@server-reactive/") || path?.startsWith("/@server-ref/")) {
+        } else if (path?.startsWith(base) || path?.startsWith("/__slidev/") || path?.startsWith("/@server-reactive/") || path?.startsWith("/@server-ref/")) {
+          request.url = url;
           slides.middlewares(request, response, next);
         } else next();
       });

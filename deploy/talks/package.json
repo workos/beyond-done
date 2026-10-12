@@ -1,0 +1,11 @@
+{
+  "name": "talks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "wrangler deploy --dry-run --outdir dist"
+  },
+  "devDependencies": {
+    "wrangler": "4.132.0"
+  }
+}

@@ -23,6 +23,7 @@ export function generationArgs(config: ClassConfig): string[] {
     ...(config.credit ? ["--credit", config.credit] : []),
     "--theme-preset", config.theme.preset, "--accent", config.theme.accent,
     // Source availability and publication are independent. The build strips private links.
+    // Class-root-relative: prepareClassGlossary resolves it against basePath, so the glossary stays base-agnostic.
     "--slides-url", "/slides/#",
   ];
 }
@@ -31,8 +32,9 @@ export async function buildClass(): Promise<void> {
   if (classConfig.slides.publish) await generateSlidesQr();
   await run(["astro", "build"]);
   if (classConfig.slides.publish) {
-    await run(["slidev", "build", "slides/slides.md", "--base", "/slides/", "--router-mode", "hash", "--without-notes", "--out", resolve("dist/slides")]);
+    await run(["slidev", "build", "slides/slides.md", "--base", `${classConfig.basePath}/slides/`, "--router-mode", "hash", "--without-notes", "--out", resolve("dist/slides")]);
   }
+  // Only chat:setup reads this; the site itself ships through pnpm run deploy:talks.
   await mkdir(".class-build", { recursive: true });
   await writeFile(".class-build/wrangler.json", `${JSON.stringify(cloudflareConfig(classConfig), null, 2)}\n`);
 }
@@ -44,17 +46,10 @@ async function main(): Promise<void> {
       await generate([...generationArgs(classConfig), ...args]);
       break;
     case "build":
-    case "preview":
-    case "deploy":
-      if (command === "deploy" && (classConfig.slug === "my-class" || classConfig.hostname === "my-class.typevoid.com")) {
-        throw new Error("Set your class slug and hostname in class.config.json before deploying.");
-      }
       await buildClass();
-      if (command === "preview") await run(["wrangler", "dev", "--config", ".class-build/wrangler.json", ...args]);
-      if (command === "deploy") await run(["wrangler", "deploy", "--config", ".class-build/wrangler.json", ...args]);
       break;
     default:
-      throw new Error("Usage: tsx scripts/class.ts <generate|build|preview|deploy>");
+      throw new Error("Usage: tsx scripts/class.ts <generate|build>");
   }
 }
 

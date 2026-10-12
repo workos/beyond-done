@@ -8,7 +8,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Glossary } from "../src/App.js";
-import { classConfig, classConfigSchema, cloudflareConfig } from "../src/class-config.js";
+import { classConfig, classConfigSchema, cloudflareConfig, withBase } from "../src/class-config.js";
 import { prepareClassGlossary, starterGlossary } from "../src/class-glossary.js";
 import worker, { type Env } from "../src/worker.js";
 import { generationArgs } from "./class.js";
@@ -33,16 +33,45 @@ function glossary() {
   return input;
 }
 
-test("class config validates the hostname and generates explicit Cloudflare routes", () => {
-  for (const hostname of ["https://class.typevoid.com", "typevoid.com", "class.example.com", "class.typevoid.com/path", "-class.typevoid.com"]) {
-    assert.equal(classConfigSchema.safeParse({ ...classConfig, hostname }).success, false);
+test("class config validates the hostname and base path", () => {
+  const valid = classConfigSchema.parse({ ...classConfig, hostname: "talks.workos.cloud", basePath: "/beyond-done" });
+  assert.equal(valid.hostname, "talks.workos.cloud");
+  assert.equal(valid.basePath, "/beyond-done");
+  assert.equal(classConfigSchema.safeParse({ ...classConfig, basePath: "/talks/beyond-done-2" }).success, true);
+  for (const hostname of ["https://talks.workos.cloud", "talks.workos.cloud/beyond-done", "talks.workos.cloud:443", "Talks.workos.cloud", "-talks.workos.cloud", "talks", ""]) {
+    assert.equal(classConfigSchema.safeParse({ ...classConfig, hostname }).success, false, hostname);
   }
-  const config = cloudflareConfig({ ...classConfig, hostname: "agents.typevoid.com", slug: "agents", features: disabled });
+  for (const basePath of ["beyond-done", "/beyond-done/", "/", "", "//beyond-done", "/beyond-done/../x", "/Beyond-done", "/beyond done", "/-beyond", "/beyond_done", undefined]) {
+    assert.equal(classConfigSchema.safeParse({ ...classConfig, basePath }).success, false, String(basePath));
+  }
+  const config = cloudflareConfig({ ...classConfig, slug: "agents", features: disabled });
   assert.equal(config.name, "agents");
-  assert.deepEqual(config.routes, [{ pattern: "agents.typevoid.com", custom_domain: true }]);
   assert.equal(config.vars.CHAT_ENABLED, "false");
   assert.equal(config.assets.not_found_handling, "404-page");
-  assert.equal(config.workers_dev, false);
+  assert.ok(!("routes" in config) && !("workers_dev" in config));
+});
+
+test("withBase resolves class-root-relative URLs only, and is idempotent", () => {
+  const cases: Array<[string, string]> = [
+    ["/", "/beyond-done/"],
+    ["/glossary/", "/beyond-done/glossary/"],
+    ["/materials/transfer-worksheet.md?download=1#top", "/beyond-done/materials/transfer-worksheet.md?download=1#top"],
+    ["/slides/#", "/beyond-done/slides/#"],
+    ["/beyond-done", "/beyond-done"],
+    ["/beyond-done/", "/beyond-done/"],
+    ["/beyond-done/glossary/", "/beyond-done/glossary/"],
+    ["/beyond-done?x=1", "/beyond-done?x=1"],
+    ["/beyond-done-2/", "/beyond-done/beyond-done-2/"],
+    ["//example.com/x", "//example.com/x"],
+    ["https://example.com/x", "https://example.com/x"],
+    ["#content", "#content"],
+    ["mailto:teacher@example.com", "mailto:teacher@example.com"],
+    ["materials/x.md", "materials/x.md"],
+    ["../x", "../x"],
+    ["", ""],
+  ];
+  for (const [input, expected] of cases) assert.equal(withBase(input, "/beyond-done"), expected, input);
+  assert.equal(withBase(withBase("/glossary/", "/beyond-done"), "/beyond-done"), "/beyond-done/glossary/");
 });
 
 test("class audience and links are optional and link URLs are safe", () => {
@@ -70,8 +99,12 @@ test("unpublished slides lose links and source metadata without changing reviewe
   assert.doesNotMatch(JSON.stringify(prepared), /private-deck|previous\.example/);
   assert.deepEqual(input, original);
   const published = prepareClassGlossary(input, { ...classConfig, slides: { publish: true, link: true }, features: enabled });
-  assert.equal(published.slidesUrl, "/slides/#");
+  assert.equal(published.slidesUrl, "/beyond-done/slides/#");
   assert.equal(published.sections[0].terms[0].slide, 2);
+  assert.deepEqual(published.resources.map(resource => resource.url), [
+    "https://previous.example/slides?download=1", "", "/beyond-done/slides/#/2", "https://example.org/guide",
+  ], "class-root-relative resource links are served under the base path");
+  assert.deepEqual(prepareClassGlossary(published, { ...classConfig, slides: { publish: true, link: false } }).resources.map(resource => resource.id), ["deck", "guide"], "based slide links are still recognized as slides");
 });
 
 test("published slides can be unlinked without disabling publication", () => {
@@ -165,7 +198,8 @@ test("class builds publish slides only when enabled and never overwrite the glos
       assert.match(home, /Workshop instructor/);
       assert.equal(home.includes("Developers &lt;new&gt; to the topic"), publish);
       assert.equal(home.includes('class="class-audience"'), publish);
-      assert.equal(home.includes('href="/slides/"'), publish && link);
+      assert.equal(home.includes('href="/beyond-done/slides/"'), publish && link);
+      assert.doesNotMatch(home, /(?:href|src)="\/(?!beyond-done\/)/, "every root link is under the base path");
       const lesson = await readFile(join(directory, "dist/lessons/04-honest-questions/index.html"), "utf8");
       assert.match(lesson, /Test the questions with real Jev/);
       const glossaryPage = await readFile(join(directory, "dist/glossary/index.html"), "utf8");
@@ -177,8 +211,8 @@ test("class builds publish slides only when enabled and never overwrite the glos
       assert.equal(lesson.includes('class="pill lesson-complete"'), publish);
       const built = await readFile(join(directory, "dist/glossary.json"), "utf8");
       if (publish) {
-        assert.match(await readFile(join(directory, "dist/slides/index.html"), "utf8"), /\/slides\//);
-        if (link) assert.match(built, /\/slides\/#/);
+        assert.match(await readFile(join(directory, "dist/slides/index.html"), "utf8"), /\/beyond-done\/slides\//);
+        if (link) assert.match(built, /"\/beyond-done\/slides\/#"/);
         else assert.doesNotMatch(built, /\/slides|private-deck|previous\.example/);
       } else {
         await assert.rejects(readFile(join(directory, "dist/slides/index.html")), { code: "ENOENT" });

@@ -1,0 +1,7 @@
+{
+  "name": "Talks",
+  "surfaces": {
+    "/": "web",
+    "/beyond-done": "public"
+  }
+}
