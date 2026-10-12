@@ -17,7 +17,7 @@ Prepare with [preflight.md](preflight.md). Keep the lesson site and demo app in 
 
 The shared intro is slide 2. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver/room-reader for the Jev segment or policy exercise. During the game, one keeps time and the other collects one useful counterexample. These are suggestions to confirm in rehearsal, not invented job descriptions.
 
-The deck has 30 slides within the same 60-minute schedule. The new slides replace lecture time with an incident animation, repo/glossary QR handoff, actual saved evidence, and a short architecture bridge. The primary opening demo is the real memory-only app; slide 4 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 1. Do not imply our exercise would have prevented that incident.
+The deck has 32 slides within the same 60-minute schedule. The new slides replace lecture time with an incident animation, repo/glossary QR handoff, actual saved evidence, and a short architecture bridge. The primary opening demo is the real memory-only app; slide 4 has a labelled illustration as fallback. Read [the opening script and primary sources](opening.md) before rehearsal. Advance through deletion AND recovery on slide 1. Do not imply our exercise would have prevented that incident.
 
 ## Timing and stage cues
 
@@ -38,7 +38,7 @@ The deck has 30 slides within the same 60-minute schedule. The new slides replac
 | 32–33 | Checkpoint | “What did this number NOT prove?” Move on. |
 | 33–36 | Policy | Walk the ordered table. Missing evidence first; no averaging hard gates. |
 | 36–40 | Build | Implement `decide()`; run focused policy check. |
-| 40–43 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 20. Last 30 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
+| 40–43 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 21. Last 30 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
 | 43–44 | Pair up | Bouncer vs. Bluffer. Freeze the verifier; keep human labels out of JSON. |
 | 44–47 | Round 1 | 90 seconds to write the polite lie; 90 seconds to judge and inspect. |
 | 47–50 | Round 2 | Swap roles. 90 seconds to write a valid paraphrase; 90 seconds to judge. |
@@ -108,7 +108,7 @@ Without keys, use `pnpm lab:app --candidate FILE` and a human peer. For a less l
 
 Bouncer points: bad→repair **+2**; good→accept **+2**; bad→accept **−3**; good→repair/escalate **−1**; bad→escalate **0**. Outage, invalid JSON, or disputed label is no contest. Escalate-everything scores −1. A fully correct two-case defense scores 4.
 
-Timers on slides 22/24 start only on a button press. Pause/reset is available; leaving a slide pauses it. No automatic music or sound. The six-stage illustration on slide 19 uses arrow-key reveals; its stubborn-worker checkbox demonstrates the alternate ending.
+Timers on slides 24/26 start only on a button press. Pause/reset is available; leaving a slide pauses it. No automatic music or sound. The six-stage illustration on slide 20 uses arrow-key reveals; its stubborn-worker checkbox demonstrates the alternate ending.
 
 Celebrate one useful discovery: Best Polite Lie or Most Unfairly Rejected, with bragging rights only. Do not promise physical prizes. If nobody fools the model, compare which wording was hardest to label—the absence of an exploit is not a failed activity. Make it playful without turning another attendee into the joke.
 

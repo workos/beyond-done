@@ -58,7 +58,7 @@ try {
       });
       if (outside.length) overflow.push({ slide, clicks, outside });
     }
-    if ([1, 2, 4, 5, 6, 7, 11, 12, 14, 15, 19, 20, 22, 24, 29, 30].includes(slide)) {
+    if ([1, 2, 4, 5, 6, 7, 11, 12, 14, 15, 18, 20, 21, 22, 24, 26, 29, 30, 31, 32].includes(slide)) {
       await page.screenshot({ path: `.lab-runs/deck-review/${String(slide).padStart(2, "0")}.png` });
     }
   }
