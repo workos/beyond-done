@@ -38,13 +38,13 @@ The deck has 30 slides within the same 60-minute schedule. The new slides replac
 | 32–33 | Checkpoint | “What did this number NOT prove?” Move on. |
 | 33–36 | Policy | Walk the ordered table. Missing evidence first; no averaging hard gates. |
 | 36–40 | Build | Implement `decide()`; run focused policy check. |
-| 40–43 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 20. |
+| 40–43 | Payoff | Scripted loop repairs once then accepts; stubborn version escalates. Show both revision hashes and evidence hashes on slide 20. Last 30 seconds: the thesis slide; say “‘Done’ is a claim. Ask for the receipt.” |
 | 43–44 | Pair up | Bouncer vs. Bluffer. Freeze the verifier; keep human labels out of JSON. |
 | 44–47 | Round 1 | 90 seconds to write the polite lie; 90 seconds to judge and inspect. |
 | 47–50 | Round 2 | Swap roles. 90 seconds to write a valid paraphrase; 90 seconds to judge. |
 | 50–52 | Score + share | Reward caught defects AND accepted good work. Spotlight one useful counterexample. |
 | 52–54 | Trade-off | Project the 0.9/0.8 fixture table. Do not mix synthetic counts with live game results. |
-| 54–55 | Final boss | Stale-evidence shared check; explain why perfect but old proof cannot approve this revision. |
+| 54–55 | Final boss | Stale-evidence shared check; explain why perfect but old proof cannot approve this revision. Last 30 seconds: the thesis slide again; tie it back to the three builds. |
 | 55–58 | Transfer | Map one feature to launch command, user path, evidence, and stop condition. Pair-share; finish the longer worksheet after class. |
 | 58–60 | Close | One or two examples. Repeat the three closing questions. |
 

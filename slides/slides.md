@@ -474,6 +474,21 @@ Captured report: public/materials/repair-report.json. This slide is not a live m
 -->
 
 ---
+class: night
+---
+
+<div class="thesis-questions">
+<div><p>What did we <span class="accent">observe?</span></p><p class="thesis-build"><code>observe.ts</code> · Build 1</p></div>
+<div><p>What did we <span class="accent">infer?</span></p><p class="thesis-build"><code>questions.ts</code> · Build 2</p></div>
+<div><p>Why did we <span class="accent">stop?</span></p><p class="thesis-build"><code>decide.ts</code> · Build 3</p></div>
+</div>
+
+<!--
+42:30–43:00, the last 30 seconds of the payoff. No reveals: leave it up long enough for people to photograph it.
+Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
+-->
+
+---
 class: indigo
 ---
 
@@ -645,6 +660,22 @@ Teaching expectations:
 54:00–55:00. One quick shared fixture: stale evidence is an injected harness fault, not a generated worker config.
 A one-sentence evidence explanation earns the room's final point. Cut this live command if behind, not the transfer exercise.
 Heldout evaluation moves to take-home to protect time for participant-authored attacks.
+-->
+
+---
+class: night
+---
+
+<div class="thesis-questions">
+<div><p>What did we <span class="accent">observe?</span></p><p class="thesis-build"><code>observe.ts</code> · Build 1</p></div>
+<div><p>What did we <span class="accent">infer?</span></p><p class="thesis-build"><code>questions.ts</code> · Build 2</p></div>
+<div><p>Why did we <span class="accent">stop?</span></p><p class="thesis-build"><code>decide.ts</code> · Build 3</p></div>
+</div>
+
+<!--
+54:30–55:00, the last 30 seconds of the final boss. Same slide as before the game. No reveals: leave it up long enough for people to photograph it.
+Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
+Tie it back to the three builds: observe.ts recorded what happened, questions.ts asked what the evidence supports, decide.ts said when to stop.
 -->
 
 ---
