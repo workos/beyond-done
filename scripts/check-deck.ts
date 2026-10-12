@@ -20,6 +20,19 @@ const loopSlide = slideFor('<LoopMachine');
 const roundSlide = slideFor('Round 1 · The polite lie');
 const evidenceSlide = slideFor('<EvidenceFlow');
 const contrastSlide = slideFor('<VerificationContrast');
+const receiptSlide = slideFor('<RepairReceipt');
+const workbenchSlide = slideFor('<VerificationWorkbench');
+const browserProofSlide = slideFor('<BrowserProof');
+const historySlide = slideFor('<ReceiptHistory');
+const examplesSlide = slideFor('<VerifierExamples');
+const ctxSlide = slideFor('<CtxWalkthrough');
+const clickStates = new Map([
+  [loopSlide, [0, 1, 2, 3, 4, 5]], [contrastSlide, [0, 1, 2, 3]],
+  [receiptSlide, [0, 1, 2, 3]], [workbenchSlide, [0, 1, 2]],
+  [browserProofSlide, [0, 1, 2]], [historySlide, [0, 1, 2, 3]],
+  [examplesSlide, [0, 1, 2]],
+  [ctxSlide, [0, 1, 2, 3]],
+]);
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
 // DECK_URL is the class site root, e.g. https://talks.workos.cloud/beyond-done/. The deck is at slides/ below it.
@@ -47,7 +60,7 @@ try {
   await mkdir(".lab-runs/deck-review", { recursive: true });
   const overflow: unknown[] = [];
   for (let slide = 1; slide <= slideCount; slide++) {
-    for (const clicks of slide === loopSlide ? [0, 1, 2, 3, 4, 5] : slide === contrastSlide ? [0, 1, 2, 3] : [0, 99]) {
+    for (const clicks of (clickStates.get(slide) ?? [0, 99])) {
       const root = await go(slide, clicks);
       const outside = await root.locator(".slidev-layout").evaluate(layout => {
         const bounds = layout.getBoundingClientRect();
@@ -61,10 +74,72 @@ try {
           }).map(element => ({ tag: element.tagName, text: element.textContent?.slice(0, 55) }));
       });
       if (outside.length) overflow.push({ slide, clicks, outside });
+      const diagramOverflow = await root.locator('.workbench-stage, .browser-stage, .history-stage, .repair-receipt, .verifier-examples, .example-card').evaluateAll(stages => stages.flatMap(stage => {
+        const bounds = stage.getBoundingClientRect();
+        return [...stage.querySelectorAll(':scope > *,p,li,.receipt-paper,.attempt-history,.run-card')]
+          .filter(element => element.getBoundingClientRect().bottom > bounds.bottom + 2)
+          .map(element => ({ text: element.textContent?.slice(0, 55), problem: 'extends into the following caption' }));
+      }));
+      if (diagramOverflow.length) overflow.push({ slide, clicks, diagramOverflow });
     }
     await page.screenshot({ path: `.lab-runs/deck-review/${String(slide).padStart(2, "0")}.png` });
   }
   assert.deepEqual(overflow, [], "Slide content must fit at initial and fully revealed states");
+  const receipt = await go(receiptSlide, 2);
+  await expect(receipt.locator('.receipt-top')).toContainText('ATTEMPT 1');
+  const firstRevision = await receipt.locator('.receipt-section').first().innerText();
+  await page.keyboard.press('ArrowRight');
+  await expect(receipt.locator('.receipt-top')).toContainText('ATTEMPT 2');
+  await expect(receipt.locator('.receipt-decision')).toContainText('ACCEPT');
+  assert.notEqual(await receipt.locator('.receipt-section').first().innerText(), firstRevision);
+  await expect(receipt.locator('.attempt-history')).toContainText('1 · REPAIR');
+  await page.keyboard.press('ArrowLeft');
+  await expect(receipt.locator('.receipt-top')).toContainText('ATTEMPT 1');
+  await expect(receipt.locator('.receipt-decision')).toContainText('REPAIR');
+  const workbench = await go(workbenchSlide, 1);
+  await page.keyboard.press('ArrowRight');
+  await expect(workbench.locator('.proof-result')).toContainText('none');
+  await expect(workbench.locator('.proof-header')).toContainText('FAIL');
+  await page.keyboard.press('ArrowLeft');
+  await expect(workbench.locator('.proof-result')).toHaveCount(0);
+  const browserProof = await go(browserProofSlide, 1);
+  await page.keyboard.press('ArrowRight');
+  await expect(browserProof.locator('.trace-panel')).toHaveClass(/repaired/);
+  await page.keyboard.press('ArrowLeft');
+  await expect(browserProof.locator('.trace-panel')).not.toHaveClass(/repaired/);
+  const history = await go(historySlide, 3);
+  await expect(history.locator('.history-focus')).toContainText('Fine-tuning is an optional next step');
+  await page.keyboard.press('ArrowLeft');
+  await expect(history.getByRole('heading', { name: 'Climb on evidence.' })).toBeVisible();
+  await expect(history.locator('.run-card')).toHaveCount(3);
+  const examples = await go(examplesSlide, 0);
+  await expect(examples.locator('.example-card')).toHaveCount(3);
+  await page.keyboard.press('ArrowRight');
+  await expect(examples.locator('.example-card.instrumented')).toHaveCount(3);
+  await page.keyboard.press('ArrowRight');
+  await expect(examples.locator('.example-card.evidenced')).toHaveCount(3);
+  await expect(examples.locator('.example-prompt')).toContainText('TWO MINUTES');
+  await page.keyboard.press('ArrowLeft');
+  await expect(examples.locator('.example-card.evidenced')).toHaveCount(0);
+  const hostsTools = await go(ctxSlide);
+  await expect(hostsTools.getByRole('link', { name: 'Read Zack’s CTX blueprint' })).toHaveAttribute('href', 'https://zackproser.com/blog/ctx-personal-context-engine');
+  await page.keyboard.press('ArrowRight');
+  await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
+  for (const step of [2, 3]) {
+    await page.keyboard.press('ArrowRight');
+    await expect(hostsTools.locator('.ctx-walkthrough')).toHaveAttribute('data-step', String(step));
+    await expect(hostsTools.locator('.ctx-comparison')).toHaveCount(0);
+    const screenshot = hostsTools.locator('.ctx-image-frame img');
+    await expect(screenshot).toBeVisible();
+    await expect.poll(() => screenshot.evaluate(img => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    await expect(screenshot).toHaveAttribute('alt', step === 2 ? /CTX architecture/ : /No run attached/);
+  }
+  await page.keyboard.press('ArrowLeft');
+  await expect(hostsTools.locator('.architecture-view')).toBeVisible();
+  await page.keyboard.press('ArrowLeft');
+  await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
+  await page.keyboard.press('ArrowLeft');
+  await expect(hostsTools.locator('.ctx-comparison')).not.toHaveClass(/focused/);
   const contrast = await go(contrastSlide, 3);
   await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('36:00');
   await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
@@ -108,6 +183,15 @@ try {
   await expect(loop.getByRole("heading", { name: "A human takes it from here." })).toBeVisible();
 
   await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const [slide, selector, clicks] of [
+    [receiptSlide, '.receipt-paper', 3], [workbenchSlide, '.proof-result', 2],
+    [browserProofSlide, '.hotspot', 2], [historySlide, '.history-focus', 3],
+    [examplesSlide, '.example-prompt', 2],
+    [ctxSlide, '.ctx-overlay', 3],
+  ] as const) {
+    const root = await go(slide, clicks);
+    assert.equal(await root.locator(selector).evaluate(e => getComputedStyle(e).animationName), 'none');
+  }
   const reducedContrast = await go(contrastSlide);
   await page.getByRole('button', { name: 'Go to next slide', exact: true }).click();
   await expect(reducedContrast.locator('.verification-contrast')).toHaveAttribute('data-step', '1');
@@ -146,7 +230,7 @@ try {
   await expect(round.getByRole("status")).toHaveText("Pens down. Swap roles.");
   await expect(round.getByRole("timer")).toHaveText("0:00");
   assert.deepEqual(errors, [], "No deck runtime errors");
-  console.log(`PASS: ${slideCount} slides × reveal states; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
+  console.log(`PASS: ${slideCount} slides × reveal states; takeaways/receipts forward+reverse/reduced motion; CTX links, image loading and forward/reverse overlays; verification comparison clocks/reverse/modes/reduced motion; portraits; incident recovery; QR; saved evidence; reload reveal; six loop stages + escalation; timer start/pause/resume/reset/expiry/navigation; reduced motion.`);
   console.log("Visual samples: .lab-runs/deck-review/");
 } finally {
   await browser.close();
