@@ -26,7 +26,7 @@ If using mise in a fresh clone, review `mise.toml`, run `mise trust`, then `mise
 This repository is private; your GitHub account must have access.
 
 ```bash
-gh repo clone nicknisi/beyond-done
+gh repo clone workos/beyond-done
 cd beyond-done
 pnpm install
 pnpm exec playwright install chromium
@@ -140,7 +140,7 @@ Receipts, screenshots, and event logs live under ignored `.lab-runs/`. Only fict
 - [Implementation contract](docs/lab-contract.md)
 - [Template operations](.agents/skills/workshop/SKILL.md)
 
-`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, then corrected by hand against the lessons. Regenerating replaces those corrections. Source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done).
+`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, then corrected by hand against the lessons. Regenerating replaces those corrections. Source is hosted privately at [workos/beyond-done](https://github.com/workos/beyond-done).
 
 ## Deploying the site
 

@@ -48,7 +48,7 @@ Slide 9 shows that the hosts live by this rule. Nick: Riker's status comes from 
 
 ## 6:00–10:00 — Follow along
 
-The repo QR already appeared on slide 4; slide 10 adds the interactive glossary. Source lives at `github.com/nicknisi/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm snack doctor` as the smoke test. Pair people who are blocked.
+The repo QR already appeared on slide 4; slide 10 adds the interactive glossary. Source lives at `github.com/workos/beyond-done`, currently private. Confirm attendee access before the workshop. Setup instructions remain in README; use `pnpm snack doctor` as the smoke test. Pair people who are blocked.
 
 The glossary QR is generated from the class hostname by `pnpm slides:qr` (also run by `pnpm build` and `pnpm slides`). The template hostname deliberately produces no glossary QR. Once the public destination is agreed, update `class.config.json`, regenerate, deploy through the normal workshop workflow, and check `/glossary/` from an attendee device. Deployment requires an agreed destination and is separate from editing the deck.
 

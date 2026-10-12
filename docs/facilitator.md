@@ -135,4 +135,4 @@ Slides 28–30 connect the finished lab to attendees' own work. Keep them to abo
 
 ## Closing handoff
 
-[Transfer worksheet](../public/materials/transfer-worksheet.md), [take-home reference](take-home.md), and the code stay with attendees. The source repository is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done), currently private. Confirm attendee access before sharing it.
+[Transfer worksheet](../public/materials/transfer-worksheet.md), [take-home reference](take-home.md), and the code stay with attendees. The source repository is [workos/beyond-done](https://github.com/workos/beyond-done), currently private. Confirm attendee access before sharing it.

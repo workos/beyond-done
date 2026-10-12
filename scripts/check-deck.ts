@@ -228,7 +228,7 @@ try {
   await expect(page.getByText("Data later recovered.", { exact: true })).toBeVisible();
   const repoSlide = await go(slideFor('resource="repo"'));
   const repoLink = repoSlide.getByRole('link', { name: 'Open workshop repository' });
-  await expect(repoLink).toHaveAttribute('href', 'https://github.com/nicknisi/beyond-done');
+  await expect(repoLink).toHaveAttribute('href', 'https://github.com/workos/beyond-done');
   assert.ok(await repoLink.locator('img').evaluate(img => (img as HTMLImageElement).naturalWidth > 0), 'Repo QR loads');
   const round = await go(roundSlide);
   await page.clock.install();

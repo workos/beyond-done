@@ -12,7 +12,7 @@ const url = computed(() => props.resource === "repo" ? repoUrl : glossaryUrl);
       <a :href="url" target="_blank" rel="noopener noreferrer" :aria-label="`Open ${resource === 'repo' ? 'workshop repository' : 'interactive glossary'}`">
         <img :src="`${qrBase}qr/${resource}.svg`" :alt="`QR code for ${url}`" width="240" height="240">
       </a>
-      <p>{{ resource === 'repo' ? 'github.com/nicknisi/beyond-done' : url.replace('https://', '') }}</p>
+      <p>{{ url.replace('https://', '') }}</p>
     </template>
     <div v-else class="resource-pending"><strong>Glossary link pending</strong><p>The hosts will share the public URL.</p></div>
   </div>

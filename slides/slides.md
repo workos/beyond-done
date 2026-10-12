@@ -123,7 +123,7 @@ Then read the caption: “Here’s the deal. For the next hour we build a verifi
 ---
 
 <div class="split">
-<div><p class="small-label">FOLLOW ALONG</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/nicknisi/beyond-done.git<br>cd beyond-done<br>pnpm snack doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
+<div><p class="small-label">FOLLOW ALONG</p><h1>This repo is<br>your workbench.</h1><p class="lede">Clone it on your laptop.<br>Keep README beside the lesson site.</p><div class="command repo-setup">git clone https://github.com/workos/beyond-done.git<br>cd beyond-done<br>pnpm snack doctor<br>pnpm dev</div><p class="aside-note">Node 24 + pnpm 12.4.1 · install steps in README.<br>Repo is private: ask a host if access fails.</p></div>
 <ResourceQr resource="repo" />
 </div>
 
