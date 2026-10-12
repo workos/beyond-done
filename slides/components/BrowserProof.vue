@@ -53,7 +53,7 @@ const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 2)));
 .browser-tools .selected { background: #ded6ff; }
 .browser-stage { display: grid; grid-template-columns: 1fr 1.05fr; gap: 22px; height: 270px; }
 .trace-recipe { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.trace-recipe li { display: flex; align-items: flex-start; gap: 12px; margin: 0; padding: 6px 12px; border-left: 3px solid #e5e0f3; transition: background .3s, border-color .3s; }
+.trace-recipe li { line-height: 1.2; display: flex; align-items: flex-start; gap: 12px; margin: 0; padding: 6px 12px; border-left: 3px solid #e5e0f3; transition: background .3s, border-color .3s; }
 .trace-recipe li.current { border-color: #6752d9; background: #ece7fe; border-radius: 0 7px 7px 0; }
 .trace-recipe li > b { font: 15px "JetBrains Mono Variable", monospace; color: #6752d9; padding-top: 4px; }
 .trace-recipe strong { display: block; font-size: 20px; font-weight: 650; margin-bottom: 4px; }

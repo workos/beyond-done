@@ -72,7 +72,7 @@ try {
       if (outside.length) overflow.push({ slide, clicks, outside });
       const diagramOverflow = await root.locator('.workbench-stage, .browser-stage, .history-stage, .repair-receipt').evaluateAll(stages => stages.flatMap(stage => {
         const bounds = stage.getBoundingClientRect();
-        return [...stage.querySelectorAll('p,li,.receipt-paper,.attempt-history,.run-card,.improvement-loop')]
+        return [...stage.querySelectorAll(':scope > *,p,li,.receipt-paper,.attempt-history,.run-card')]
           .filter(element => element.getBoundingClientRect().bottom > bounds.bottom + 2)
           .map(element => ({ text: element.textContent?.slice(0, 55), problem: 'extends into the following caption' }));
       }));

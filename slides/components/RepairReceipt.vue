@@ -49,7 +49,7 @@ const short = (value: string) => value.slice(0, 12);
 <style scoped>
 .repair-receipt { font-size: 18px; line-height: 1.35; }
 .repair-receipt code { background: transparent; padding: 0; line-height: 1.45; }
-.repair-receipt { display: grid; grid-template-columns: 1fr 1.07fr; gap: 38px; height: 298px; }
+.repair-receipt { display: grid; grid-template-columns: 1fr 1.07fr; gap: 38px; height: 308px; }
 .receipt-explainer ol { margin: 0; padding: 0; list-style: none; }
 .receipt-explainer li { display: flex; gap: 13px; padding: 6px 12px; margin: 0 0 4px; border-left: 3px solid #9995ef; transition: background .3s, border-color .3s; }
 .receipt-explainer li.current { background: #ffffff15; border-color: #d9ff82; border-radius: 0 7px 7px 0; }
