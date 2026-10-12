@@ -46,12 +46,12 @@ const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 2)));
 .browser-proof code { background: transparent; padding: 0; line-height: 1.45; }
 .browser-proof .eyebrow { color: #5b4cd0; font-size: 15px; letter-spacing: .08em; margin: 0 0 6px; }
 .browser-proof h1 { font-size: 44px; margin: 0 0 12px; }
-.browser-tools { display: grid; flex-shrink: 0; grid-template-columns: .85fr 1fr 1.25fr; border: 1px solid #d7d1ec; border-radius: 9px; overflow: hidden; margin-bottom: 14px; }
+.browser-tools { display: grid; flex-shrink: 0; grid-template-columns: .85fr 1fr 1.25fr; border: 1px solid #d7d1ec; border-radius: 9px; overflow: hidden; margin-bottom: 12px; }
 .browser-tools > div { padding: 8px 17px; display: flex; flex-direction: column; gap: 4px; background: #efedf8; }
 .browser-tools b { font-size: 21px; line-height: 1.25; }
 .browser-tools span { font-size: 15px; line-height: 1.3; color: #65627d; }
 .browser-tools .selected { background: #ded6ff; }
-.browser-stage { display: grid; grid-template-columns: 1fr 1.05fr; gap: 22px; height: 250px; flex: 0 0 250px; }
+.browser-stage { display: grid; grid-template-columns: 1fr 1.05fr; gap: 22px; height: 260px; flex: 0 0 260px; }
 .trace-recipe { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .trace-recipe li { line-height: 1.2; display: flex; align-items: flex-start; gap: 12px; margin: 0; padding: 6px 12px; border-left: 3px solid #e5e0f3; transition: background .3s, border-color .3s; }
 .trace-recipe li.current { border-color: #6752d9; background: #ece7fe; border-radius: 0 7px 7px 0; }
