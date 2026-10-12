@@ -42,7 +42,7 @@ Slide 6 credits the short quote from [pstack Part 2](https://x.com/poteto/status
 
 ## 4:30–5:00 — Our own tools
 
-Slide 7 shows that the hosts live by this rule. Nick: Riker runs the job's check itself and keeps the command, exit code, commit and output hash; a worker's "done" is not proof. Zack: CTX ignores bare executor claims; only its evaluators close a node, from receipts bound to the exact revision. Keep it to one sentence each. Both repositories are private, so don't promise links or access. The receipt and final-boss slides have callbacks in their presenter notes.
+Slide 8 shows that the hosts live by this rule. Nick: Riker runs the job's check itself and keeps the command, exit code, commit and output hash; a worker's "done" is not proof. Zack: CTX ignores bare executor claims; only its evaluators close a node, from receipts bound to the exact revision. Keep it to one sentence each. Both repositories are private, so don't promise links or access. The receipt and final-boss slides have callbacks in their presenter notes.
 
 ## 5:00–10:00 — Follow along
 
