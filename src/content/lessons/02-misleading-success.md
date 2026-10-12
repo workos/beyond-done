@@ -12,11 +12,11 @@ duration: "10 minutes (live 0:00–10:00)"
 You can say, out loud, why "the agent said it was done" is not evidence, and
 you know exactly which three files you will edit and which commands grade them.
 
-## The hook: incident → live failure (0:00–5:00)
+## The hook: incident → live failure (0:00–6:00)
 
 The hosts open with PocketOS founder Jer Crane's [account of an agent deleting production data](https://x.com/lifeofjer/status/2048103471019434248). [Railway's follow-up](https://blog.railway.com/p/your-ai-wants-to-nuke-your-database) says the database was recovered and deletion safeguards changed. Production permissions and recovery are part of that story; this class's browser prototype does not reproduce it or claim to prevent it.
 
-Now inspect a smaller claim we can check together. The deck's **staged worker report** says the waitlist form renders, submits, and displays a success message. This is a teaching prop, not a real agent transcript or test run. **Vote:** is the feature done?
+After the host intros, the repo QR goes up so you can clone while we talk. Then inspect a smaller claim we can check together. The deck's **staged worker report** says the waitlist form renders, submits, and displays a success message. This is a teaching prop, not a real agent transcript or test run. **Vote:** is the feature done?
 
 Watch the facilitator run:
 
@@ -43,9 +43,9 @@ You are prototyping the **Midnight Snack Lab** waitlist — a sold-out
 > We do **not** register anyone with real organizers, send real email, charge
 > money, or run a real service. Never describe it as real enrollment.
 
-## Repo, glossary, and contract (5:00–10:00)
+## Repo, glossary, and contract (6:00–10:00)
 
-The repo QR opens [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). It is currently private; ask a host if your GitHub account cannot access it. README has installation and command instructions. Run `pnpm lab:doctor`, then `pnpm dev` for the lesson site and [interactive glossary](/glossary/). The hosts will share the public glossary URL once it is ready.
+The repo QR (shown right after the intros) opens [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). It is currently private; ask a host if your GitHub account cannot access it. README has installation and command instructions. Run `pnpm lab:doctor`, then `pnpm dev` for the lesson site and [interactive glossary](/glossary/). The hosts will share the public glossary URL once it is ready.
 
 Follow this rhythm: **read the lesson → edit the named file → run its check → inspect the evidence**. Predict results before running. If setup blocks you, pair with someone; observing and explaining the evidence is useful participation too.
 

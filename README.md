@@ -49,8 +49,8 @@ Use each printed URL. Linux may need `pnpm exec playwright install --with-deps c
 
 | Minutes | Activity | Result |
 | --- | --- | --- |
-| 0–5 | Real incident → vote → live app failure | A completion claim needs independent evidence |
-| 5–10 | Repo + glossary QR, smoke test, contract | Know where to work and what evidence must show |
+| 0–6 | Real incident → intros + repo QR → vote → live app failure | A completion claim needs independent evidence |
+| 6–10 | Glossary QR, smoke test, contract | Know where to work and what evidence must show |
 | 10–21 | Playwright collector | One submit/reload observation |
 | 21–33 | Fast/slow architecture, two questions + live comparison | Distinguish support from confident wording |
 | 33–43 | Policy + bounded repair | Witness repair → accept and repair → escalate |
