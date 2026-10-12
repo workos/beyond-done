@@ -62,7 +62,7 @@ const observation = report.attempts[0].evidence.observation;
 .terminal-title { display: flex; align-items: center; gap: 5px; margin-bottom: 10px; color: #b9b2d8; font-size: 13px; }
 .terminal-title i { width: 6px; height: 6px; border-radius: 50%; background: #8374b0; }
 .terminal-title span { margin-left: 7px; }
-.tool-terminal code { font-size: 18px; line-height: 1.6; color: #d9ff82; }
+.verification-workbench .tool-terminal code { display: block; font-size: 18px; line-height: 1.6; color: #d9ff82; background: #191625; padding: 0; border-radius: 0; box-shadow: none; }
 .tool-path { display: flex; gap: 9px; font-size: 16px; color: #b9b2d8; margin-top: 10px; transition: color .4s; }
 .tool-path.wired { color: #d9ff82; }
 .tool-terminal p { font-size: 14px; line-height: 1.45; margin: 10px 0 0; color: #b9b2d8; }

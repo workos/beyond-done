@@ -283,5 +283,6 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .slidev-layout.receipt-slide > h1 { margin-bottom: 18px; }
 .slidev-layout .receipt-command { margin-top: 14px; font-size: 16px; color: #e1e0ff; }
 .slidev-layout .receipt-command code { font-size: 16px; color: #d9ff82; background: transparent; padding: 0; }
+.slidev-layout.receipt-slide .receipt-source code { color: #fff; background: transparent; padding: 0; }
 .slidev-layout .comparison .host-reading { font-size: 15px; line-height: 1.6; margin-top: 14px; }
 .host-reading a { text-decoration: underline; text-underline-offset: 3px; }
