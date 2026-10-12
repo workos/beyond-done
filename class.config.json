@@ -19,7 +19,8 @@
       "url": "/materials/transfer-worksheet.md"
     }
   ],
-  "hostname": "my-class.typevoid.com",
+  "hostname": "talks.workos.cloud",
+  "basePath": "/beyond-done",
   "theme": {
     "preset": "clean",
     "accent": "#6363f1"

@@ -8,7 +8,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Glossary } from "../src/App.js";
-import { classConfig, classConfigSchema, cloudflareConfig } from "../src/class-config.js";
+import { classConfig, classConfigSchema, cloudflareConfig, withBase } from "../src/class-config.js";
 import { prepareClassGlossary, starterGlossary } from "../src/class-glossary.js";
 import worker, { type Env } from "../src/worker.js";
 import { generationArgs } from "./class.js";
@@ -33,16 +33,45 @@ function glossary() {
   return input;
 }
 
-test("class config validates the hostname and generates explicit Cloudflare routes", () => {
-  for (const hostname of ["https://class.typevoid.com", "typevoid.com", "class.example.com", "class.typevoid.com/path", "-class.typevoid.com"]) {
-    assert.equal(classConfigSchema.safeParse({ ...classConfig, hostname }).success, false);
+test("class config validates the hostname and base path", () => {
+  const valid = classConfigSchema.parse({ ...classConfig, hostname: "talks.workos.cloud", basePath: "/beyond-done" });
+  assert.equal(valid.hostname, "talks.workos.cloud");
+  assert.equal(valid.basePath, "/beyond-done");
+  assert.equal(classConfigSchema.safeParse({ ...classConfig, basePath: "/talks/beyond-done-2" }).success, true);
+  for (const hostname of ["https://talks.workos.cloud", "talks.workos.cloud/beyond-done", "talks.workos.cloud:443", "Talks.workos.cloud", "-talks.workos.cloud", "talks", ""]) {
+    assert.equal(classConfigSchema.safeParse({ ...classConfig, hostname }).success, false, hostname);
   }
-  const config = cloudflareConfig({ ...classConfig, hostname: "agents.typevoid.com", slug: "agents", features: disabled });
+  for (const basePath of ["beyond-done", "/beyond-done/", "/", "", "//beyond-done", "/beyond-done/../x", "/Beyond-done", "/beyond done", "/-beyond", "/beyond_done", undefined]) {
+    assert.equal(classConfigSchema.safeParse({ ...classConfig, basePath }).success, false, String(basePath));
+  }
+  const config = cloudflareConfig({ ...classConfig, slug: "agents", features: disabled });
   assert.equal(config.name, "agents");
-  assert.deepEqual(config.routes, [{ pattern: "agents.typevoid.com", custom_domain: true }]);
   assert.equal(config.vars.CHAT_ENABLED, "false");
   assert.equal(config.assets.not_found_handling, "404-page");
-  assert.equal(config.workers_dev, false);
+  assert.ok(!("routes" in config) && !("workers_dev" in config));
+});
+
+test("withBase resolves class-root-relative URLs only, and is idempotent", () => {
+  const cases: Array<[string, string]> = [
+    ["/", "/beyond-done/"],
+    ["/glossary/", "/beyond-done/glossary/"],
+    ["/materials/transfer-worksheet.md?download=1#top", "/beyond-done/materials/transfer-worksheet.md?download=1#top"],
+    ["/slides/#", "/beyond-done/slides/#"],
+    ["/beyond-done", "/beyond-done"],
+    ["/beyond-done/", "/beyond-done/"],
+    ["/beyond-done/glossary/", "/beyond-done/glossary/"],
+    ["/beyond-done?x=1", "/beyond-done?x=1"],
+    ["/beyond-done-2/", "/beyond-done/beyond-done-2/"],
+    ["//example.com/x", "//example.com/x"],
+    ["https://example.com/x", "https://example.com/x"],
+    ["#content", "#content"],
+    ["mailto:teacher@example.com", "mailto:teacher@example.com"],
+    ["materials/x.md", "materials/x.md"],
+    ["../x", "../x"],
+    ["", ""],
+  ];
+  for (const [input, expected] of cases) assert.equal(withBase(input, "/beyond-done"), expected, input);
+  assert.equal(withBase(withBase("/glossary/", "/beyond-done"), "/beyond-done"), "/beyond-done/glossary/");
 });
 
 test("class audience and links are optional and link URLs are safe", () => {

@@ -10,8 +10,8 @@ description = "Generate the class glossary from lessons and slides"
 run = "pnpm glossary"
 
 [tasks.deploy]
-description = "Build and deploy the class to its configured hostname"
-run = "pnpm deploy"
+description = "Build the class and deploy it to the Alto talks app"
+run = "pnpm run deploy:talks"
 
 [tasks.dev]
 description = "Preview class materials with Astro"

@@ -17,7 +17,9 @@ export const classConfigSchema = z.object({
       z.string().regex(/^(?:\/(?!\/)|#)[^\s\\]*$/),
     ])),
   }).strict()).default([]),
-  hostname: z.string().regex(/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.typevoid\.com$/, "Use a subdomain of typevoid.com, without https:// or a path."),
+  hostname: z.string().max(253).regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/, "Use a bare hostname such as talks.workos.cloud, without https://, a port or a path."),
+  // Where the class is served on that host. Every site, deck and glossary URL is resolved against it.
+  basePath: z.string().regex(/^(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)+$/, "Use a path such as /beyond-done: a leading slash, no trailing slash, lowercase letters, digits and hyphens."),
   theme: glossaryThemeSchema,
   slides: z.object({ publish: z.boolean(), link: z.boolean().default(true) }).strict(),
   features: z.object({ quiz: z.boolean(), demos: z.boolean(), progress: z.boolean(), chat: z.boolean() }).strict(),
@@ -27,14 +29,22 @@ export type ClassConfig = z.infer<typeof classConfigSchema>;
 export type ClassFeatures = ClassConfig["features"];
 export const classConfig = classConfigSchema.parse(config);
 
+/**
+ * Resolves a class-root-relative URL ("/glossary/") against the base path ("/beyond-done/glossary/").
+ * Absolute, protocol-relative, hash, mailto and relative URLs pass through, as do URLs already under the base.
+ */
+export function withBase(url: string, basePath = classConfig.basePath): string {
+  if (!url.startsWith("/") || url.startsWith("//")) return url;
+  const rest = url.slice(basePath.length);
+  if (url.startsWith(basePath) && (rest === "" || /^[/?#]/.test(rest))) return url;
+  return `${basePath}${url}`;
+}
+
 export function cloudflareConfig(config: ClassConfig) {
   return {
     name: config.slug,
     main: "../src/worker.ts",
     compatibility_date: "2025-09-15",
-    workers_dev: false,
-    preview_urls: false,
-    routes: [{ pattern: config.hostname, custom_domain: true }],
     vars: { CHAT_ENABLED: String(config.features.chat) },
     assets: {
       directory: "../dist",
