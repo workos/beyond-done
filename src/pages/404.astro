@@ -1,10 +1,11 @@
 ---
 import ClassLayout from "../layouts/ClassLayout.astro";
+import { withBase } from "../class-config";
 ---
 <ClassLayout title="Page not found">
   <main id="content" class="measure status">
     <h1>Page not found</h1>
     <p>This page isn’t part of the published class materials.</p>
-    <a href="/">Return to the lessons</a>
+    <a href={withBase("/")}>Return to the lessons</a>
   </main>
 </ClassLayout>

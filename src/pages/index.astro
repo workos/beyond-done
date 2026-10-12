@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ClassLayout from "../layouts/ClassLayout.astro";
-import { classConfig as config } from "../class-config";
+import { classConfig as config, withBase } from "../class-config";
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
 // Durations are free text. Only add them up when every lesson states one in minutes or hours.
 const minutes = lessons.filter((lesson) => !lesson.data.prework).map((lesson) => {
@@ -31,14 +31,14 @@ const totalTime = total >= 60 ? `${Math.floor(total / 60)} h${total % 60 ? ` ${t
       <h2 id="lessons-heading">Lessons</h2>
       <ol class="lesson-list">
         {lessons.map((lesson, index) => <li>
-          <a href={`/lessons/${lesson.id}/`}>
+          <a href={withBase(`/lessons/${lesson.id}/`)}>
             <span class="lesson-number">{String(index + 1).padStart(2, "0")}</span>
             <div><h3>{lesson.data.title}</h3><p>{lesson.data.description}</p>{lesson.data.duration && <small>{lesson.data.duration}</small>}</div>
             <span class="arrow" aria-hidden="true">→</span>
           </a>
         </li>)}
       </ol>
-      <aside class="class-reference"><strong>Need a definition?</strong><p>The glossary is a reference, not homework. Look things up as you go.</p><a href="/glossary/">Open the glossary →</a></aside>
+      <aside class="class-reference"><strong>Need a definition?</strong><p>The glossary is a reference, not homework. Look things up as you go.</p><a href={withBase("/glossary/")}>Open the glossary →</a></aside>
     </section>
   </main>
 </ClassLayout>

@@ -38,14 +38,16 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
             if (match) { clearTimeout(timer); done(match[1]); }
           });
         });
-        const home = await (await fetch(`${url}/`)).text();
+        const site = `${url}${classConfig.basePath}`;
+        const home = await (await fetch(`${site}/`)).text();
         assert.match(home, /Preflight — before the hour/);
         assert.match(home, /<dd>1 h<\/dd>/);
-        assert.ok(!home.includes('href="/slides/"'));
-        const glossary = await (await fetch(`${url}/glossary/`)).text();
+        assert.match(home, /href="\/beyond-done\/glossary\/"/);
+        assert.ok(!home.includes('/slides/"'));
+        const glossary = await (await fetch(`${site}/glossary/`)).text();
         assert.equal(/<button[^>]*class="chat-fab/.test(glossary), false);
         assert.deepEqual(await (await fetch(`${url}/api/chat/status`)).json(), { enabled: enabled && Boolean(key) });
-        const slides = await fetch(`${url}/slides/`);
+        const slides = await fetch(`${site}/slides/`);
         assert.equal(slides.status, enabled ? 200 : 404);
         if (enabled) {
           assert.match(await slides.text(), /@slidev/);
@@ -55,7 +57,7 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
           assert.match(slide.note, /Teaching expectations:/);
           assert.match(slide.noteHTML, /<li>/);
           for (const path of ["/slides/@vite/client", "/slides/@slidev/setups/main"]) {
-            const response = await fetch(`${url}${path}`);
+            const response = await fetch(`${site}${path}`);
             assert.equal(response.status, 200, path);
             assert.match(response.headers.get("content-type") ?? "", /javascript/);
           }

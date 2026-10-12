@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import ClassLayout from "../../layouts/ClassLayout.astro";
-import { classConfig as config } from "../../class-config";
+import { classConfig as config, withBase } from "../../class-config";
 export async function getStaticPaths() {
   const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
   return lessons.map((lesson, index) => ({ params: { id: lesson.id }, props: { lesson, index, lessons } }));
@@ -13,7 +13,7 @@ const next = lessons[index + 1];
 ---
 <ClassLayout title={lesson.data.title} description={lesson.data.description}>
   <main id="content" class="measure lesson-page">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">All lessons</a> / Lesson {index + 1}</nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href={withBase("/")}>All lessons</a> / Lesson {index + 1}</nav>
     <header class="lesson-heading">
       <div class="section-kicker">Lesson {index + 1} of {lessons.length}{lesson.data.duration ? ` · ${lesson.data.duration}` : ""}</div>
       <h1>{lesson.data.title}</h1>
@@ -22,8 +22,8 @@ const next = lessons[index + 1];
     <article class="prose"><Content /></article>
     {config.features.progress && <button class="pill lesson-complete" data-key={`class-lessons:${config.slug}`} data-lesson={lesson.id} aria-pressed="false">Mark lesson complete</button>}
     <nav class="lesson-pagination" aria-label="Lesson navigation">
-      {previous ? <a class="prev" href={`/lessons/${previous.id}/`}><small>Previous</small><span>{previous.data.title}</span></a> : <a class="prev" href="/"><small>Back</small><span>All lessons</span></a>}
-      {next ? <a class="next" href={`/lessons/${next.id}/`}><small>Next</small><span>{next.data.title}</span></a> : <a class="next" href="/glossary/"><small>Keep going</small><span>Explore the glossary</span></a>}
+      {previous ? <a class="prev" href={withBase(`/lessons/${previous.id}/`)}><small>Previous</small><span>{previous.data.title}</span></a> : <a class="prev" href={withBase("/")}><small>Back</small><span>All lessons</span></a>}
+      {next ? <a class="next" href={withBase(`/lessons/${next.id}/`)}><small>Next</small><span>{next.data.title}</span></a> : <a class="next" href={withBase("/glossary/")}><small>Keep going</small><span>Explore the glossary</span></a>}
     </nav>
   </main>
   <script>

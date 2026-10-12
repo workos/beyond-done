@@ -99,8 +99,12 @@ test("unpublished slides lose links and source metadata without changing reviewe
   assert.doesNotMatch(JSON.stringify(prepared), /private-deck|previous\.example/);
   assert.deepEqual(input, original);
   const published = prepareClassGlossary(input, { ...classConfig, slides: { publish: true, link: true }, features: enabled });
-  assert.equal(published.slidesUrl, "/slides/#");
+  assert.equal(published.slidesUrl, "/beyond-done/slides/#");
   assert.equal(published.sections[0].terms[0].slide, 2);
+  assert.deepEqual(published.resources.map(resource => resource.url), [
+    "https://previous.example/slides?download=1", "", "/beyond-done/slides/#/2", "https://example.org/guide",
+  ], "class-root-relative resource links are served under the base path");
+  assert.deepEqual(prepareClassGlossary(published, { ...classConfig, slides: { publish: true, link: false } }).resources.map(resource => resource.id), ["deck", "guide"], "based slide links are still recognized as slides");
 });
 
 test("published slides can be unlinked without disabling publication", () => {
