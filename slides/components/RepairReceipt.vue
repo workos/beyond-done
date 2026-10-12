@@ -43,7 +43,7 @@ const short = (value: string) => value.slice(0, 12);
       </div>
     </div>
   </section>
-  <p class="receipt-source">Real browser run · scripted worker · synthetic scores · <code>public/materials/repair-report.json</code><br>Hashes shortened. A hash binds the record; the check determines what it proves.</p>
+  <p class="receipt-source">Real browser run · scripted worker · synthetic scores · <code>public/materials/repair-report.json</code></p>
 </template>
 
 <style scoped>
@@ -76,7 +76,7 @@ const short = (value: string) => value.slice(0, 12);
 .receipt-decision b { padding: 5px 8px; border: 1px solid #ad563e; color: #873c28; border-radius: 3px; font: 14px "JetBrains Mono Variable", monospace; transform: rotate(-3deg); }
 .receipt-decision b.accepted { color: #305420; border-color: #589137; background: #e7f5d2; }
 .receipt-decision span { font-size: 12px; }
-.receipt-source { margin: 20px 0 0 !important; font-size: 14px; line-height: 1.5 !important; color: #e1e0ff; }
+.receipt-source { margin: 24px 0 0 !important; font-size: 14px; line-height: 1.5 !important; color: #e1e0ff; }
 .receipt-source code { font-size: 13px; background: transparent; padding: 0; }
 @keyframes print-receipt { from { opacity: .4; transform: translateY(-12px) rotate(-2deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
 </style>
