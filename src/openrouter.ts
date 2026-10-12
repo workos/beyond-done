@@ -25,22 +25,26 @@ export function validateMessages(input: unknown): ChatMessage[] {
   });
 }
 
-export function buildSystemPrompt(workshop: WorkshopGlossary): string {
+// Lessons are optional Markdown appended after the glossary; the class site passes every published lesson.
+export function buildSystemPrompt(workshop: WorkshopGlossary, lessons = ""): string {
   const glossary = workshop.sections.map((section) =>
     `## ${section.name}\n${section.terms.map((term) => `- ${term.term}: ${term.definition} Why it matters: ${term.whyItMatters}`).join("\n")}`,
   ).join("\n\n");
+  const sources = lessons ? "the glossary and lessons below" : "the glossary below";
 
   return `You are the workshop assistant for "${workshop.title}".
-Answer from the glossary below. Use plain, direct language suitable for an attendee reading on a phone.
-Keep most answers between two and five sentences. Name relevant glossary terms.
+Answer from ${sources}. Use plain, direct language suitable for an attendee reading on a phone.
+Keep most answers between two and five sentences. Name relevant glossary terms${lessons ? " and lessons" : ""}.
 Do not invent workshop facts, links, prices, or tool behavior.
-If the answer is not supported by the glossary, reply exactly: That is not covered in this workshop.
+If the answer is not supported by ${sources}, reply exactly: That is not covered in this workshop.
 
-${glossary}`;
+# Glossary
+
+${glossary}${lessons ? `\n\n# Lessons\n\n${lessons}` : ""}`;
 }
 
 export async function askOpenRouter(input: {
-  workshop: WorkshopGlossary;
+  systemPrompt: string;
   messages: unknown;
   apiKey?: string;
   model?: string;
@@ -60,7 +64,7 @@ export async function askOpenRouter(input: {
       temperature: 0.2,
       max_tokens: 500,
       messages: [
-        { role: "system", content: buildSystemPrompt(input.workshop) },
+        { role: "system", content: input.systemPrompt },
         ...messages.slice(-12),
       ],
     }),

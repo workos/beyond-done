@@ -33,6 +33,6 @@
     "quiz": true,
     "demos": false,
     "progress": true,
-    "chat": false
+    "chat": true
   }
 }

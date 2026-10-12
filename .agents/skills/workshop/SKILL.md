@@ -107,10 +107,10 @@ pnpm chat:setup
 - Provisioning accepts `OPENROUTER_MANAGEMENT_API_KEY` in the shell or gitignored `.env`; `OPENROUTER_MANAGEMENT_KEY` is a compatibility alias.
 - Agree on a lifetime budget and future expiry before creating a key. The interactive defaults are $15 and seven days, not an instruction to spend without approval. Set `CHAT_BUDGET_USD` and `CHAT_EXPIRES_AT` to the agreed values for a non-interactive run.
 - An existing local `OPENROUTER_API_KEY` can be installed instead of creating one. `OPENROUTER_MODEL` is optional.
-- The script pipes secrets to Cloudflare and stores only a nonsecret receipt at `generated/openrouter-chat-key.json`. Do not print key values, manually persist a returned key, or delete the receipt to force replacement.
+- The script pipes the key to the Alto `talks` app's `OPENROUTER_API_KEY` secret and stores only a nonsecret receipt at `generated/openrouter-chat-key.json`. Do not print key values, manually persist a returned key, or delete the receipt to force replacement.
 - Missing credentials leave chat hidden without blocking deployment. Installing a secret enables runtime availability without a rebuild; it does not install that inference key into the local dev environment.
 - Reruns reuse an installed key and recover interrupted setup; failed installation revokes a newly created key. Inspect failures rather than bypassing these protections or creating another key manually. Expired keys need explicit revocation before replacement; see the README.
 
-For bundle verification without publication, run `pnpm build` followed by `pnpm exec wrangler deploy --config .class-build/wrangler.json --dry-run`.
+For bundle verification without publication, run `pnpm run deploy:talks:dry-run`.
 
 Finish with the changed content/configuration, checks performed, glossary freshness, and any remaining prerequisites. State explicitly whether the site was deployed and whether a key was actually created or installed. Never report a mocked provisioning test as a live deployment.

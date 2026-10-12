@@ -6,6 +6,7 @@ import { cp, mkdir, mkdtemp, readdir, rm, stat, writeFile } from "node:fs/promis
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join, relative, resolve } from "node:path";
 import { classConfig } from "../src/class-config.js";
+import { classSystemPrompt } from "./dev-chat.js";
 
 const dryRun = process.argv.includes("--dry-run");
 const remote = process.env.TALKS_REMOTE || "https://git.workos.cloud/talks.git";
@@ -55,6 +56,10 @@ async function repository(): Promise<string> {
 async function stage(app: string, revision: string) {
   for (const entry of await readdir(app)) if (entry !== ".git") await rm(join(app, entry), { recursive: true, force: true });
   await cp("deploy/talks", app, { recursive: true });
+  // deploy/talks/src/worker.ts imports these: the chat Worker, its OpenRouter client and this class's chat settings.
+  for (const file of ["talks-worker.ts", "openrouter.ts"]) await cp(join("src", file), join(app, "src", file));
+  const settings = { basePath: classConfig.basePath, enabled: classConfig.features.chat, systemPrompt: await classSystemPrompt() };
+  await writeFile(join(app, "src", "chat.json"), `${JSON.stringify(settings)}\n`);
   await cp("dist", join(app, "public", talk), { recursive: true });
   await writeFile(join(app, "public", talk, "revision.txt"), `${revision}\n`);
 

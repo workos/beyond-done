@@ -1,14 +1,24 @@
 import type { Connect } from "vite";
-import { askOpenRouter, ChatError } from "../src/openrouter.js";
-import type { WorkshopGlossary } from "../src/schema.js";
+import { classConfig } from "../src/class-config.js";
+import { loadClassGlossary } from "../src/class-glossary.js";
+import { askOpenRouter, buildSystemPrompt, ChatError } from "../src/openrouter.js";
+import { collectSource } from "./source.js";
+
+// The glossary plus every lesson's Markdown. Slides stay out: their presenter notes are not public.
+export async function classSystemPrompt(): Promise<string> {
+  const [workshop, lessons] = await Promise.all([loadClassGlossary(), collectSource("src/content/lessons", false)]);
+  return buildSystemPrompt(workshop, lessons.content);
+}
 
 export function chatMiddleware(
-  loadGlossary: () => Promise<WorkshopGlossary>,
+  loadSystemPrompt: () => Promise<string>,
   env: { OPENROUTER_API_KEY?: string; OPENROUTER_MODEL?: string },
   enabled = true,
 ): Connect.NextHandleFunction {
   return async (request, response, next) => {
-    const path = request.url?.split("?")[0];
+    const url = request.url?.split("?")[0] ?? "";
+    // The site calls the API under its base path, as in production.
+    const path = url.startsWith(`${classConfig.basePath}/`) ? url.slice(classConfig.basePath.length) : url;
     if (path !== "/api/chat" && path !== "/api/chat/status") return next();
     response.setHeader("Content-Type", "application/json; charset=utf-8");
     response.setHeader("Cache-Control", "no-store");
@@ -26,7 +36,7 @@ export function chatMiddleware(
       }
       const body = JSON.parse(raw) as { messages?: unknown };
       const message = await askOpenRouter({
-        workshop: await loadGlossary(),
+        systemPrompt: await loadSystemPrompt(),
         messages: body.messages,
         apiKey: env.OPENROUTER_API_KEY,
         model: env.OPENROUTER_MODEL,

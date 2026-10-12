@@ -3,5 +3,13 @@
   "surfaces": {
     "/": "web",
     "/beyond-done": "public"
+  },
+  "resources": {
+    "d1": [{ "binding": "DB" }]
+  },
+  "governance": {
+    "secrets": {
+      "OPENROUTER_API_KEY": { "scope": "all" }
+    }
   }
 }

@@ -8,7 +8,7 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Glossary } from "../src/App.js";
-import { classConfig, classConfigSchema, cloudflareConfig, withBase } from "../src/class-config.js";
+import { classConfig, classConfigSchema, withBase } from "../src/class-config.js";
 import { prepareClassGlossary, starterGlossary } from "../src/class-glossary.js";
 import worker, { type Env } from "../src/worker.js";
 import { generationArgs } from "./class.js";
@@ -44,11 +44,6 @@ test("class config validates the hostname and base path", () => {
   for (const basePath of ["beyond-done", "/beyond-done/", "/", "", "//beyond-done", "/beyond-done/../x", "/Beyond-done", "/beyond done", "/-beyond", "/beyond_done", undefined]) {
     assert.equal(classConfigSchema.safeParse({ ...classConfig, basePath }).success, false, String(basePath));
   }
-  const config = cloudflareConfig({ ...classConfig, slug: "agents", features: disabled });
-  assert.equal(config.name, "agents");
-  assert.equal(config.vars.CHAT_ENABLED, "false");
-  assert.equal(config.assets.not_found_handling, "404-page");
-  assert.ok(!("routes" in config) && !("workers_dev" in config));
 });
 
 test("withBase resolves class-root-relative URLs only, and is idempotent", () => {
@@ -223,8 +218,6 @@ test("class builds publish slides only when enabled and never overwrite the glos
       assert.doesNotMatch(output, /PRIVATE_SPEAKER_NOTE/);
       if (!publish) assert.doesNotMatch(output, /DECK_ONLY_SENTINEL|private-deck/);
       assert.equal(await readFile(join(directory, "generated/glossary.json"), "utf8"), original);
-      const cloudflare = JSON.parse(await readFile(join(directory, ".class-build/wrangler.json"), "utf8"));
-      assert.equal(cloudflare.vars.CHAT_ENABLED, String(publish));
     }
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

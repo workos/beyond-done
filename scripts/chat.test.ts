@@ -18,3 +18,11 @@ test("keeps valid user and assistant messages", () => {
     { role: "assistant", content: "A model working through tools." },
   ]);
 });
+
+test("the class system prompt grounds answers in the glossary and lessons", async () => {
+  const { classSystemPrompt } = await import("./dev-chat.js");
+  const prompt = await classSystemPrompt();
+  assert.match(prompt, /Answer from the glossary and lessons below/);
+  assert.match(prompt, /- Bounded repair:/);
+  assert.match(prompt, /===== SOURCE: 03-observe-evidence\.md =====/);
+});

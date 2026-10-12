@@ -1,4 +1,4 @@
-import { askOpenRouter, ChatError } from "./openrouter.js";
+import { askOpenRouter, buildSystemPrompt, ChatError } from "./openrouter.js";
 import type { WorkshopGlossary } from "./schema.js";
 
 export interface Env {
@@ -36,7 +36,7 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
   if (!glossaryResponse.ok) return json({ error: "Glossary data was not found." }, 500);
   const workshop = await glossaryResponse.json() as WorkshopGlossary;
   const message = await askOpenRouter({
-    workshop,
+    systemPrompt: buildSystemPrompt(workshop),
     messages: body.messages,
     apiKey: env.OPENROUTER_API_KEY,
     model: env.OPENROUTER_MODEL,

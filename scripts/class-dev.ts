@@ -3,8 +3,7 @@ import { createServer, resolveOptions, parser } from "@slidev/cli";
 import type { Plugin } from "vite";
 import { localEnv } from "./local-env.js";
 import { classConfig } from "../src/class-config.js";
-import { loadClassGlossary } from "../src/class-glossary.js";
-import { chatMiddleware } from "./dev-chat.js";
+import { chatMiddleware, classSystemPrompt } from "./dev-chat.js";
 
 export default function classDev(): Plugin {
   return {
@@ -12,7 +11,7 @@ export default function classDev(): Plugin {
     enforce: "pre",
     configureServer: async (server) => {
       const env = await localEnv();
-      server.middlewares.use(chatMiddleware(loadClassGlossary, env, classConfig.features.chat));
+      server.middlewares.use(chatMiddleware(classSystemPrompt, env, classConfig.features.chat));
 
       if (!classConfig.slides.publish) return;
       await generateSlidesQr();

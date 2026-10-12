@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import { ChatError } from "./src/openrouter.js";
+import { buildSystemPrompt, ChatError } from "./src/openrouter.js";
 import { chatMiddleware } from "./scripts/dev-chat.js";
 import type { WorkshopGlossary } from "./src/schema.js";
 
@@ -12,7 +12,7 @@ function workshopData(): Plugin {
       server.middlewares.use(chatMiddleware(async () => {
         const dataPath = process.env.WORKSHOP_COMPANION_DATA;
         if (!dataPath) throw new ChatError(500, "Workshop data is not configured.");
-        return JSON.parse(await readFile(dataPath, "utf8")) as WorkshopGlossary;
+        return buildSystemPrompt(JSON.parse(await readFile(dataPath, "utf8")) as WorkshopGlossary);
       }, process.env));
       server.middlewares.use("/glossary.json", async (_request, response) => {
         const path = process.env.WORKSHOP_COMPANION_DATA;

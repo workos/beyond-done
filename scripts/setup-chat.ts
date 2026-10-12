@@ -1,24 +1,38 @@
 import { readFile, rename } from "node:fs/promises";
+import { spawn } from "node:child_process";
 import { pathToFileURL } from "node:url";
 import { classConfig, type ClassConfig } from "../src/class-config.js";
 import { createChatKey, revokeChatKey, writeReceipt, type ChatKeyReceipt } from "./chat-key.js";
-import { command } from "./command.js";
 import { localEnv } from "./local-env.js";
 import { prompt } from "./prompt.js";
 
 const receiptPath = "generated/openrouter-chat-key.json";
-const wrangler = ["exec", "wrangler"];
-const configArgs = ["--config", ".class-build/wrangler.json"];
+// The Alto app scripts/deploy-talks.ts publishes to. Its manifest declares OPENROUTER_API_KEY.
+const app = "talks";
+
+// Secrets go through stdin so they never appear in arguments or output.
+function alto(args: string[], input?: string): Promise<void> {
+  return new Promise((done, reject) => {
+    const child = spawn("alto", args, { stdio: [input === undefined ? "ignore" : "pipe", "inherit", "inherit"] });
+    child.stdin?.on("error", () => {});
+    child.stdin?.end(input);
+    child.on("error", reject);
+    child.on("exit", (code, signal) => code === 0 ? done() : reject(new Error(`alto ${args.slice(0, 2).join(" ")} failed (${signal ?? code}).`)));
+  });
+}
+
+// The deployed Worker reports enabled only when it can read the secret, so this checks the real installation.
+async function liveChatEnabled(config: ClassConfig): Promise<boolean> {
+  const response = await fetch(`https://${config.hostname}${config.basePath}/api/chat/status?t=${Date.now()}`, { cache: "no-store", signal: AbortSignal.timeout(10_000) });
+  if (!response.ok) return false;
+  return (await response.json() as { enabled?: boolean }).enabled === true;
+}
 
 export async function setupChat(config: ClassConfig, env: NodeJS.ProcessEnv): Promise<boolean> {
   if (!config.features.chat) {
     console.log("Chat is disabled in class.config.json.");
     return false;
   }
-  // Explicit generated config avoids accidentally targeting the legacy companion Worker.
-  const deployed = JSON.parse(await readFile(".class-build/wrangler.json", "utf8"));
-  if (deployed.name !== config.slug) throw new Error("Build and deploy this class before setting up chat.");
-  const secrets = JSON.parse(await command([...wrangler, "secret", "list", ...configArgs], { env, capture: true })) as Array<{ name: string }>;
   let receipt: ChatKeyReceipt | undefined;
   try {
     receipt = JSON.parse(await readFile(receiptPath, "utf8"));
@@ -28,9 +42,8 @@ export async function setupChat(config: ClassConfig, env: NodeJS.ProcessEnv): Pr
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }
-  const installed = secrets.some(secret => secret.name === "OPENROUTER_API_KEY");
-  if (installed && !receipt?.revokedAt) {
-    if (receipt && new Date(receipt.expiresAt) <= new Date()) {
+  if (await liveChatEnabled(config)) {
+    if (receipt && !receipt.revokedAt && new Date(receipt.expiresAt) <= new Date()) {
       throw new Error("The chat key has expired. Revoke it with pnpm chat-key revoke --receipt generated/openrouter-chat-key.json, then run pnpm chat:setup.");
     }
     console.log("Chat key already installed; keeping it.");
@@ -41,7 +54,7 @@ export async function setupChat(config: ClassConfig, env: NodeJS.ProcessEnv): Pr
     console.log("Chat stays hidden. Set OPENROUTER_MANAGEMENT_API_KEY in your environment or .env, then run pnpm chat:setup.");
     return false;
   }
-  // A receipt with no installed secret is an interrupted setup. Revoke before replacing.
+  // A live receipt while the deployed site cannot read a key is an interrupted setup. Revoke before replacing.
   if (receipt && !receipt.revokedAt) {
     if (!managementKey) throw new Error("OPENROUTER_MANAGEMENT_API_KEY is needed to clean up the interrupted setup.");
     await revokeChatKey(managementKey, receipt.hash);
@@ -62,25 +75,26 @@ export async function setupChat(config: ClassConfig, env: NodeJS.ProcessEnv): Pr
   }
   try {
     if (created) await writeReceipt(receiptPath, created);
-    await command([...wrangler, "secret", "bulk", ...configArgs], {
-      env,
-      input: JSON.stringify({ OPENROUTER_API_KEY: key, OPENROUTER_MODEL: env.OPENROUTER_MODEL || "anthropic/claude-haiku-4.5" }),
-    });
+    await alto(["secrets", "set", app, "OPENROUTER_API_KEY", "--scope", "all"], key);
+    // Secret reads are cached for about a minute.
+    const deadline = Date.now() + 120_000;
+    while (!(await liveChatEnabled(config))) {
+      if (Date.now() >= deadline) throw new Error(`The deployed site still reports chat disabled. Deploy with pnpm run deploy:talks first, then rerun pnpm chat:setup.`);
+      await new Promise(done => setTimeout(done, 5_000));
+    }
   } catch (error) {
     if (created) {
       console.error("Setup failed; revoking the newly created key.");
+      // A revoked key left in Alto would still make the site report chat as enabled.
+      await alto(["secrets", "delete", app, "OPENROUTER_API_KEY", "--scope", "all"]).catch(() => console.error(`Delete OPENROUTER_API_KEY from ${app} with alto secrets delete.`));
       await revokeChatKey(managementKey!, created.hash);
       created.revokedAt = new Date().toISOString();
       await writeReceipt(receiptPath, created);
     }
     throw error;
   }
-  const verified = JSON.parse(await command([...wrangler, "secret", "list", ...configArgs], { env, capture: true })) as Array<{ name: string }>;
-  if (!["OPENROUTER_API_KEY", "OPENROUTER_MODEL"].every(name => verified.some(secret => secret.name === name))) {
-    throw new Error("Chat secrets could not be verified. Rerun pnpm chat:setup to recover.");
-  }
   if (!created && receipt) await rename(receiptPath, `${receiptPath}.replaced-${Date.now()}`);
-  console.log("Chat key installed and verified. No rebuild needed.");
+  console.log(`Chat key installed on ${app} and verified at https://${config.hostname}${config.basePath}/api/chat/status.`);
   return true;
 }
 

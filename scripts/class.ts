@@ -1,9 +1,8 @@
 import { generateSlidesQr } from "./slides-qr.js";
 import { spawn } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { classConfig, cloudflareConfig, type ClassConfig } from "../src/class-config.js";
+import { classConfig, type ClassConfig } from "../src/class-config.js";
 import { main as generate } from "./generate.js";
 
 function run(args: string[]): Promise<void> {
@@ -34,9 +33,6 @@ export async function buildClass(): Promise<void> {
   if (classConfig.slides.publish) {
     await run(["slidev", "build", "slides/slides.md", "--base", `${classConfig.basePath}/slides/`, "--router-mode", "hash", "--without-notes", "--out", resolve("dist/slides")]);
   }
-  // Only chat:setup reads this; the site itself ships through pnpm run deploy:talks.
-  await mkdir(".class-build", { recursive: true });
-  await writeFile(".class-build/wrangler.json", `${JSON.stringify(cloudflareConfig(classConfig), null, 2)}\n`);
 }
 
 async function main(): Promise<void> {

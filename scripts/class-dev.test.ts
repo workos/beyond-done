@@ -46,7 +46,7 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
         assert.ok(!home.includes('/slides/"'));
         const glossary = await (await fetch(`${site}/glossary/`)).text();
         assert.equal(/<button[^>]*class="chat-fab/.test(glossary), false);
-        assert.deepEqual(await (await fetch(`${url}/api/chat/status`)).json(), { enabled: enabled && Boolean(key) });
+        assert.deepEqual(await (await fetch(`${site}/api/chat/status`)).json(), { enabled: enabled && Boolean(key) });
         const slides = await fetch(`${site}/slides/`);
         assert.equal(slides.status, enabled ? 200 : 404);
         if (enabled) {
@@ -62,7 +62,7 @@ test("one dev site serves unlinked slides and the chat API, and respects disable
             assert.match(response.headers.get("content-type") ?? "", /javascript/);
           }
         }
-        const chat = await fetch(`${url}/api/chat`, {
+        const chat = await fetch(`${site}/api/chat`, {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ messages: [] }),
         });

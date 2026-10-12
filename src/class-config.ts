@@ -39,18 +39,3 @@ export function withBase(url: string, basePath = classConfig.basePath): string {
   if (url.startsWith(basePath) && (rest === "" || /^[/?#]/.test(rest))) return url;
   return `${basePath}${url}`;
 }
-
-export function cloudflareConfig(config: ClassConfig) {
-  return {
-    name: config.slug,
-    main: "../src/worker.ts",
-    compatibility_date: "2025-09-15",
-    vars: { CHAT_ENABLED: String(config.features.chat) },
-    assets: {
-      directory: "../dist",
-      binding: "ASSETS",
-      not_found_handling: "404-page",
-      run_worker_first: ["/api/*"],
-    },
-  };
-}
