@@ -237,7 +237,7 @@ a { color: inherit; }
 .chat-empty { display: flex; flex-direction: column; gap: 9px; color: var(--muted); }
 .chat-empty button { padding: 11px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--canvas); color: var(--text); cursor: pointer; text-align: left; }
 .chat-empty button:hover { border-color: var(--accent); }
-.chat-message { width: fit-content; max-width: 88%; margin: 0 0 11px; padding: 10px 13px; border-radius: 12px; line-height: 1.48; }
+.chat-message { width: fit-content; max-width: 88%; margin: 0 0 11px; padding: 10px 13px; border-radius: 12px; line-height: 1.48; white-space: pre-wrap; }
 .chat-message p { margin: 0; }
 .chat-message p + p { margin-top: 8px; }
 .chat-message.user { margin-left: auto; background: var(--accent); color: var(--accent-contrast, white); }
