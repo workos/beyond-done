@@ -210,7 +210,11 @@ async function prove(solution: boolean) {
     const revision = await currentRevision(session.appUrl);
     return runProof(browser, session.appUrl, prove, join(DIR, `proof-${revision}.png`));
   });
-  await writeFile(RECEIPT, JSON.stringify(receipt, null, 2));
+  const json = JSON.stringify(receipt, null, 2);
+  await writeFile(RECEIPT, json); // latest, for doctor
+  // Append, never overwrite: failures stay in the history next to the final green.
+  await mkdir(join(DIR, "receipts"), { recursive: true });
+  await writeFile(join(DIR, "receipts", `${receipt.at.replace(/[:.]/g, "-")}-${receipt.revision ?? "unknown"}.json`), json);
   out(receipt);
   process.exitCode = receipt.verdict === "PASS" ? 0 : receipt.verdict === "FAIL" ? 1 : 2;
 }

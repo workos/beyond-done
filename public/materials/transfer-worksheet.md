@@ -3,7 +3,7 @@
 > Beyond "Done": Building Verification Loops for AI Agents. Print this, or copy
 > it into your notes. Fill it in for a system you actually ship.
 
-The loop:  **observe → ask → decide → bounded repair**
+The loop:  **observe → fix → prove**
 
 ---
 
@@ -41,7 +41,7 @@ What would you observe *from the outside* to check it for real?
 _______________________________________________________________________
 ```
 
-### 3. Two honest questions (yes/no, answerable from the evidence)
+### 3. Meaning checks (yes/no questions a model or a human could answer)
 
 - criterion A: _______________________________________________________
 - criterion B: _______________________________________________________
@@ -49,27 +49,27 @@ _______________________________________________________________________
 > A judge's answer is a **probability of yes** (a Noul) — not confidence, not
 > proof.
 
-### 4. Hard checks (must be true regardless of any probability)
+### 4. Hard checks for your `prove` (assertions, including side effects)
 
 ```
 - _____________________________________________________________________
 - _____________________________________________________________________
 ```
 
-### 5. Fail-closed path
-What happens when you *can't* judge (missing evidence, judge/model down)?
-(Hint: escalate — not accept, not "blame the product.")
+### 5. "Can't tell" path
+What happens when evidence is missing or stale, or the judge is down?
+(Hint: it's never a pass, and never a reason to change the app.)
 
 ```
 _______________________________________________________________________
 ```
 
 ### 6. Repair budget
-How many automatic repairs before a human is pulled in? ____  (we used **1**)
+How many fixes before a human is pulled in? ____  (we used **2**)
 
-### 7. Thresholds + holdout
-Acceptance bar: ______   Cases you'll hold out to sanity-check it (and NOT tune
-against):
+### 7. Eval cases + holdout
+The misses you'll keep as regression cases, and the cases you'll hold out to
+sanity-check changes (and NOT tune against):
 
 ```
 _______________________________________________________________________
@@ -107,11 +107,11 @@ Later, curated and permitted runs can support fine-tuning. Review labels, redact
 ### Don’t overstate what you built
 
 - [ ] A Noul is the probability of yes — not confidence, not proof.
-- [ ] Synthetic scores are fixtures — not live measurements or model accuracy.
+- [ ] A receipt belongs to one revision; "can't tell" is never a pass.
 - [ ] Browser-local prototype — no real enrollment, email, or payment.
-- [ ] Process separation ≠ security sandbox; injection guidance ≠ guarantee.
-- [ ] A small hand-authored suite ≠ production reliability.
-- [ ] Accept-after-repair (fresh evidence) is not a false accept.
+- [ ] A revision hash ≠ isolation from an agent with a shell.
+- [ ] One app and five bugs ≠ production reliability.
+- [ ] A PASS after a fix needs fresh evidence; the earlier FAIL stays in the history.
 
 **Cost check:** A bad acceptance costs ______. An unnecessary interruption costs ______.
 

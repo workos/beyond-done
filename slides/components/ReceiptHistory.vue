@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { computed, unref } from "vue";
 import { useSlideContext } from "@slidev/client";
-import opening from "../../public/materials/opening-report.json";
-import repair from "../../public/materials/repair-report.json";
+import failed from "../../public/materials/snack-receipts/1-fail-attendee-app.json";
+import fixed from "../../public/materials/snack-receipts/2-pass-after-agent-fix.json";
+import miss from "../../public/materials/snack-receipts/3-pass-console-error-miss.json";
 
 const { $clicks } = useSlideContext();
 const step = computed(() => Math.max(0, Math.min(Number(unref($clicks)), 3)));
 const entries = [
-  { label: 'Reload failure', run: opening.runId, attempt: opening.attempts[0] },
-  ...repair.attempts.map(attempt => ({ label: 'Copy repair', run: repair.runId, attempt })),
+  { label: 'Reload failure', receipt: failed, note: '4 checks failed' },
+  { label: 'Agent fix', receipt: fixed, note: '5 / 5 checks' },
+  { label: 'Game miss', receipt: miss, note: `${miss.pageErrors.length} page error, no check failed` },
 ];
 const stages = [
-  { title: 'Keep the whole run.', body: 'Inputs, actions, artifacts, checks and outcomes. Preserve failures and escalations alongside successes.', action: 'Start now: keep every .lab-runs/<id>/report.json.' },
+  { title: 'Keep the whole run.', body: 'Inputs, actions, artifacts, checks and outcomes. Preserve failures and escalations alongside successes.', action: 'Start now: snack appends every receipt to .lab-runs/snack/receipts/.' },
   { title: 'Turn failures into eval cases.', body: 'Label the expected outcome. Freeze the cases and grader. Change one prompt, tool or policy at a time.', action: 'Compare false accepts, unnecessary escalation, time and cost.' },
   { title: 'Climb on evidence.', body: 'Rerun the same cases. Confirm gains on untouched cases before promoting a change; otherwise keep the baseline.', action: 'That is the improvement loop. Saving logs alone does not improve it.' },
   { title: 'Your own run dataset.', body: 'Curate permitted, redacted, independently labeled runs. Keep train / eval sets separate. Fine-tuning is an optional next step.', action: 'Evaluate any trained model with the same independent gates.' },
@@ -25,11 +27,11 @@ const stages = [
     <div class="history-stage">
       <div class="run-ledger">
         <div class="ledger-heading"><span>APPEND EACH ATTEMPT</span><span>↓</span></div>
-        <div v-for="(entry, i) in entries" :key="`${entry.run}-${entry.attempt.expected.attempt}`" class="run-card" :style="{ '--order': i }">
-          <div><strong>{{ entry.label }}</strong><b :class="entry.attempt.decision.action">{{ entry.attempt.decision.action }}</b></div>
-          <code>{{ entry.run.slice(0, 8) }} / attempt {{ entry.attempt.expected.attempt }}</code>
+        <div v-for="(entry, i) in entries" :key="entry.receipt.revision" class="run-card" :style="{ '--order': i }">
+          <div><strong>{{ entry.label }}</strong><b :class="{ accept: entry.receipt.verdict === 'PASS' && !entry.receipt.pageErrors.length }">{{ entry.receipt.verdict }}</b></div>
+          <code>{{ entry.receipt.revision }} · {{ entry.note }}</code>
         </div>
-        <p>Two saved runs. Three attempts.<br>The failed attempts stay in the record.</p>
+        <p>Three receipts, three revisions.<br>The failure and the miss stay in the record.</p>
       </div>
       <div class="history-arrow" aria-hidden="true">→</div>
       <div class="improvement-loop">
@@ -48,7 +50,7 @@ const stages = [
       </div>
     </div>
     <p class="history-action" :key="step">{{ stages[step].action }}</p>
-    <p class="source-note">Left: actual workshop reports, fixture scores · Right: a workflow to build in your own system.<br>Riker + CTX arrived here independently. Lesson 07 has the schema, eval commands and next steps.</p>
+    <p class="source-note">Left: real snack receipts from this workshop · Right: a workflow to build in your own system.<br>Riker + CTX arrived here independently. Lesson 07 has the receipt fields and next steps.</p>
   </section>
 </template>
 

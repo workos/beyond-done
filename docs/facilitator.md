@@ -15,7 +15,7 @@ Prepare with [preflight.md](preflight.md). Before the talk, start `pnpm snack up
 
 The shared intro is slide 3. Each instructor gets about 15 seconds: name and one real reason you care about supervising agent work, not a résumé. Suggested split: Nick plays the overconfident worker and drives the first browser demo; Zack calls the audience vote and watches for blocked pairs. Swap driver and room-reader at the agent run (slide 19). During the game, one keeps time and the other walks the room. Confirm these in rehearsal.
 
-The deck has 30 slides. Slides 1–10 are the opening (incident, intros, repo QR, vote, live failure, Lauren Tan's quote, the two-afternoons comparison, Riker and CTX, glossary QR). Slides 11–26 build the right-hand lane from slide 8: the gap, the lever, the proof, the agent, the game, and the final boss. Slides 27–30 are the take-home, the close, Q&A, and Booth 6.
+The deck has 34 slides. Slides 1–10 are the opening (incident, intros, repo QR, vote, live failure, Lauren Tan's quote, the two-afternoons comparison, Riker and the CTX walkthrough, glossary QR). Slides 11–27 build the right-hand lane from slide 8: the gap, the lever, the proof, the agent and its receipt, the game, and the final boss. Slides 28–31 are the four animated takeaways (a tool for your app, browser instruments, receipt history, verifier examples with the transfer exercise); 32–34 are the close, Q&A, and Booth 6.
 
 The comparison on slide 8 takes 40 seconds: three advances contrast guessing with a repeatable check. Its clocks are invented illustrations, not benchmark data. The optional Slow UI mode shows a schematic DevTools trace.
 
@@ -40,16 +40,18 @@ The primary opening demo is the real attendee app in the browser `snack up` open
 | 28–30 | 17 | The receipt and the three exit codes. Have people run `pnpm snack prove`. |
 | 30–34 | 18 | The feature map; attendees add two gotchas. Point at `lab/verify/SKILL.md`. |
 | 34–40 | 19 | Live agent run with the three-sentence prompt. Fallback recording after 90 seconds. |
-| 40–43 | 20 | It persists, it also lies. `pnpm snack judge` live. Fix the copy; prove and judge again. |
-| 43–44 | 21 | When to stop. |
-| 44–45 | 22 | Pair up: Saboteur vs. Detective. |
-| 45–50 | 23 | Two 2-minute rounds with the timer; swap roles between them. |
-| 50–51:30 | 24 | Score it. Fish for who said “it works” and was wrong. |
-| 51:30–53:30 | 25 | The reveal: overpromise and console-error got past `prove`. Every miss becomes a new line. |
-| 53:30–55 | 26 | Final boss, live: a one-character edit, then `pnpm snack doctor` shows STALE. |
-| 55–58 | 27 | Transfer: plan the lever for your own app. Pair-share. |
-| 58–60 | 28 | Close: Observe. Fix. Prove. |
-| 60+ | 29–30 | Q&A with both QR codes up, then the Booth 6 invite. |
+| 40–41 | 20 | Open the receipt: bind → observe → decide → append, on the real FAIL → PASS pair. Failed attempts stay in the history. |
+| 41–43:30 | 21 | It persists, it also lies. `pnpm snack judge` live. Fix the copy; prove and judge again. |
+| 43:30–44 | 22 | When to stop. |
+| 44–45 | 23 | Pair up: Saboteur vs. Detective. |
+| 45–50 | 24 | Two 2-minute rounds with the timer; swap roles between them. |
+| 50–51:30 | 25 | Score it. Fish for who said “it works” and was wrong. |
+| 51:30–53:30 | 26 | The reveal: overpromise and console-error got past `prove`. Every miss becomes a new line. |
+| 53:30–55 | 27 | Final boss, live: a one-character edit, then `pnpm snack doctor` shows STALE. |
+| 55–56:30 | 28–30 | Takeaways: a tool for your app (30s), browser instruments (30s), receipt history → evals → optional dataset (30–45s). Use the click cues; deeper setup stays in Lesson 07. |
+| 56:30–58:45 | 31 | Verifier examples, then protect two minutes: one feature, check command, saved receipt, stop condition. |
+| 58:45–60 | 32 | Close: Observe. Fix. Prove. Hear one example. |
+| 60+ | 33–34 | Q&A with both QR codes up, then the Booth 6 invite. |
 
 Hard stops: **18, 30, 44, 55**. Preflight is not charged against the hour. Protect the agent run and the transfer exercise; cut the second game round before either.
 
@@ -74,11 +76,11 @@ If it reproduces, fix it, and show me the receipt and the screenshot as proof.
 
 In rehearsal, Claude Code took about 50 seconds and 12 turns. It ran `doctor`, reproduced with `join` / `storage` / `reload`, edited `lab/app/index.html` (persistence **and** the copy, because the map lists what done means), noticed the unfinished exercise proof was too weak, ran `prove --solution` (PASS, revision `4e8c43d6bc1e`), and opened the screenshot. The slide's fallback recording is that run. The receipts are in `public/materials/snack-receipts/`, with the fixed file beside them.
 
-If your live agent also fixes the copy, say so on slide 20: it caught it by reading the map and the screenshot; `prove` alone passed it. The judge numbers on slide 20 come from `pnpm snack up --bug overpromise` (a working app with only the copy bug).
+If your live agent also fixes the copy, say so on slide 21: it caught it by reading the map and the screenshot; `prove` alone passed it. The judge numbers on slide 21 come from `pnpm snack up --bug overpromise` (a working app with only the copy bug).
 
 If an attendee's agent says PASS without fixing anything, their `prove.ts` is unfinished. That's the lesson, not a failure: “a weak proof calls a broken app done.”
 
-## The judge (slide 20)
+## The judge (slide 21)
 
 ```bash
 pnpm snack judge
@@ -86,7 +88,7 @@ pnpm snack judge
 
 One billable request. Rehearsal (jev-1.13.0): the overpromise copy with persistence working scored honest 0.01 / next step 0.02 (FAIL); the agent-fixed copy scored 0.98 / 0.98 (PASS). Narrate: **“The judge reports support for one narrow question. The verdict thresholds are code.”** No key or no network: judge as a human from the screenshot. Never present a recorded number as a new judgment.
 
-## The game (slides 22–26)
+## The game (slides 23–27)
 
 Use [lesson 6](../src/content/lessons/06-break-it-quietly.md) and the [paper scorecard](../public/materials/game-scorecard.md).
 
@@ -94,13 +96,13 @@ Use [lesson 6](../src/content/lessons/06-break-it-quietly.md) and the [paper sco
 2. Detective uses snack only, no reading files. Writes down the answer and the output that proves it.
 3. Saboteur stops `up`; it prints `{"reveal": "…"}`. Swap.
 
-The bug is injected by the server into the reference app at load time, so it isn't in any file and every pair plays the same game. Two of the five bugs pass the reference proof on purpose: `overpromise` (only the screenshot or `judge` sees it) and `console-error` (it's in the receipt's `pageErrors`, but no check fails on it). That's the point of slide 25.
+The bug is injected by the server into the reference app at load time, so it isn't in any file and every pair plays the same game. Two of the five bugs pass the reference proof on purpose: `overpromise` (only the screenshot or `judge` sees it) and `console-error` (it's in the receipt's `pageErrors`, but no check fails on it). That's the point of slide 26.
 
 Points: named with output **+2**; “it works” and it did **+2**; “it works” and it didn't **−3**; blamed a bug that wasn't there **−1**; right bug without evidence **0**. Bragging rights only. Keep it about the system; never make an attendee the joke.
 
-The timer on slide 23 starts only on a button press. Leaving the slide pauses it. No sound.
+The timer on slide 24 starts only on a button press. Leaving the slide pauses it. No sound.
 
-## The final boss (slide 26)
+## The final boss (slide 27)
 
 You need a passing receipt first: the agent run gives you one. Then make a one-character edit to `lab/app/index.html` (a space in the `<title>` works) and run `pnpm snack doctor`. Both `build` and `proof` report STALE. After the slide, `git checkout lab/app/index.html` resets the app, including the agent's fix.
 
@@ -113,6 +115,14 @@ You need a passing receipt first: the agent run gives you one. Then make a one-c
 - Protect the final transfer exercise.
 
 If thirty minutes disappear, this is no longer the promised hands-on workshop: switch to a demonstration and offer the full materials afterward.
+
+## Takeaway cues
+
+Slides 28–30 connect the finished lab to attendees' own work. Keep them to about 1 minute 30 seconds, then protect the two-minute exercise on slide 31. If behind, leave these diagrams as take-home reference and go straight to slide 31.
+
+- **A tool for your app (28):** our actual CLI and a real saved receipt, applying Lauren Tan's pstack ideas. Its source link is the on-screen credit. No extra installation during class.
+- **Browser instruments (29):** the trace is a schematic; don't call it a measured speedup. The Chrome DevTools MCP setup and first prompt live in Lesson 07.
+- **Receipt history (30):** three real snack receipts provide the cards (the reload failure, the agent's fix, the game's console-error miss). The improvement loop and possible training dataset are a next step, not something this lab implements. Nick and Zack arrived at receipts independently in Riker and CTX.
 
 ## Questions to listen for
 

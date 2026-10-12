@@ -63,7 +63,7 @@ The attendee app is broken, so a finished proof says `FAIL`, with your hints und
 
 ## Read the receipt
 
-`pnpm snack prove` writes `.lab-runs/snack/receipt.json` and prints it:
+`pnpm snack prove` prints the receipt, writes it to `.lab-runs/snack/receipt.json`, and appends a copy to `.lab-runs/snack/receipts/` so failures stay in the history:
 
 - `verdict`: `PASS`, `FAIL`, or `ERROR`.
 - `revision`: a fingerprint of the exact code that was served. The proof belongs to that code only.

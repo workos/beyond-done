@@ -9,17 +9,15 @@ duration: "5 minutes (live 55:00–60:00)"
 
 ## Outcome
 
-You can describe the loop — **observe → ask → decide → bounded repair** — and
+You can describe the loop — **observe → fix → prove** — and
 restate the claims it does and does not support, in your own project's terms.
 
 ## The pattern you just built
 
-1. **Observe** real behaviour independently (don't trust "done").
-2. **Ask** precise yes/no questions whose answers are probabilities (Nouls).
-3. **Decide** with hard checks that can't be averaged away, failing closed on
-   missing evidence or a judge outage.
-4. **Repair once**, then re-observe and re-judge; escalate if it still falls
-   short.
+1. **Give the agent a lever:** a small CLI that drives the real app and reports what happened as JSON, with `doctor` first.
+2. **Define done in a proof** that exercises the user path and checks side effects, and writes a receipt bound to one revision.
+3. **Read what assertions can't see:** the screenshot, a narrow judge (Jev) or a human for meaning.
+4. **Stop on evidence:** PASS on the current revision. “Can't tell” is never a pass; the same failure after two fixes goes to a human.
 
 ## Transfer worksheet (fill in for your project)
 
@@ -33,7 +31,7 @@ Lauren Tan's [pstack Part 1](https://x.com/poteto/status/2094457600259842065) ar
 
 | Feature | Launch / reach it | User path | Tool + proof | Stop / ask for help |
 | --- | --- | --- | --- | --- |
-| Our waitlist | `pnpm lab:app --scenario memory-only` → printed URL | Submit email → reload | Playwright observations + revision-bound report | Missing/stale proof: escalate; known failure: one repair |
+| Our waitlist | `pnpm snack up` → a Chrome snack can drive | Join → reload | `pnpm snack prove` → revision-bound receipt | Stale or missing proof: re-prove or ask; same failure after two fixes: a human |
 | Your feature | … | … | … | … |
 
 A useful check is runnable again after the next change. Give it a clear command, prerequisites, and expected evidence. Start with deterministic assertions; add a semantic question only where meaning requires one. See the [pstack verification skill source](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md) for a fuller approach.
@@ -43,14 +41,14 @@ A useful check is runnable again after the next change. Give it a clear command,
 1. **The "done" that lies:** what shallow green do people trust in your system?
 2. **Independent evidence:** what would you observe, from the outside, to check
    it for real?
-3. **Two honest questions:** write two yes/no questions a judge (model or human)
-   could answer about that evidence.
+3. **Meaning checks:** which claims need a judgment (model or human) rather than an
+   assertion? Write each as a narrow yes/no question.
 4. **Hard checks:** what must be true regardless of any probability?
-5. **Fail-closed:** what's your "we can't judge" path (missing evidence, judge
-   down)?
-6. **Repair budget:** how many automatic repairs before a human is pulled in?
-7. **Thresholds + holdout:** what's your acceptance bar, and what cases will you
-   hold out to sanity-check it?
+5. **Can't tell:** what happens when evidence is missing, stale, or the judge is
+   down? (It must never become a pass.)
+6. **Repair budget:** how many fixes before a human is pulled in? (We used two.)
+7. **Eval cases:** which misses become regression cases, and which cases will
+   you hold out to sanity-check changes?
 
 > Need a starting point? Think about an agent changing account settings, drafting a support reply, or updating a dashboard filter. What evidence would you need before accepting its work?
 
@@ -95,13 +93,12 @@ Replace the brackets with a feature in your app. This is a request to **build yo
 For this repository, the small tool already exists:
 
 ```bash
-pnpm lab:doctor
-pnpm lab:check --scenario memory-only --solution
-pnpm lab:check --scenario happy --solution
-pnpm lab:loop --solution
+pnpm snack up                 # own terminal; leave it running
+pnpm snack doctor
+pnpm snack prove --solution
 ```
 
-The first check observes `reloadedStatus: "none"` and reports **REPAIR**. The second reports **ACCEPT**. The loop records **REPAIR → ACCEPT**, with a new revision and new observations on attempt two. Each command prints its `.lab-runs/<id>/report.json` path. These use real browser observations and synthetic judge scores; no API key is needed. `lab:check` reports the policy decision in JSON and console output; its exit code alone does **not** distinguish ACCEPT from REPAIR or ESCALATE. If you make a CI gate, consume `final.action` and reject missing/invalid reports too.
+On the attendee app, `prove` reports **FAIL** (status after reload: `none`) and exits 1. After a fix it reports **PASS** for a new revision. Each run prints the receipt, writes `.lab-runs/snack/receipt.json`, and appends a copy to `.lab-runs/snack/receipts/`. Exit codes separate PASS (0), FAIL (1) and can't tell (2), so a CI gate can use them; it should still reject a missing receipt. No API key is needed; only `snack judge` calls a model.
 
 ### Give the agent browser instruments
 
@@ -129,18 +126,18 @@ Zack’s public [CTX blueprint](https://zackproser.com/blog/ctx-personal-context
 
 ### What to put in the record
 
-Open the [saved repair report](/materials/repair-report.json), or the path printed by your own run. This table separates what the lab already saves from metadata to add in your own system:
+Open the [saved FAIL receipt](/materials/snack-receipts/1-fail-attendee-app.json) and the [PASS after the agent's fix](/materials/snack-receipts/2-pass-after-agent-fix.json), or the receipts in your own `.lab-runs/snack/receipts/`. This table separates what snack already saves from metadata to add in your own system:
 
 | Question | Already in the workshop receipt | Add for your own system |
 | --- | --- | --- |
-| What work was attempted? | `runId`, `expected.attempt`, `candidate`, `judgeInput.contract` | Task ID, parent run, user request, allowed scope |
-| Which version was checked? | `expected.revision`, `evidence.loadedRevision` | Git commit **and** dirty patch/artifact hash, build/deployment ID |
-| What actually happened? | `evidence.observation`, `capturedAt`, `judgment.evidenceHash` | Tool calls/results, trace/screenshot/log paths and hashes |
-| What did the evaluator use? | `questions`, `questionHash`, `thresholds`, `judgeMode` | Verifier/policy version, model ID/settings, tool and environment versions |
-| Why did it stop? | `checks`, `judgment`, `decision.reasons`, `final` | Independent outcome label, reviewer, escalation/resolution |
+| What work was attempted? | `app`, and the proof that ran (`prove.ts`) | Task ID, parent run, user request, allowed scope |
+| Which version was checked? | `revision` (a hash of the served HTML) | Git commit **and** dirty patch/artifact hash, build/deployment ID |
+| What actually happened? | `checks[].actual`, `pageErrors`, `screenshot`, `at` | Tool calls/results, trace/log paths and hashes |
+| What did the evaluator use? | `checks[].name` and `expected`; `snack judge` adds the model and probabilities | Verifier/policy version, model ID/settings, tool and environment versions |
+| Why did it stop? | `verdict`, `next` | Independent outcome label, reviewer, escalation/resolution |
 | What did it cost? | Not collected by this lab | Wall time, retries, token/API cost; distinguish missing from zero |
 
-The lab’s **candidate revision hashes candidate JSON**, not a Git commit. Do not relabel it as a source revision. Preserve the underlying artifacts as well as their hashes. Use a new run ID and append attempts; never overwrite a failed attempt with the final success. `.lab-runs/` is gitignored local scratch: copy runs you want to keep to your own durable archive, with appropriate access and retention rules. The workshop does not upload or train on them.
+The receipt’s **revision hashes the served HTML**, not a Git commit. Do not relabel it as a source revision. Preserve the underlying artifacts (the screenshot) as well as their hashes. Append attempts; never overwrite a failed attempt with the final success. snack keeps the latest receipt for `doctor` and appends every receipt to `receipts/`. `.lab-runs/` is gitignored local scratch: copy runs you want to keep to your own durable archive, with appropriate access and retention rules. The workshop does not upload or train on them.
 
 ### Turn the history into an improvement loop
 
@@ -152,16 +149,17 @@ The lab’s **candidate revision hashes candidate JSON**, not a Git commit. Do n
 
 That is hillclimbing: propose a change, measure it, keep it only when the evidence supports the objective. Logging is the prerequisite, not the improvement algorithm.
 
-Try the **policy** version here:
+Try the smallest version here, on your proof. The game's misses are your first eval cases:
 
 ```bash
-pnpm lab:eval --solution --accept-at 0.9
-pnpm lab:eval --solution --accept-at 0.8
-# Freeze your chosen threshold before revealing the holdout:
-pnpm lab:eval --solution --suite heldout --accept-at 0.9
+pnpm lab:exercise                      # baseline: your proof vs. a correct app and three broken ones
+# Change one thing: add a "no page errors" check to lab/exercises/prove.ts.
+pnpm lab:exercise                      # the correct app must still pass
+pnpm snack up --bug console-error      # own terminal
+pnpm snack prove                       # the miss should now FAIL
 ```
 
-Each eval writes `evaluation.json` and per-case reports under a fresh `.lab-runs/<id>/`. At 0.9, the teaching fixtures yield 0/5 false accepts and 2/3 unnecessary escalations; at 0.8, 1/5 and 1/3. The second command intentionally exits 1 because it admits a false accept. Use your chosen threshold on the final command, not necessarily 0.9. These small, synthetic sets teach a trade-off; they do not measure prompt quality, model accuracy or production reliability.
+Keep the change only if the correct app still passes and the miss now fails. Then try `--bug overpromise`: no assertion on this page catches it, which is why the meaning check exists. Five bugs and one app teach the loop; they don't measure anything about production reliability.
 
 ### Optional later: fine-tuning
 
@@ -169,22 +167,24 @@ A run archive can become a dataset of tasks, tool interactions, artifacts and in
 
 ## Claims — say these precisely
 
+- A receipt belongs to **one revision**. After any edit, the old receipt proves nothing.
+- “Can't tell” (exit 2) is **not** a product failure, and it never becomes a pass.
 - A Noul is the **probability of yes**, not a separate confidence or a proof.
-- Synthetic probabilities are **fixtures**, not live Jev measurements or model
-  accuracy.
 - The prototype is **browser-local**: no real enrollment, email, or payment.
-- Process separation is **not** a security sandbox; injection guidance is **not**
-  a security guarantee.
-- A small hand-authored suite is **not** production reliability.
-- Accept-after-repair (with fresh evidence) is **not** a false accept.
+- The revision hash is local provenance, **not** isolation from an agent with a
+  shell.
+- One app and five bugs are **not** production reliability.
+- A PASS after a fix needs fresh evidence for the new revision; the earlier FAIL
+  stays in the history.
 
 ## Time-compression fallback
 
 Running short on time? This still works:
 
-- **Skip the editor loop:** run every graded command with `--solution` and watch
-  the loop, attacks, and eval on the projector.
-- **Keep the playful core:** author one misleading message and one valid paraphrase, then explain the evidence. A partner can judge if API access is unavailable. Use the provided threshold table instead of repeating every eval.
+- **Skip the editor loop:** add `--solution` to `snack prove` and `lab:exercise`,
+  and watch the agent run on the projector.
+- **Keep the playful core:** play one round of Break it quietly with
+  `pnpm snack up --bug random`, and explain the evidence that found it.
 - **If setup failed entirely:** pair with a green neighbour; you can still do the
   transfer worksheet and debrief, which is the part you keep.
 

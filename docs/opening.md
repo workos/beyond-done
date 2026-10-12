@@ -32,7 +32,7 @@ pnpm snack up
 4. Reload the actual page. Point to `none`, `—`, and the empty confirmation.
 5. Ask which acceptance criterion the original completion report omitted.
 
-The confirmation says “Your seat is confirmed.” Don't point it out yet; slide 20 pays it off.
+The confirmation says “Your seat is confirmed.” Don’t point it out yet; slide 21 pays it off.
 
 Slide 6's illustration is only the fallback if the app cannot start. Name it as such.
 

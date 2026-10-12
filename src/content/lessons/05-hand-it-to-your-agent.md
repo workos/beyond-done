@@ -42,7 +42,16 @@ The prompt has no steps and no “remember to reload”. The skill, the map, and
 
 To start over: `git checkout lab/app/index.html`.
 
-## 3. It persists. It also lies. (40:00–43:00)
+## 3. Open the receipt (40:00–41:00)
+
+Every `pnpm snack prove` appends a receipt to `.lab-runs/snack/receipts/`. Read the two from your agent's run (or the saved pair: [FAIL](/materials/snack-receipts/1-fail-attendee-app.json), then [PASS](/materials/snack-receipts/2-pass-after-agent-fix.json)) in four steps:
+
+1. **Bind:** which revision, and when?
+2. **Observe:** what did the app actually do? Status after reload, storage, page errors.
+3. **Decide:** which checks failed, and what's `next`? That line is what the agent acted on.
+4. **Append:** new code, new revision, fresh evidence. The failure stays in the history.
+
+## 4. It persists. It also lies. (41:00–43:30)
 
 Open the screenshot from the passing receipt. The confirmation says **“You're in! Your seat is confirmed.”** The map says waitlist only, no guaranteed seat. `prove` checked that the record survives; it can't tell whether the message is honest.
 
@@ -60,7 +69,7 @@ Have the agent fix the copy, then run `prove` and `judge` again. Both should pas
 
 A probability is a signal, not proof. 0.55 doesn't mean 55% done; it means the judge is torn. If your product has exactly one approved message, skip the model and compare the text.
 
-## 4. When to stop (43:00–44:00)
+## 5. When to stop (43:30–44:00)
 
 From `lab/verify/SKILL.md`:
 

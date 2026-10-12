@@ -48,7 +48,7 @@ Confirm the model name and both verdicts: the attendee copy fails, the fixed cop
 
 Print or share `public/materials/game-scorecard.md`. Try each bug once: `pnpm snack up --bug <name>` for `memory-only`, `wrong-email`, `lost-confirmation`, `overpromise`, `console-error`, `none`; stopping `up` prints the reveal. Confirm `overpromise` and `console-error` pass `prove --solution` (they're meant to).
 
-Test the slide 6 reload illustration, the slide 8 comparison (three advances, reverse, and both examples), slide 11's six click reveals, slide 19's fallback recording, slide 25's reveal, and the round timer on slide 23. The timer starts manually, pauses on navigation, and needs no backend. Arrow keys reveal teaching steps; control buttons don't advance the slide.
+Test the slide 6 reload illustration, the slide 8 comparison (three advances, reverse, and both examples), slide 11's six click reveals, slide 19's fallback recording, slide 20's receipt walkthrough, slide 26's reveal, the takeaways on 28–31, and the round timer on slide 24. The timer starts manually, pauses on navigation, and needs no backend. Arrow keys reveal teaching steps; control buttons don't advance the slide.
 
 ## Failure plans
 

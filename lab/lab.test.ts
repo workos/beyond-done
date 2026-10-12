@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -101,6 +101,7 @@ test("snack CLI: up, doctor, drive, look, prove, and down against a real Chrome 
     assert.equal(proof.code, 1);
     assert.equal(proof.json.verdict, "FAIL");
     assert.ok(existsSync(proof.json.screenshot));
+    assert.equal((await readdir(join(dir, "receipts"))).length, 1, "every receipt is appended to the history");
     assert.match((await run("doctor")).json.proof.status, /^FAIL for the current source/);
     const unknown = await run("frobnicate");
     assert.equal(unknown.code, 2);

@@ -42,9 +42,9 @@ fonts:
 2. **The gap (6–10):** what *you* do to check (reload, DevTools) and the agent can’t. Instructions don’t fix that; a lever does.
 3. **Eyes (10–18):** `snack`, a small CLI that drives the app over the Chrome DevTools Protocol. Everyone drives it.
 4. **The proof (18–30):** attendees write `prove`, the one coding exercise, and read the receipt it produces.
-5. **The agent (30–44):** a feature map, then their own agent: “Repro it. Fix it. Show me proof.” Then the copy that still lies, and the stop rule.
+5. **The agent (30–44):** a feature map, then their own agent: “Repro it. Fix it. Show me proof.” Then the receipt from that run, the copy that still lies, and the stop rule.
 6. **The game (44–55):** a saboteur hides a bug; a detective finds it with snack alone. Every miss becomes a new check. Final boss: a stale receipt.
-7. **Take it home (55–60):** plan the lever for their own app.
+7. **Take it home (55–60):** a tool for your app, browser instruments, receipt history, and concrete examples, then two minutes to write their own first check.
 
 The three verbs to keep repeating: **Observe. Fix. Prove.** They’re the right-hand lane on slide 8 and the close.
 
@@ -274,14 +274,12 @@ clicks: 3
 -->
 
 ---
+title: We hold our own tools to this.
+class: ctx-slide
+clicks: 3
 ---
 
-# We hold our own tools to this.
-
-<div class="comparison">
-<div><div class="small-label">Riker · Nick · runs coding agents for you</div><blockquote>“Status comes from records, not model prose.”</blockquote><p class="comparison-label">Riker runs the job’s check itself and keeps the command, exit code, commit and output hash. No check: reported unverified.</p></div>
-<div><div class="small-label">CTX · Zack · context + verification control plane</div><blockquote>“A bare executor claim is kept in the ledger but ignored.”</blockquote><p class="comparison-label">Verifiers write receipts bound to the exact revision. Only CTX’s evaluators close a node.</p></div>
-</div>
+<CtxWalkthrough />
 
 <!--
 **ACT 1 · THE CLAIM** · 5:30–6:00 · one sentence each
@@ -292,9 +290,15 @@ clicks: 3
 - **Nick:** “Riker runs coding agents for me. It never believes the agent’s status. It runs the job’s check itself and records the command, exit code, commit and a hash of the output. If there’s no check, the job is marked unverified.” Optional: “The last PR to this deck came out of a Riker job.”
 - **Zack:** “CTX models work as a graph of observable end states. A worker can claim whatever it likes; the claim is logged and ignored. Verifiers write receipts tied to the exact revision, and only CTX’s evaluators close a node.”
 
+**Click walkthrough · Zack:** Use the images as a quick visual example in the hour; expand these prompts during rehearsal or questions. No additional slide advances are needed between images. Left arrow retraces every state.
+
+1. **CTX spotlight:** The CTX card lifts and Riker recedes. “Here’s what that means in my system.”
+2. **Architecture overlay:** Start at the agent session, then trace work → verifier → gate → outcome. A **run** is one execution attempt, including its inputs, actions and artifacts; it is not the task’s completion status. **Inputs** bind the work to the things in scope. A **verification** is the required condition, such as all scoped PRs being merged. A **verifier** is the connector that queries the real system and returns an observation/receipt. A worker’s prose cannot satisfy the gate. On failure the task stays open; on success the evaluator can close it. Keep the ledger over time for evaluation and improvement; a training corpus is a possible curated use, not automatic learning.
+3. **App overlay:** Walk left to right: “Pull requests in scope” is the input set; “All pull requests merged” is the verification; “Re-check with GitHub” invokes the verifier; the scoped PR and observed merged state support the satisfied gate. Point out **Latest run: No run attached**: this screenshot shows the task’s verification state, not a run-detail view. Do not imply that the captured check has an attached run. The recording of a run and the requirement for completion are different concepts.
+
 **Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. One more tab first.”
 
-**Careful:** Both repos are private. Describe them; don’t promise links or access. Callbacks come on the receipt and final-boss slides.
+**Careful:** The implementations are private. The CTX links are public writing: the original context-engine blueprint and the later retrospective about verification gates. Nick and Zack arrived at receipts independently. Return to that shared idea on the receipt and run-history slides; don’t imply either article exposes the private implementation.
 -->
 
 ---
@@ -674,9 +678,40 @@ clicks: 7
 
 **Land it:** “Same agent as slide 5. The difference isn’t the model. It’s the lever.”
 
-**Next →** “It passed. So… done? Look at the screenshot.”
+**Next →** “Let’s open the receipt from that run.”
 
 **Careful:** Agents vary. If yours fixes the copy too, great: ask it why. That’s the next slide. If an attendee’s agent says PASS without fixing anything, their `prove.ts` is unfinished; that’s a lesson, not a failure. The fallback is a recorded run, not a live one; say so.
+-->
+
+---
+class: indigo receipt-slide
+clicks: 3
+---
+
+<p class="small-label">THE RUN YOU JUST WATCHED</p>
+
+# Open the receipt.
+
+<RepairReceipt />
+<div class="receipt-command">Try it: <code>pnpm snack prove</code> · every receipt is appended to <code>.lab-runs/snack/receipts/</code></div>
+
+<!--
+**ACT 5 · THE AGENT · the receipt** · 40:00–41:00 · three clicks
+
+**Why this slide:** A receipt is a durable record of an evaluation. It should explain the outcome today and preserve enough context to compare runs later. These two are the agent run from the previous slide: before and after its fix. Nick and Zack arrived at this independently in Riker and CTX.
+
+**Say / click:**
+- **0 — bind:** “Which revision did we check, and when? This is a real saved receipt from the run you just watched.”
+- **1 — observe:** “What did the app actually do? Status after reload: none. Nothing in localStorage. No page errors.”
+- **2 — decide:** “Which checks failed, and what should happen next? That `next` line is what the agent acted on.”
+- **3 — append:** “New code, new revision, fresh evidence. Attempt two passes; attempt one stays in the history. Don’t overwrite the failure with the final green.”
+- Optional callback: Nick’s Riker preserves the job’s check; Zack’s CTX ties evidence to a work-graph revision. The shared move is to preserve the run, not just its final message.
+
+**Do:** Have attendees open their own `.lab-runs/snack/receipts/`: one file per `prove`. Lesson 07 maps the receipt fields and the extra metadata a real system needs.
+
+**Next →** “That history becomes useful evaluation data; we’ll come back to it at the end. But first: the receipt says PASS. So… done? Look at the screenshot.”
+
+**Careful:** Saved receipts from the reference proof (`--solution`) before and after a real Claude Code run, not your live run; your revisions will differ. The revision is a hash of the served HTML, not a Git commit. snack doesn’t record model, tool or environment versions or costs, which a production run archive needs.
 -->
 
 ---
@@ -694,7 +729,7 @@ clicks: 1
 <p class="aside-note">Some claims aren’t assertions. Ask a fast judge one narrow question, or show a human the screenshot.</p>
 
 <!--
-**ACT 5 · THE AGENT** · 40:00–43:00 · Zack
+**ACT 5 · THE AGENT** · 41:00–43:30 · Zack
 
 **Why this slide:** Behavior and meaning are different checks. `prove` can tell you the record survived. It can’t tell you whether the message is honest. That’s why the receipt has a screenshot, and why there’s a second kind of check.
 
@@ -733,7 +768,7 @@ clicks: 1
 <p class="footnote">The skill states the rule. The CLI supplies the evidence. Neither trusts the agent’s word.</p>
 
 <!--
-**ACT 5 · THE AGENT** · 43:00–44:00 · Nick · hard stop 44:00
+**ACT 5 · THE AGENT** · 43:30–44:00 · Nick · hard stop 44:00
 
 **Why this slide:** A loop without a stop rule either quits early or never ends. These four lines live in `lab/verify/SKILL.md`, so every agent reads the same rule.
 
@@ -907,34 +942,94 @@ clicks: 1
 -->
 
 ---
+class: night takeaway-slide
+clicks: 2
 ---
 
-<div class="split">
-<div><h1>Build the lever<br>for your app.</h1><p class="lede">One CLI your agent can run.<br>One proof. One feature file.<br>Treat it like infrastructure.</p><p class="aside-note">Further reading: Lauren Tan on verification as critical infrastructure.</p><a class="aside-note" href="https://x.com/poteto/status/2094457600259842065" target="_blank" rel="noopener noreferrer">The Complete Guide to pstack, Part 1 ↗</a></div>
-<div class="ticket">
-<div class="ticket-top"><span>YOUR VERIFICATION LEVER</span><span>KEEP THIS</span></div>
-<p><strong>doctor checks:</strong> ______________________</p><p><strong>Drive (3 commands):</strong> __________________</p><p><strong>Look (3 commands):</strong> ___________________</p><p><strong>prove (one user path):</strong> _______________</p><p><strong>First gotcha:</strong> __________________________</p>
-<div class="ticket-bottom"><span>ONE APP. ONE LEVER. ONE PROOF.</span></div>
-</div>
-</div>
+<VerificationWorkbench />
 
 <!--
-**ACT 7 · TAKE IT HOME** · 55:00–58:00 · protect this, even if behind
+**ACT 7 · TAKE IT HOME · a tool for your app** · 55:00–55:30 · two clicks
 
-**Why this slide:** Transfer to their own work. The deliverable is a plan for one small CLI they’ll actually build, not a framework.
+**Why this slide:** Turn the hour into a recipe for their own app. An agent needs a maintained map of the feature plus a tool to exercise it. We built the small version: the map, snack, and `prove`.
 
-**Say:**
-- “Pick one app you work on. Fill in the ticket.”
-- “**doctor**: how would an agent know the app is up, on the right build?”
-- “**Drive**: three things a user does. **Look**: three things you check by hand. On the web that’s the DevTools protocol; on iOS it’s the simulator; for a CLI it’s a terminal session.”
-- “**prove**: one user path, end to end, with side effects.”
-- “**First gotcha**: the thing in your app that always looks done before it is.”
-- “Then build it like infrastructure: tested, maintained, improved every time something slips through. Your whole team gets it, and so do their agents.”
-- “Lauren Tan’s guide to pstack goes much deeper on this. It’s where a lot of today’s ideas come from.”
+**Say / click:**
+- **0:** “One feature, one user path, one observable outcome. This is the feature map.”
+- **1:** “Our CLI launches the app, drives a real browser and captures what happened. The agent can rerun it. In your repo, wrap the harness you already have in a small tool and document how to use it.”
+- **2:** “Now it knows the record disappeared on reload. That’s a specific repair target.”
 
-**Do:** Two minutes to write, then tell a neighbor. Stuck? Suggest a settings page, a checkout step, or a search filter. The longer worksheet is at /materials/transfer-worksheet.md (Lesson 07).
+**After class:** Lesson 07 has a copyable agent prompt to build a project-local verifier. Lauren’s pstack verification skill and Build the Lever principle are the primary references. This command and app are ours; we are applying her workflow, not showing a pstack command.
 
-**Next →** “Let’s hear one.”
+**Next →** “And when the symptom is deeper than a missing record?”
+-->
+
+---
+class: takeaway-slide
+clicks: 2
+---
+
+<BrowserProof />
+
+<!--
+**ACT 7 · TAKE IT HOME · browser instruments** · 55:30–56:00 · two clicks
+
+**Say / click:**
+- **0:** “Console for exceptions, network for failed requests, performance traces for work that blocks the browser. Let the agent use those instruments.”
+- **1:** “Record the slow interaction. Inspect the hot path. A flamechart gives you a place to investigate, not automatic proof of the cause.”
+- **2:** “Repair and record again under the same conditions. Check that it still works, too. Keep both traces.”
+
+**Concrete next step:** Chrome DevTools MCP exposes `performance_start_trace`, `performance_stop_trace` and `performance_analyze_insight`. It also has a CLI. Follow the official setup in Lesson 07; connect it to a test instance of your app and ask it to investigate one slow interaction. We are not installing another tool during the hour.
+
+**Careful:** This is an animated schematic, not a trace measured from the workshop app or a benchmark of speedup. A fast trace alone does not establish correct behavior.
+
+**Next →** “Those traces are receipts too. Keep them across runs.”
+-->
+
+---
+class: night takeaway-slide
+clicks: 3
+---
+
+<ReceiptHistory />
+
+<!--
+**ACT 7 · TAKE IT HOME · a history you can improve against** · 56:00–56:30 · three clicks
+
+**Say / click:**
+- **0:** “Nick and I both ended up here: receipts are evidence now, and a history of the system over time. Keep the failure, the repair and the final outcome.”
+- **1:** “Turn recurring failures into labeled evaluation cases. Freeze the grader. Change one tool, prompt or policy, then rerun the same tasks. Track bad accepts and unnecessary interruptions; add latency and cost in your own system.”
+- **2:** “Hillclimbing means keeping a change only when independent evaluation supports it. Check untouched cases before promotion. If the agent can rewrite its own scorekeeper, the hill might be fake.”
+- **3:** “Over time you have your own run dataset. With permission, redaction, reviewed labels and a separate evaluation split, it can also support fine-tuning. That’s an option, not something these logs do automatically.”
+
+**Concrete next step:** Lesson 07 shows where snack keeps receipts (`.lab-runs/snack/receipts/`), what each field means, and which extra fields a real run archive needs. The game already produced the first eval cases: the bugs that slipped past `prove`. An automatic improvement loop also needs a bounded experiment budget, a promotion gate and rollback.
+
+**Careful:** The left cards are real saved snack receipts from this workshop (the reload failure, the agent’s fix, and the game’s console-error miss), not a measured trend or a training corpus. The right side is the workflow attendees can build next. This workshop does not fine-tune anything.
+
+**Next →** “Now write the first row for your own app.”
+-->
+
+---
+class: night takeaway-slide
+clicks: 2
+---
+
+<VerifierExamples />
+
+<!--
+**ACT 7 · TAKE IT HOME** · 56:30–58:45 · 15-second examples, then protect the two-minute exercise
+
+**Why this slide:** Give people concrete starting points for their own apps. Leave all three examples visible while they write one small check they will build first.
+
+**Say / click:**
+- **0:** “A web filter survives reload. A native draft survives relaunch. Duplicate webhook delivery creates one job.”
+- **1:** “Wrap the tool that can reach the real system: browser automation, a native UI driver, or HTTP plus a database read.”
+- **2:** “Now name the assertion and the evidence you’ll save. These are ordinary, testable facts. Pick your own feature.”
+
+**Do:** At 56:45, give them two minutes to write: feature/user path, check command, receipt location, and when to stop or ask for help. Keep the examples visible. The worksheet and detailed versions of these recipes are in Lesson 07.
+
+**Careful:** These are illustrative blueprints, not three additional workshop apps. The `verify` commands are example wrappers attendees can build; they are not installed by this repository. Appium requires a driver for the target platform. A screenshot alone does not prove persistence, and a 200 response alone does not prove a job ran exactly once. For asynchronous jobs, wait for a defined completion signal within a deadline and inspect records for the test event ID.
+
+**Next →** “Let’s hear a couple.”
 -->
 
 ---
@@ -946,7 +1041,7 @@ class: indigo
 <p class="footnote">Your agents will keep saying “done.” Now they can show you the receipt.</p>
 
 <!--
-**ACT 7 · TAKE IT HOME · close** · 58:00–60:00 · both hosts
+**ACT 7 · TAKE IT HOME · close** · 58:45–60:00 · both hosts
 
 **Why this slide:** Close the arc where slide 8 opened it. The right-hand lane was “Observe. Fix. Prove.” Now they’ve built it.
 

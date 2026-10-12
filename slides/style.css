@@ -43,6 +43,8 @@
 .slidev-layout.indigo { --deck-bg: #5552dd; --deck-ink: #fff; --deck-muted: #e1e0ff; --deck-logo: url("/brand/workos-logo-white.svg"); }
 .slidev-layout.night { --deck-bg: #242238; --deck-ink: #f8f8ff; --deck-muted: #c3bfd9; --deck-logo: url("/brand/workos-logo-white.svg"); }
 .slidev-layout.contrast-slide { padding: 28px 40px 38px; }
+.slidev-layout.ctx-slide { padding: 0; }
+.slidev-layout.ctx-slide:has(.ctx-overlay) { --deck-logo: url("/brand/workos-logo-white.svg"); }
 .slidev-layout.lime { --deck-bg: #d9ff82; --deck-ink: #262b20; --deck-muted: #505a3e; }
 .slidev-layout.coral { --deck-bg: #ffb6a5; --deck-ink: #342438; --deck-muted: #684955; }
 .slidev-layout.indigo .accent, .slidev-layout.night .accent { color: var(--snack-lime); }
@@ -211,6 +213,16 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 /* Size-only overrides for text inside shared components (ResourceQr, IncidentOpener). Drop this block to restore the components' own sizes. */
 .slidev-layout div.resource-qr p, .slidev-layout div.resource-qr.compact p { font-size: 16px; }
 .slidev-layout .incident-opener .incident-kicker, .slidev-layout .incident-opener .incident-quote a, .slidev-layout .incident-opener .incident-context, .slidev-layout .incident-opener .incident-request, .slidev-layout .incident-opener .volume-heading { font-size: 16px; }
+
+/* Take-home diagrams keep room for projected labels and source links. */
+.slidev-layout.takeaway-slide, .slidev-layout.receipt-slide { padding: 28px 40px 38px; }
+.slidev-layout.receipt-slide > .small-label { margin-bottom: 8px; }
+.slidev-layout.receipt-slide > h1 { margin-bottom: 18px; }
+.slidev-layout .receipt-command { margin-top: 14px; font-size: 16px; color: #e1e0ff; }
+.slidev-layout .receipt-command code { font-size: 16px; color: #d9ff82; background: transparent; padding: 0; }
+.slidev-layout.receipt-slide .receipt-source code { color: #fff; background: transparent; padding: 0; }
+.slidev-layout .comparison .host-reading { font-size: 15px; line-height: 1.6; margin-top: 14px; }
+.host-reading a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Second half: the snack lever. */
 .devtools { background: #1f1d30; color: #e8e5f8; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 60px -30px #0008; }
