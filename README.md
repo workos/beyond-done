@@ -159,7 +159,7 @@ Each start uses a new port. A new port is a new browser origin, so localStorage 
 | `pnpm lab:test` | **Required.** Lab tests (`lab/*.test.ts`): unit, fake-transport, and real-browser reference tests; no model costs |
 | `pnpm test` | **Required.** Template and script regression tests (`scripts/*.test.ts`) |
 | `pnpm build` | Typecheck lab/site and build lessons, glossary, and slides |
-| `pnpm slides:check` | Check 30 slides, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
+| `pnpm slides:check` | Check 32 slides, reveals, QR assets, saved evidence, loop, timers, and reduced motion |
 
 **Run both `pnpm test` and `pnpm lab:test`.** Each covers only its own folder: `pnpm test` runs the script tests and `pnpm lab:test` runs the lab tests. Passing one says nothing about the other.
 

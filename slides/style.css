@@ -195,6 +195,11 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ff967f; outline-
 .source-lines span { font-size: 19px; }
 .close-questions { margin-top: 35px; }
 .close-questions p { font: 650 43px/1.15 "Bricolage Grotesque Variable", sans-serif; margin: 20px 0; }
+.thesis-questions { display: flex; height: 100%; flex-direction: column; justify-content: center; gap: 30px; }
+.slidev-layout .thesis-questions p { margin: 0; }
+.thesis-questions > div > p:first-child { font: 650 62px/1.05 "Bricolage Grotesque Variable", sans-serif; letter-spacing: -.03em; }
+.slidev-layout .thesis-questions .thesis-build { margin-top: 8px; font-size: 20px; line-height: 1.35; color: var(--deck-muted); }
+.slidev-layout .thesis-questions .thesis-build code { font-size: 20px; }
 .slidev-layout .quote-thesis { font-size: 53px; line-height: 1.15; margin-bottom: 30px; }
 .follow-steps p { font-size: 19px; margin-bottom: 12px; }
 .architecture-lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }

@@ -103,6 +103,7 @@ Teaching expectations:
 2:00–4:00. PRIMARY: switch to the already-open actual app from pnpm lab:app --scenario memory-only. Submit ada@example.test, show waitlisted and saved email, then reload and show none and an empty confirmation.
 Return to this slide. The right-hand illustration is a labelled fallback if the app fails to start, not the default proof. Its Reload button shows the same failure.
 Click the slide advance once for the punchline. A passing submit check did not prove persistence.
+Thesis, out loud, in your own words: 'Done' is a claim. Ask for the receipt.
 -->
 
 ---
@@ -236,7 +237,7 @@ class: observe-slide
 ---
 
 <div class="observe-head">
-<div><div class="exercise-number">Build 1 · 10–21 minutes</div><h1>Catch the vanishing act.</h1></div>
+<div><div class="exercise-number">Build 1 · Observe · 10–21 minutes</div><h1>Catch the vanishing act.</h1></div>
 <div><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
 </div>
 <div class="observe-caption-row"><p class="build-description">Fresh browser → submit → read → reload → read again.</p><p class="code-caption">lab/exercises/observe.ts</p></div>
@@ -275,7 +276,6 @@ clicks: 2
 # The opening bug.<br>Now with evidence.
 
 <EvidenceFlow />
-<p class="footnote">Reproduce: pnpm lab:check --scenario memory-only · Open the printed report.json path.</p>
 
 <!--
 Teaching expectations:
@@ -285,6 +285,7 @@ Teaching expectations:
 
 ~20:00 checkpoint. Advance twice: observations → revision-bound evidence → failed mandatory checks. This is a saved real browser run using the reference solution, not a current live run. Its judge scores are synthetic.
 Open public/materials/opening-report.json or run pnpm lab:check --scenario memory-only with the learner collector. Their unfinished policy still escalates; inspect observations and checks. Local hashes establish consistency, not isolation from a shell-capable attacker.
+Moved from footnote: Reproduce: pnpm lab:check --scenario memory-only · Open the printed report.json path.
 -->
 
 ---
@@ -332,7 +333,7 @@ Anthropic's planner/generator/evaluator harness is one broader example. Our clas
 ---
 ---
 
-<div class="exercise-number small-label">Build 2 · 23–33 minutes</div>
+<div class="exercise-number small-label">Build 2 · Infer · 23–33 minutes</div>
 
 # Two questions. No vibes check.
 
@@ -410,9 +411,31 @@ Moved from footnote: Synthetic fixtures ignore your question wording entirely.
 -->
 
 ---
+class: indigo
 ---
 
-<div class="small-label">Build 3 · 33–43 minutes</div>
+# Name the source.<br>Every time.
+
+<div class="source-lines">
+<div><strong>Synthetic fixture</strong><span>Authored scores. Tests policy.</span></div>
+<div v-click><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
+<div v-click><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
+</div>
+
+<!--
+Teaching expectations:
+- Name what each result can establish: synthetic scores test policy, recordings show past responses, and live calls provide new but fallible judgments.
+- Prevent source confusion: neither a replay nor a fixture provides feedback on a learner's newly edited questions.
+- Label peer review as human judgment and keep its conclusions separate from claims about model performance.
+
+Transition at 33:00, or use as a callback whenever source confusion appears.
+No additional lecture block. Later, in the game's no-key rounds, name the fourth source plainly: a human peer.
+-->
+
+---
+---
+
+<div class="small-label">Build 3 · Stop · 33–43 minutes</div>
 
 # The bouncer’s rulebook.
 
@@ -465,12 +488,27 @@ class: indigo
 
 <RepairReceipt />
 <div class="command">pnpm lab:loop<br>pnpm lab:loop --stubborn</div>
-<p class="footnote">Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.</p>
 
 <!--
 This belongs to the same three-minute payoff as the previous animation. Run the completed learner loop, or --solution for the reference. Open report.json and match its fields to this saved reference run.
 Point to the different candidate revisions AND evidence hashes. A new candidate does not inherit the old judgment. --stubborn must end repair → escalate.
 Captured report: public/materials/repair-report.json. This slide is not a live model response. If short on time, inspect the saved report and protect the game.
+Moved from footnote: Open the printed report.json · Catch-up: append --solution · Scripted worker + synthetic scores.
+-->
+
+---
+class: night
+---
+
+<div class="thesis-questions">
+<div><p>What did we <span class="accent">observe?</span></p><p class="thesis-build"><code>observe.ts</code> · Build 1</p></div>
+<div><p>What did we <span class="accent">infer?</span></p><p class="thesis-build"><code>questions.ts</code> · Build 2</p></div>
+<div><p>Why did we <span class="accent">stop?</span></p><p class="thesis-build"><code>decide.ts</code> · Build 3</p></div>
+</div>
+
+<!--
+42:30–43:00, the last 30 seconds of the payoff. No reveals: leave it up long enough for people to photograph it.
+Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
 -->
 
 ---
@@ -599,6 +637,7 @@ Teaching expectations:
 Zack/Nick can act as the label-review jury if a message is ambiguous; don't quietly move the label to fit the model.
 Escalate-everything scores -1 across a bad+good pair, not a perfect defense. Max score is 4.
 Keep the competition about the system, never about embarrassing a participant. No promised physical prize.
+Count hands: how many polite lies got past the door? How many honest rewrites got bounced? Say the room's numbers before the next slide. They're the only real data in the deck.
 -->
 
 ---
@@ -645,28 +684,23 @@ Teaching expectations:
 54:00–55:00. One quick shared fixture: stale evidence is an injected harness fault, not a generated worker config.
 A one-sentence evidence explanation earns the room's final point. Cut this live command if behind, not the transfer exercise.
 Heldout evaluation moves to take-home to protect time for participant-authored attacks.
+Nick: one story of your own here: an agent that handed you a perfect-looking receipt that wasn't real (e.g. touching the proof file instead of running the tests).
 -->
 
 ---
-class: indigo
+class: night
 ---
 
-# Name the source.<br>Every time.
-
-<div class="source-lines">
-<div><strong>Synthetic fixture</strong><span>Authored scores. Tests policy.</span></div>
-<div v-click><strong>Recorded response</strong><span>Real past request. No new feedback.</span></div>
-<div v-click><strong>Live Jev</strong><span>New judgment. Still fallible.</span></div>
+<div class="thesis-questions">
+<div><p>What did we <span class="accent">observe?</span></p><p class="thesis-build"><code>observe.ts</code> · Build 1</p></div>
+<div><p>What did we <span class="accent">infer?</span></p><p class="thesis-build"><code>questions.ts</code> · Build 2</p></div>
+<div><p>Why did we <span class="accent">stop?</span></p><p class="thesis-build"><code>decide.ts</code> · Build 3</p></div>
 </div>
 
 <!--
-Teaching expectations:
-- Name what each result can establish: synthetic scores test policy, recordings show past responses, and live calls provide new but fallible judgments.
-- Prevent source confusion: neither a replay nor a fixture provides feedback on a learner's newly edited questions.
-- Label peer review as human judgment and keep its conclusions separate from claims about model performance.
-
-Transition at 55:00, or use as a callback whenever source confusion appears.
-No additional lecture block. During no-key rounds, name the fourth source plainly: a human peer.
+54:30–55:00, the last 30 seconds of the final boss. Same slide as before the game. No reveals: leave it up long enough for people to photograph it.
+Say the thesis out loud: "'Done' is a claim. Ask for the receipt."
+Tie it back to the three builds: observe.ts recorded what happened, questions.ts asked what the evidence supports, decide.ts said when to stop.
 -->
 
 ---
@@ -680,7 +714,6 @@ No additional lecture block. During no-key rounds, name the fourth source plainl
 <div class="ticket-bottom"><span>ONE REAL TASK. ONE FIRST CHECK.</span></div>
 </div>
 </div>
-<p class="footnote">55–58 minutes · Lesson 07 · /materials/transfer-worksheet.md · Launch → drive → observe → decide.</p>
 
 <!--
 Teaching expectations:
@@ -691,6 +724,7 @@ Teaching expectations:
 
 55:00–58:00. Two-minute write, then brief pair-share. If stuck: settings change, support reply, dashboard filter.
 Ask where a hard assertion is sufficient and where a semantic judgment is actually helpful.
+Moved from footnote: 55–58 minutes · Lesson 07 · /materials/transfer-worksheet.md · Launch → drive → observe → decide.
 -->
 
 ---
