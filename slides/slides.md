@@ -116,7 +116,7 @@ Then read the caption: “Here’s the deal. For the next hour we build a verifi
 
 **Next →** “To build it, you need the code. Get it on your laptop now.”
 
-**Roles:** Nick drives the first demo and plays the overconfident worker. Zack calls the vote and watches the room. Swap at the agent run (confirm in rehearsal). Riker and CTX get their own slide later; don’t pitch them here.
+**Roles:** Nick drives the first demo and plays the overconfident worker. Zack calls the vote and watches the room. Swap at the agent run (confirm in rehearsal). Riker and CTX get their own slides later; don’t pitch them here.
 -->
 
 ---
@@ -300,6 +300,34 @@ clicks: 3
 -->
 
 ---
+title: The worker said “ready.” Riker checked.
+class: riker-slide night
+clicks: 7
+---
+
+<RikerWalkthrough />
+
+<!--
+**ACT 1 · THE CLAIM** · 6:30–7:30 · Nick · seven quick clicks
+
+**Why this slide:** Credibility, not a pitch. The loop from the quote slide, running in a tool Nick uses every day, on a real job: job 140, the PR that deployed this workshop site. Every value on screen is Riker’s own record of that job.
+
+**Say** (one line per click, keep moving):
+- **(0)** “This is Riker. It runs coding agents for me. Here’s the worker’s hand-back on the job that deployed this site: ‘ready for Nick to run.’ Riker keeps that as the story. It never sets the status.”
+- **(1)** “The check was part of the job at 07:34, before the worker wrote any code. Nineteen steps: tests, build, this deck’s checker, a deploy dry run.” Point at the highlight: “And the worker admits it didn’t rerun the full suite.”
+- **(2)** “So Riker runs it itself, in the job’s worktree. Two minutes twenty-one. Exit zero.” The clock replays the real duration in about a second and a half.
+- **(3)** “The proof comes from the check’s own process: command, exit code, commit, tree, and a hash of the log. Read it back later and the hash still has to match.”
+- **(4)** “Signing rewrote the commits, but the tree didn’t change, so the proof still holds. Now it says proven. No check would mean ‘done, unverified.’ A failed check means nothing ships.”
+- **(5)** “Some things no command can judge. Riker names the look a person still owes.”
+- **(6)** Screenshot: “Every line in the app is read from a record. ‘Proven’ only appears when Riker’s own check passed.”
+- **(7)** Screenshot: “Ember only ever means a person is needed. Mint only ever means proven. Nothing else uses either color.”
+
+**Next →** “Zack got to the same rule from a different direction.”
+
+**Careful:** Riker is private; don’t promise access. The job view replays job 140’s stored record. The two screenshots are Riker’s app on a demo repo, not job 140. Left arrow retraces every state. Short on time? Stop after click 5 and skip the screenshots.
+-->
+
+---
 title: We hold our own tools to this.
 class: ctx-slide
 clicks: 3
@@ -308,12 +336,12 @@ clicks: 3
 <CtxWalkthrough />
 
 <!--
-**ACT 1 · THE CLAIM** · 6:30–7:00 · one sentence each
+**ACT 1 · THE CLAIM** · 7:30–8:00 · Zack
 
 **Why this slide:** Credibility, not a pitch. The thesis comes from our day jobs. Both tools refuse to treat a worker’s “done” as proof. Today’s build is a small version of both.
 
 **Say:**
-- **Nick:** “Riker runs coding agents for me. It never believes the agent’s status. It runs the job’s check itself and records the command, exit code, commit and a hash of the output. If there’s no check, the job is marked unverified.” Optional: “The last PR to this deck came out of a Riker job.”
+- **Nick:** The Riker card recaps the last slide. Hand off in one line: “That’s mine. Zack?”
 - **Zack:** “CTX models work as a graph of observable end states. A worker can claim whatever it likes; the claim is logged and ignored. Verifiers write receipts tied to the exact revision, and only CTX’s evaluators close a node.”
 
 **Click walkthrough · Zack:** Use the images as a quick visual example in the hour; expand these prompts during rehearsal or questions. No additional slide advances are needed between images. Left arrow retraces every state.
@@ -346,7 +374,7 @@ clicks: 6
 </div>
 
 <!--
-**ACT 2 · THE SETUP** · 7:00–9:00 · Zack asks, Nick clicks
+**ACT 2 · THE SETUP** · 8:00–9:00 · Zack asks, Nick clicks
 
 **Why this slide:** The room already knows how to verify this bug by hand. Make them say it, then point out the gap: the agent that claimed “done” had none of those tools. Everything after this slide closes that gap.
 
