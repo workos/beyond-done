@@ -1,0 +1,47 @@
+{
+  "verdict": "PASS",
+  "revision": "4e8c43d6bc1e",
+  "app": "http://127.0.0.1:63724",
+  "at": "2026-10-12T14:31:59.032Z",
+  "checks": [
+    {
+      "name": "fresh visitor starts empty",
+      "pass": true,
+      "expected": "none",
+      "actual": "none"
+    },
+    {
+      "name": "status survives reload",
+      "pass": true,
+      "expected": "waitlisted",
+      "actual": "waitlisted",
+      "hint": "The record vanished on reload. Persist it (localStorage), then re-run: pnpm snack prove"
+    },
+    {
+      "name": "email survives reload",
+      "pass": true,
+      "expected": "ada@example.test",
+      "actual": "ada@example.test",
+      "hint": "After reload, the saved email is not the one the visitor typed. Persist the address they entered."
+    },
+    {
+      "name": "confirmation survives reload",
+      "pass": true,
+      "expected": "You're on the waitlist. This doesn't guarantee a seat. We'll email you if a place opens.",
+      "actual": "You're on the waitlist. This doesn't guarantee a seat. We'll email you if a place opens.",
+      "hint": "The confirmation disappeared or changed after reload. Show it for a saved record too."
+    },
+    {
+      "name": "record is in localStorage",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "hint": "Nothing in localStorage holds the visitor's email. What the page shows is not what was saved."
+    }
+  ],
+  "pageErrors": [],
+  "next": [
+    "These checks passed on this revision. They cover nothing else: read the screenshot for anything they missed."
+  ],
+  "screenshot": ".lab-runs/snack/proof-4e8c43d6bc1e.png"
+}
