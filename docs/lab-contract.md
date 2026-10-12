@@ -33,7 +33,7 @@ Their own coding agent edits `lab/app/index.html`, guided by `lab/verify/SKILL.m
 
 ## Checks
 
-- `pnpm lab:test`: bug transforms, revisions, reference proof verdicts per bug, the shipped app failing (skipped once you've edited `lab/app/index.html`), ERROR paths including a screenshot that can't be saved, judge mapping with a fake transport, `up`'s startup lock and failed-start cleanup, and the CLI end to end in headless Chromium against a game app (`up`, a refused second `up`, `doctor`, `join`, `storage`, `reload`, `console`, `prove`, unknown command, `down`).
+- `pnpm lab:test`: bug transforms, revisions, reference proof verdicts per bug, the shipped app failing (skipped once you've edited `lab/app/index.html`), ERROR paths including a screenshot that can't be saved, judge mapping with a fake transport, `up`'s startup lock and failed-start cleanup, `down` refusing to signal a stale or unresponsive session, and the CLI end to end in headless Chromium against a game app (`up`, a refused second `up`, `doctor`, `join`, `storage`, `reload`, `console`, `prove`, unknown command, `down`).
 - `pnpm test`, `pnpm build`, `pnpm slides:check`.
 
 ## Concepts to keep precise

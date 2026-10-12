@@ -52,9 +52,14 @@ async function readSession(): Promise<Session> {
   try { session = JSON.parse(await readFile(SESSION, "utf8")); } catch {
     throw new SnackError("No app is running.", "Start one in its own terminal and leave it running: pnpm snack up");
   }
-  // A live pid alone could be a reused one: the session is ours only if its app server still answers.
-  const answers = alive(session.pid) && await fetch(new URL("/favicon.ico", session.appUrl)).then(() => true, () => false);
-  if (!answers) {
+  // A live pid alone could be a reused one: the session is ours only if its app server says it runs in that pid.
+  const owner = !alive(session.pid) ? "gone" : await fetch(new URL("/__snack/pid", session.appUrl), { signal: AbortSignal.timeout(1000) })
+    .then(async response => ((await response.json()) as { pid?: number }).pid === session.pid ? "ours" : "gone")
+    .catch((error: Error) => error.name === "TimeoutError" ? "silent" : "gone");
+  // Silent is not proof of anything: keep the record and signal nothing.
+  if (owner === "silent") throw new SnackError(`The app from up (pid ${session.pid}) isn't answering. It may be suspended (Ctrl+Z).`,
+    "In its terminal, run fg to resume it, or press Ctrl+C there and start again: pnpm snack up");
+  if (owner === "gone") {
     await rm(SESSION, { force: true });
     throw new SnackError("The app from the last `up` is no longer running.", "Start it again: pnpm snack up");
   }

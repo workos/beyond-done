@@ -68,6 +68,10 @@ export async function startApp(options: AppOptions = {}) {
         const { revision } = await render(options);
         res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
         res.end(JSON.stringify({ revision }));
+      } else if (path === "/__snack/pid") {
+        // Lets snack prove a saved session's pid is really this server's process before signalling it.
+        res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+        res.end(JSON.stringify({ pid: process.pid }));
       } else if (path === "/workos.svg") {
         res.writeHead(200, { "Content-Type": "image/svg+xml", "Cache-Control": "no-store" });
         res.end(logo);

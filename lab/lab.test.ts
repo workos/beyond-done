@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
 import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -137,7 +138,7 @@ test("snack CLI: up, doctor, drive, look, prove, and down against a real Chrome 
   }
 });
 
-test("snack up: a held lock refuses a second start, and a failed start exits and cleans up", async () => {
+test("snack up/down: a held lock refuses a second start, a failed start exits, and a stale or silent session is never signalled", async () => {
   const dir = await mkdtemp(join(tmpdir(), "snack-"));
   const cli = fileURLToPath(new URL("./snack.ts", import.meta.url));
   const run = async (env: NodeJS.ProcessEnv) => {
@@ -159,10 +160,35 @@ test("snack up: a held lock refuses a second start, and a failed start exits and
     assert.equal(existsSync(join(dir, "session.json")), false);
     // A leftover session whose pid now belongs to someone else (here: this test runner) is stale, never signalled.
     await writeFile(join(dir, "session.json"), JSON.stringify({ pid: process.pid, appUrl: "http://127.0.0.1:9", cdpUrl: "http://127.0.0.1:9" }));
-    const down = await promisify(execFile)("npx", ["tsx", cli, "down"], { env: { ...process.env, SNACK_DIR: dir } }).catch(error => error);
-    assert.equal(down.code, 2);
-    assert.match(JSON.parse(down.stderr).error, /no longer running/);
+    const down = () => promisify(execFile)("npx", ["tsx", cli, "down"], { env: { ...process.env, SNACK_DIR: dir } }).catch(error => error);
+    const refused = await down();
+    assert.equal(refused.code, 2);
+    assert.match(JSON.parse(refused.stderr).error, /no longer running/);
     assert.equal(existsSync(join(dir, "session.json")), false);
+    // A live pid whose app answers from a different process: not ours, so never signalled.
+    const bystander = spawn("sleep", ["30"]);
+    const app = await startApp({ app: "solution" }); // answers with this test runner's pid
+    const held = new Set<import("node:net").Socket>();
+    const silent = createServer(socket => held.add(socket)); // accepts, never answers: a suspended up
+    await new Promise<void>(resolve => silent.listen(0, "127.0.0.1", resolve));
+    try {
+      await writeFile(join(dir, "session.json"), JSON.stringify({ pid: bystander.pid, appUrl: app.url, cdpUrl: app.url }));
+      const other = await down();
+      assert.match(JSON.parse(other.stderr).error, /no longer running/);
+      assert.equal(bystander.exitCode === null && bystander.signalCode === null, true, "the bystander was not signalled");
+      const { port } = silent.address() as { port: number };
+      await writeFile(join(dir, "session.json"), JSON.stringify({ pid: bystander.pid, appUrl: `http://127.0.0.1:${port}`, cdpUrl: "" }));
+      const stuck = await down();
+      assert.equal(stuck.code, 2);
+      assert.match(JSON.parse(stuck.stderr).error, /isn't answering/);
+      assert.equal(existsSync(join(dir, "session.json")), true, "silence is not proof: the record stays");
+      assert.equal(bystander.signalCode, null, "and nothing is signalled");
+    } finally {
+      bystander.kill();
+      held.forEach(socket => socket.destroy());
+      silent.close();
+      await app.close();
+    }
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
