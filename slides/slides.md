@@ -130,7 +130,7 @@ Then read the caption: “Here’s the deal. For the next hour we build a verifi
 <!--
 **ACT 1 · THE CLAIM** · 1:15–1:45 · Zack
 
-**Why this slide:** Logistics with a deadline. Two slides from now we ask people to run the broken app, so the clone needs to start now.
+**Why this slide:** Logistics with a deadline. Three slides from now we ask people to run the broken app, so the clone needs to start now.
 
 **Say:**
 - “This repo is your workbench for the hour. Scan it or type the clone URL.”
@@ -141,7 +141,33 @@ Then read the caption: “Here’s the deal. For the next hour we build a verifi
 
 **Do:** Leave the QR up for about 30 seconds. Still blocked after two minutes? Pair with a neighbor. People without laptops: predict results with a partner.
 
-**Next →** “While that clones, let’s vote on something.”
+**Next →** “While that clones, one more tab.”
+-->
+
+---
+---
+
+<div class="split">
+<div><p class="small-label">YOUR REFERENCE THROUGHOUT THE HOUR</p><h1>A word lost you?<br>Keep this open.</h1><p class="lede">Searchable terms, examples,<br>and checks for understanding.</p><div class="follow-steps"><p><strong>Read</strong> the matching lesson.</p><p><strong>Edit → run → inspect</strong> at each checkpoint.</p><p><strong>Predict first.</strong> Explain the evidence.</p></div><p class="aside-note">Behind? Add <code>--solution</code> to a snack command,<br>or copy <code>lab/solution/prove.ts</code>.</p></div>
+<ResourceQr resource="glossary" />
+</div>
+<p class="footnote">These slides, the lessons, and the glossary: <a href="https://talks.workos.cloud/beyond-done" target="_blank" rel="noopener noreferrer"><strong>talks.workos.cloud/beyond-done</strong></a></p>
+
+<!--
+**ACT 1 · THE CLAIM** · 1:45–2:45 · Zack talks, Nick walks the room
+
+**Why this slide:** The last logistics before the story starts. It gives people a safety net so jargon doesn’t lose them, and it sets the rhythm every build will follow.
+
+**Say:**
+- “Scan this one too. It’s the glossary: every term we use today, searchable, with examples. If we say a word you don’t know, look it up there instead of tuning out.” Search “evidence” live.
+- Point at the footnote: “These slides are hosted too, at talks.workos.cloud/beyond-done, next to the lessons and the glossary. No need to photograph every slide.”
+- “Three surfaces today: the repo is the code, the lesson site is the instructions, and `pnpm snack` drives the deliberately broken app.”
+- Walk the three steps: “Every build: read the lesson, edit-run-inspect, and **predict before you run**. Predicting is how you notice when the evidence surprises you.”
+- “Fall behind? Save your file and copy just that one reference file. Or add `--solution` to any command to run the reference.”
+
+**Next →** “Now, let’s vote on something.”
+
+**Do:** Check that `doctor` is green around the room. Pair anyone stuck. Local fallback: `pnpm dev`, then /glossary/.
 -->
 
 ---
@@ -159,7 +185,7 @@ class: lime
 </div>
 
 <!--
-**ACT 1 · THE CLAIM** · 1:45–2:30 · Nick plays the worker, Zack calls the vote
+**ACT 1 · THE CLAIM** · 2:45–3:30 · Nick plays the worker, Zack calls the vote
 
 **Why this slide:** Make the room commit to trusting a confident report *before* they see it fail. The vote is the setup, and the next slide is the punchline. It only works if people commit.
 
@@ -183,7 +209,7 @@ class: lime
 </div>
 
 <!--
-**ACT 1 · THE CLAIM** · 2:30–4:30 · Nick drives, Zack watches the room
+**ACT 1 · THE CLAIM** · 3:30–5:30 · Nick drives, Zack watches the room
 
 **Why this slide:** The room sees the gap for itself. Every check on the worker’s ticket was *true*, and the feature still fails. The checks stopped one step before the requirement could fail. This is the problem we spend the hour solving.
 
@@ -230,7 +256,7 @@ class: night
 <p class="footnote"><a href="https://x.com/poteto/status/2097732320606507506" target="_blank" rel="noopener noreferrer">Original article ↗</a> · One waitlist. One CLI. One proof.</p>
 
 <!--
-**ACT 1 · THE CLAIM** · 4:30–4:50 · either host
+**ACT 1 · THE CLAIM** · 5:30–5:50 · either host
 
 **Why this slide:** An outside voice names the thesis, and the list on the right previews the shape of the hour. From here on, everything we build is one of those four steps.
 
@@ -252,7 +278,7 @@ clicks: 3
 <VerificationContrast />
 
 <!--
-**ACT 1 · THE CLAIM** · 4:50–5:30 · either host
+**ACT 1 · THE CLAIM** · 5:50–6:30 · either host
 
 **Why this slide:** The payoff argument. Without a check, an agent guesses and stays confident. With one, it gets a specific failure, makes a targeted fix, and knows when it’s finished. Verification is what lets you stop babysitting.
 
@@ -282,7 +308,7 @@ clicks: 3
 <CtxWalkthrough />
 
 <!--
-**ACT 1 · THE CLAIM** · 5:30–6:00 · one sentence each
+**ACT 1 · THE CLAIM** · 6:30–7:00 · one sentence each
 
 **Why this slide:** Credibility, not a pitch. The thesis comes from our day jobs. Both tools refuse to treat a worker’s “done” as proof. Today’s build is a small version of both.
 
@@ -296,33 +322,9 @@ clicks: 3
 2. **Architecture overlay:** Start at the agent session, then trace work → verifier → gate → outcome. A **run** is one execution attempt, including its inputs, actions and artifacts; it is not the task’s completion status. **Inputs** bind the work to the things in scope. A **verification** is the required condition, such as all scoped PRs being merged. A **verifier** is the connector that queries the real system and returns an observation/receipt. A worker’s prose cannot satisfy the gate. On failure the task stays open; on success the evaluator can close it. Keep the ledger over time for evaluation and improvement; a training corpus is a possible curated use, not automatic learning.
 3. **App overlay:** Walk left to right: “Pull requests in scope” is the input set; “All pull requests merged” is the verification; “Re-check with GitHub” invokes the verifier; the scoped PR and observed merged state support the satisfied gate. Point out **Latest run: No run attached**: this screenshot shows the task’s verification state, not a run-detail view. Do not imply that the captured check has an attached run. The recording of a run and the requirement for completion are different concepts.
 
-**Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. One more tab first.”
+**Next →** “Today you’ll build the small version of both: a check the worker can’t fake, receipts tied to a revision, and code, not the worker, deciding when it’s done. Here’s the app you’re going to make trustworthy.”
 
 **Careful:** The implementations are private. The CTX links are public writing: the original context-engine blueprint and the later retrospective about verification gates. Nick and Zack arrived at receipts independently. Return to that shared idea on the receipt and run-history slides; don’t imply either article exposes the private implementation.
--->
-
----
----
-
-<div class="split">
-<div><p class="small-label">YOUR REFERENCE THROUGHOUT THE HOUR</p><h1>A word lost you?<br>Keep this open.</h1><p class="lede">Searchable terms, examples,<br>and checks for understanding.</p><div class="follow-steps"><p><strong>Read</strong> the matching lesson.</p><p><strong>Edit → run → inspect</strong> at each checkpoint.</p><p><strong>Predict first.</strong> Explain the evidence.</p></div><p class="aside-note">Behind? Add <code>--solution</code> to a snack command,<br>or copy <code>lab/solution/prove.ts</code>.</p></div>
-<ResourceQr resource="glossary" />
-</div>
-
-<!--
-**ACT 2 · THE SETUP** · 6:00–7:00 · Zack talks, Nick walks the room
-
-**Why this slide:** The last logistics before the build. It gives people a safety net so jargon doesn’t lose them, and it sets the rhythm every build will follow.
-
-**Say:**
-- “Scan this one too. It’s the glossary: every term we use today, searchable, with examples. If we say a word you don’t know, look it up there instead of tuning out.” Search “evidence” live.
-- “Three surfaces today: the repo is the code, the lesson site is the instructions, and `pnpm snack` drives the deliberately broken app.”
-- Walk the three steps: “Every build: read the lesson, edit-run-inspect, and **predict before you run**. Predicting is how you notice when the evidence surprises you.”
-- “Fall behind? Save your file and copy just that one reference file. Or add `--solution` to any command to run the reference.”
-
-**Next →** “OK. Here’s the app you’re going to make trustworthy.”
-
-**Do:** Check that `doctor` is green around the room. Pair anyone stuck. Local fallback: `pnpm dev`, then /glossary/.
 -->
 
 ---
