@@ -1,13 +1,13 @@
 # Verification record
 
-Checked locally on 2026-10-12 after the slide 11+ rework (`pi/verification-lever`). This records what was exercised, not a production reliability claim.
+Checked locally on 2026-10-12 after the slide 11+ rework (`pi/verification-lever`), rebased onto main with #14 integrated. This records what was exercised, not a production reliability claim.
 
 ## Automated checks
 
-- `pnpm lab:test`: **11 passed**. Covers every game bug applying exactly once and changing the revision; the reference proof's verdict per bug (PASS on the correct app, FAIL on `memory-only`, `wrong-email`, `lost-confirmation`, PASS on `overpromise` and `console-error` with the page error recorded); the shipped attendee app failing; a throwing or empty proof becoming ERROR; judge verdict mapping and failure handling with a fake HTTP transport; the snack CLI end to end in headless Chromium (`up`, `doctor`, `join`, `storage`, `reload`, `console`, `prove`, an unknown command, `down`); lesson timings summing to 60; and the Jev recording using the same questions as `snack judge`.
+- `pnpm lab:test`: **11 passed**. Covers every game bug applying exactly once and changing the revision; the reference proof's verdict per bug (PASS on the correct app, FAIL on `memory-only`, `wrong-email`, `lost-confirmation`, PASS on `overpromise` and `console-error` with the page error recorded); the shipped attendee app failing; a throwing or empty proof becoming ERROR; judge verdict mapping and failure handling with a fake HTTP transport; the snack CLI end to end in headless Chromium (`up`, `doctor`, `join`, `storage`, `reload`, `console`, `prove` and its appended receipt history, an unknown command, `down`); lesson timings summing to 60; and the Jev recording using the same questions as `snack judge`.
 - `pnpm test`: **35 passed**.
 - `pnpm build`: **passed**, including Astro and TypeScript checks for `lab/`.
-- `pnpm slides:check`: **passed for all 30 slides** at initial and fully revealed states, plus the comparison clocks and modes, portraits, incident recovery, QR, reload reveal, the agent-run fallback reveals, the game reveal, the 120-second timer (start, pause, resume, reset, expiry, pause on navigation), and reduced motion. Visual samples: `.lab-runs/deck-review/`. The first run after a config change timed out on a cold dev server; the rerun passed.
+- `pnpm slides:check`: **passed for all 34 slides** at initial and fully revealed states, plus #14's checks (the CTX walkthrough's links, images and overlays; the receipt walkthrough forward and back on the snack receipts; the four takeaways forward, back and in reduced motion), the comparison clocks and modes, portraits, incident recovery, QR, reload reveal, the agent-run fallback reveals, the game reveal, the 120-second timer, and reduced motion. Visual samples: `.lab-runs/deck-review/`. The first run after a config change timed out on a cold dev server; the rerun passed.
 - `pnpm lab:exercise --solution`: PASS. `pnpm lab:exercise` on the unfinished scaffold: the correct app passes and the three broken apps are reported as let through, as intended.
 
 The earlier glossary assertions in `lab/content.test.ts` (an exact term count and six quiz questions) were already failing on main after the glossary refresh; they now check that the glossary parses with terms and questions.
@@ -38,4 +38,4 @@ Three calls don't establish calibration or availability.
 - Windows, and Linux with a display.
 - The deployed site. Nothing was deployed.
 - The glossary. `generated/glossary.json` still describes the old exercises and slide numbers; it needs `pnpm glossary` and a review.
-- `docs/take-home.md`, Lesson 07, and the transfer worksheet, which belong to Zack's PR #14 and still mention old commands.
+- #14's external links in Lesson 07, the worksheet and take-home.md weren't re-checked. Their content was kept; only old-lab commands and receipt fields were changed to snack.
