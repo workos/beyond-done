@@ -67,7 +67,14 @@ Two bugs get past a proof that only checks persistence. Each one tells you what 
 
 ## Final boss: “But it passed yesterday.”
 
-With a passing receipt from lesson 5, make a one-character edit to `lab/app/index.html` and run:
+The game stopped your `up`, and any `prove` you ran during it replaced your latest receipt. Set the scene again with your fixed app from lesson 5:
+
+```bash
+pnpm snack up       # its own terminal; leave it running
+pnpm snack prove    # PASS on the current revision (add --solution if your proof isn't finished)
+```
+
+Now make a one-character edit to `lab/app/index.html` (a space in the `<title>`), don't reload, and run:
 
 ```bash
 pnpm snack doctor

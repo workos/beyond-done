@@ -76,8 +76,14 @@ export async function runProof(browser: Browser, app: string, prove: Prove, scre
       receipt.verdict = checks.every(check => check.pass) ? "PASS" : "FAIL";
     }
     if (screenshot) {
-      await page.screenshot({ path: screenshot, fullPage: true });
-      receipt.screenshot = screenshot;
+      try {
+        await page.screenshot({ path: screenshot, fullPage: true });
+        receipt.screenshot = screenshot;
+      } catch (error) {
+        // The receipt tells the agent to read the screenshot, so a missing one can't pass.
+        receipt.verdict = "ERROR";
+        receipt.error = `Couldn't save the screenshot (${error instanceof Error ? error.message.split("\n")[0] : String(error)}). A receipt without its screenshot can't be read.`;
+      }
     }
   } catch (error) {
     receipt.error = "prove() threw: " + (error instanceof Error ? error.message.split("\n")[0] : String(error)) +

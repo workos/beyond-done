@@ -19,6 +19,7 @@ const SESSION = join(DIR, "session.json");
 const EVENTS = join(DIR, "events.jsonl");
 const RECEIPT = join(DIR, "receipt.json");
 const PROFILE = join(DIR, "profile");
+const LOCK = join(DIR, "up.lock");
 
 const COMMANDS = {
   up: ["Health", "up [--bug NAME|random] [--solution] [--headless]", "Start the app and a Chrome you can drive. Leave it running in its own terminal."],
@@ -106,6 +107,20 @@ async function readEvents(types: string[]) {
   return text.split("\n").filter(Boolean).map(line => JSON.parse(line)).filter(event => types.includes(event.type));
 }
 
+// Held from before up touches the profile and event log until it exits, so two ups can't share them.
+async function claimUp() {
+  await mkdir(DIR, { recursive: true });
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try { return await writeFile(LOCK, String(process.pid), { flag: "wx" }); } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+    }
+    const owner = Number(await readFile(LOCK, "utf8").catch(() => ""));
+    if (owner && alive(owner)) break;
+    await rm(LOCK, { force: true }); // Left by an up that was killed.
+  }
+  throw new SnackError("Another up is already starting or running here.", "Use it, or stop it first: pnpm snack down");
+}
+
 function freePort(): Promise<number> {
   return new Promise((resolve, reject) => {
     const server = createServer().once("error", reject).listen(0, "127.0.0.1", () => {
@@ -126,45 +141,56 @@ async function up(options: { bug?: string; solution: boolean; headless: boolean 
     bug = choice === "none" ? undefined : choice as Bug;
   }
   const appSource: AppSource = game || options.solution ? "solution" : "exercise";
-  await rm(PROFILE, { recursive: true, force: true });
-  await mkdir(DIR, { recursive: true });
-  await writeFile(EVENTS, "");
-  const app = await startApp({ app: appSource, bug });
-  const port = await freePort();
-  const headless = options.headless || Boolean(process.env.CI) || (process.platform === "linux" && !process.env.DISPLAY);
-  const context = await chromium.launchPersistentContext(PROFILE, {
-    headless, viewport: { width: 1000, height: 820 }, args: [`--remote-debugging-port=${port}`],
-  });
-  const log = (event: Record<string, unknown>) =>
-    appendFile(EVENTS, JSON.stringify({ t: new Date().toISOString(), ...event }) + "\n").catch(() => {});
-  const watch = (page: Page) => {
-    page.on("console", message => log({ type: "console", level: message.type(), text: message.text() }));
-    page.on("pageerror", error => log({ type: "pageerror", level: "error", text: error.message }));
-    page.on("load", () => log({ type: "load", url: page.url() }));
-    page.on("response", response => log({ type: "response", method: response.request().method(), status: response.status(), url: response.url() }));
-    page.on("requestfailed", request => log({ type: "requestfailed", method: request.method(), url: request.url(), text: request.failure()?.errorText }));
-  };
-  context.pages().forEach(watch);
-  context.on("page", watch);
-  const page = context.pages()[0] ?? await context.newPage();
-  await page.goto(app.url);
-  const session: Session = { pid: process.pid, appUrl: app.url, cdpUrl: `http://127.0.0.1:${port}`, app: game ? "game" : appSource, headless, startedAt: new Date().toISOString() };
-  await writeFile(SESSION, JSON.stringify(session, null, 2));
-  out({ ok: true, ...session, ...(game ? { bug: "hidden until you stop up" } : {}), next: "Leave this running. In another terminal: pnpm snack doctor" });
+  await claimUp();
+  const opened: { close(): Promise<unknown> }[] = [];
+  try {
+    await rm(PROFILE, { recursive: true, force: true });
+    await writeFile(EVENTS, "");
+    const app = await startApp({ app: appSource, bug });
+    opened.push(app);
+    const port = await freePort();
+    const headless = options.headless || Boolean(process.env.CI) || (process.platform === "linux" && !process.env.DISPLAY);
+    const context = await chromium.launchPersistentContext(PROFILE, {
+      headless, viewport: { width: 1000, height: 820 }, args: [`--remote-debugging-port=${port}`],
+    });
+    opened.unshift(context);
+    const log = (event: Record<string, unknown>) =>
+      appendFile(EVENTS, JSON.stringify({ t: new Date().toISOString(), ...event }) + "\n").catch(() => {});
+    const watch = (page: Page) => {
+      page.on("console", message => log({ type: "console", level: message.type(), text: message.text() }));
+      page.on("pageerror", error => log({ type: "pageerror", level: "error", text: error.message }));
+      page.on("load", () => log({ type: "load", url: page.url() }));
+      page.on("response", response => log({ type: "response", method: response.request().method(), status: response.status(), url: response.url() }));
+      page.on("requestfailed", request => log({ type: "requestfailed", method: request.method(), url: request.url(), text: request.failure()?.errorText }));
+    };
+    context.pages().forEach(watch);
+    context.on("page", watch);
+    const page = context.pages()[0] ?? await context.newPage();
+    await page.goto(app.url);
+    const session: Session = { pid: process.pid, appUrl: app.url, cdpUrl: `http://127.0.0.1:${port}`, app: game ? "game" : appSource, headless, startedAt: new Date().toISOString() };
+    await writeFile(SESSION, JSON.stringify(session, null, 2));
+    out({ ok: true, ...session, ...(game ? { bug: "hidden until you stop up" } : {}), next: "Leave this running. In another terminal: pnpm snack doctor" });
 
-  let stopping = false;
-  const stop = async () => {
-    if (stopping) return;
-    stopping = true;
-    await rm(SESSION, { force: true });
-    await context.close().catch(() => {});
-    await app.close().catch(() => {});
-    if (game) out({ reveal: bug ?? "none" });
-    process.exit(0);
-  };
-  process.once("SIGINT", stop);
-  process.once("SIGTERM", stop);
-  context.on("close", stop); // Someone closed the browser window.
+    let stopping = false;
+    const stop = async () => {
+      if (stopping) return;
+      stopping = true;
+      await rm(SESSION, { force: true });
+      await context.close().catch(() => {});
+      await app.close().catch(() => {});
+      await rm(LOCK, { force: true });
+      if (game) out({ reveal: bug ?? "none" });
+      process.exit(0);
+    };
+    process.once("SIGINT", stop);
+    process.once("SIGTERM", stop);
+    context.on("close", stop); // Someone closed the browser window.
+  } catch (error) {
+    // A failed start must not leave the app server holding the process open.
+    for (const resource of opened) await resource.close().catch(() => {});
+    await rm(LOCK, { force: true });
+    throw error;
+  }
   await new Promise(() => {});
 }
 
@@ -232,15 +258,21 @@ async function judgeCopy() {
       await joinWaitlist(page, EMAIL);
       const confirmationBeforeReload = await textOf(page.getByRole("status")) ?? "";
       await page.reload();
-      return { revision, confirmationBeforeReload, confirmationAfterReload: await textOf(page.getByRole("status")) ?? "" };
+      const confirmationAfterReload = await textOf(page.getByRole("status")) ?? "";
+      const changed = await readRevision(page) !== revision;
+      return { appUrl: session.appUrl, revision, changed, confirmationBeforeReload, confirmationAfterReload };
     } finally { await context.close(); }
   });
-  const { revision, ...confirmations } = evidence;
+  const { appUrl, revision, changed, ...confirmations } = evidence;
+  const appChanged = () => new SnackError(`The app changed while judging (started on ${revision}). Copy from two builds proves neither: that's "can't tell".`,
+    "Run it again once the file stops changing: pnpm snack judge");
+  if (changed) throw appChanged();
   let judgment;
   try { judgment = await judge(confirmations); } catch (error) {
     throw new SnackError(`The judge didn't answer (${error instanceof Error ? error.message : "unknown error"}). That's "can't tell", not a pass or a fail.`,
       "Check the key, quota and network, or judge it as a human: pnpm snack screenshot");
   }
+  if (await currentRevision(appUrl) !== revision) throw appChanged();
   out({ revision, evidence: confirmations, ...judgment });
   process.exitCode = judgment.verdict === "PASS" ? 0 : judgment.verdict === "FAIL" ? 1 : 2;
 }

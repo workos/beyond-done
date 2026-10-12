@@ -104,7 +104,7 @@ The timer on slide 24 starts only on a button press. Leaving the slide pauses it
 
 ## The final boss (slide 27)
 
-You need a passing receipt first: the agent run gives you one. Then make a one-character edit to `lab/app/index.html` (a space in the `<title>` works) and run `pnpm snack doctor`. Both `build` and `proof` report STALE. After the slide, `git checkout lab/app/index.html` resets the app, including the agent's fix.
+You need a passing receipt first: the agent run gives you one. If your `up` was restarted or you ran `prove` during the game, run `pnpm snack up` and `pnpm snack prove` again first. Then make a one-character edit to `lab/app/index.html` (a space in the `<title>` works) and run `pnpm snack doctor`. Both `build` and `proof` report STALE. After the slide, `git checkout lab/app/index.html` resets the app, including the agent's fix.
 
 ## If ten minutes disappear
 

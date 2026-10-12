@@ -1,10 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
-import { mkdtemp, readdir, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { TypeSafeClient } from "@typesafe-ai/sdk";
 import { chromium } from "@playwright/test";
@@ -19,6 +20,10 @@ async function proofFor(options: AppOptions, proof: Prove = prove): Promise<Rece
   try { return await runProof(browser, app.url, proof); } finally { await browser.close(); await app.close(); }
 }
 const failed = (receipt: Receipt) => receipt.checks.filter(check => !check.pass).map(check => check.name);
+const root = fileURLToPath(new URL("..", import.meta.url));
+// Attendees fix lab/app/index.html during the workshop; the shipped-scaffold test only applies to the committed copy.
+const scaffoldEdited = await promisify(execFile)("git", ["diff", "--quiet", "HEAD", "--", "lab/app/index.html"], { cwd: root })
+  .then(() => false, (error: { code?: number }) => error.code === 1);
 
 test("every game bug applies once, changes the revision, and the page carries its revision", async () => {
   const reference = await render({ app: "solution" });
@@ -43,7 +48,9 @@ test("the game's two misses pass the proof; the console error is still in the re
   assert.deepEqual(receipt.pageErrors, ["track is not defined"]);
 });
 
-test("the attendee app ships broken: it forgets the visitor and promises a seat", async () => {
+test("the attendee app ships broken: it forgets the visitor and promises a seat", {
+  skip: scaffoldEdited && "lab/app/index.html has your edits; this checks the shipped scaffold (git checkout lab/app/index.html restores it)",
+}, async () => {
   const receipt = await proofFor({ app: "exercise" });
   assert.equal(receipt.verdict, "FAIL");
   assert.ok(failed(receipt).includes("status survives reload"));
@@ -57,6 +64,17 @@ test("a proof that throws or records nothing is ERROR (can't tell), never PASS",
   const empty = await proofFor({ app: "solution" }, async () => {});
   assert.equal(empty.verdict, "ERROR");
   assert.match(empty.next[0], /no checks/);
+});
+
+test("a proof whose screenshot can't be saved is ERROR, not PASS", async () => {
+  const app = await startApp({ app: "solution" });
+  const browser = await chromium.launch();
+  try {
+    const receipt = await runProof(browser, app.url, prove, tmpdir()); // a directory: the write fails
+    assert.equal(receipt.verdict, "ERROR");
+    assert.match(receipt.error ?? "", /screenshot/);
+    assert.equal(receipt.screenshot, undefined);
+  } finally { await browser.close(); await app.close(); }
 });
 
 const fakeJudge = (honest: unknown, nextStep: unknown, status = 200) => new TypeSafeClient({
@@ -87,9 +105,13 @@ test("snack CLI: up, doctor, drive, look, prove, and down against a real Chrome 
     const result = await promisify(execFile)("npx", ["tsx", cli, ...args], { env }).catch(error => error);
     return { code: result.code ?? 0, json: JSON.parse(result.stdout || result.stderr) };
   };
-  const up = spawn("npx", ["tsx", cli, "up", "--headless"], { env, stdio: "ignore" });
+  // memory-only fails like the shipped app, but doesn't depend on the attendee's working copy.
+  const up = spawn("npx", ["tsx", cli, "up", "--headless", "--bug", "memory-only"], { env, stdio: "ignore" });
   try {
     for (let i = 0; i < 100 && !existsSync(join(dir, "session.json")); i++) await new Promise(resolve => setTimeout(resolve, 100));
+    const second = await run("up", "--headless");
+    assert.equal(second.code, 2);
+    assert.match(second.json.error, /Already running/);
     const doctor = await run("doctor");
     assert.equal(doctor.json.ok, true, JSON.stringify(doctor.json));
     assert.equal(doctor.json.proof.status, "none yet");
@@ -111,6 +133,31 @@ test("snack CLI: up, doctor, drive, look, prove, and down against a real Chrome 
     assert.match((await run("doctor")).json.checks.at(-1).next, /pnpm snack up/);
   } finally {
     up.kill("SIGTERM");
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test("snack up: a held lock refuses a second start, and a failed start exits and cleans up", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "snack-"));
+  const cli = new URL("./snack.ts", import.meta.url).pathname;
+  const run = async (env: NodeJS.ProcessEnv) => {
+    const result = await promisify(execFile)("npx", ["tsx", cli, "up", "--headless"], { env: { ...process.env, SNACK_DIR: dir, ...env }, timeout: 20_000 })
+      .catch(error => error);
+    return { code: result.code ?? 0, killed: Boolean(result.killed), json: JSON.parse(result.stdout || result.stderr) };
+  };
+  try {
+    await writeFile(join(dir, "up.lock"), String(process.pid)); // a live owner
+    const locked = await run({});
+    assert.equal(locked.code, 2);
+    assert.match(locked.json.error, /Another up/);
+    assert.equal(await readFile(join(dir, "up.lock"), "utf8"), String(process.pid), "someone else's lock is left alone");
+    await rm(join(dir, "up.lock"));
+    const failed = await run({ PLAYWRIGHT_BROWSERS_PATH: join(dir, "no-browsers") }); // Chromium can't launch
+    assert.equal(failed.killed, false, "a failed start exits instead of hanging on the app server");
+    assert.equal(failed.code, 2);
+    assert.equal(existsSync(join(dir, "up.lock")), false);
+    assert.equal(existsSync(join(dir, "session.json")), false);
+  } finally {
     await rm(dir, { recursive: true, force: true });
   }
 });

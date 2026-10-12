@@ -59,12 +59,15 @@ export async function startApp(options: AppOptions = {}) {
   const server = createServer(async (req, res) => {
     const path = new URL(req.url ?? "/", "http://localhost").pathname;
     try {
+      // Render before writeHead: a mid-save read failure must still be able to answer 500.
       if (path === "/") {
+        const { html } = await render(options);
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
-        res.end((await render(options)).html);
+        res.end(html);
       } else if (path === "/__snack/revision") {
+        const { revision } = await render(options);
         res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
-        res.end(JSON.stringify({ revision: (await render(options)).revision }));
+        res.end(JSON.stringify({ revision }));
       } else if (path === "/workos.svg") {
         res.writeHead(200, { "Content-Type": "image/svg+xml", "Cache-Control": "no-store" });
         res.end(logo);
