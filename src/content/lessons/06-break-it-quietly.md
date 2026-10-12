@@ -1,11 +1,11 @@
 ---
 title: "Break it quietly"
-description: One partner hides a bug, the other finds it with snack alone. Every bug that slips through becomes a new check.
+description: snack hides a random bug; you find it with snack alone. Every bug that slips through becomes a new check.
 order: 6
 duration: "11 minutes (live 44:00–55:00)"
 ---
 
-> Live segment **44:00–55:00**. Two rounds, then the reveal and the final boss.
+> Live segment **44:00–55:00**. One round, then the reveal and the final boss.
 
 ## Outcome
 
@@ -13,30 +13,26 @@ You've tested the lever both ways: can it find a bug that's there, and can it st
 
 ## Roles
 
-- **Saboteur:** start the app with a secret bug. The detective looks away while you type.
-- **Detective:** find it using only `pnpm snack` commands. No reading files, no `eval` on the source. Your agent may help: hand it the skill and say “find what's wrong.”
+Everyone plays solo.
+
+- **Saboteur:** snack. `--bug random` picks a secret bug and hides it from you too.
+- **Detective:** you. Find it using only `pnpm snack` commands. No reading files, no `eval` on the source. Your agent may help: hand it the skill and say “find what's wrong.”
 
 Sometimes there's no bug. “It works” is a real answer.
 
-## Each round (2 minutes)
+## The round (2 minutes)
 
-Saboteur: stop the running `up` (Ctrl+C), then pick one:
+Stop the running `up` (Ctrl+C), then:
 
 ```bash
-pnpm snack up --bug memory-only
-pnpm snack up --bug wrong-email
-pnpm snack up --bug lost-confirmation
-pnpm snack up --bug overpromise
-pnpm snack up --bug console-error
-pnpm snack up --bug none
-pnpm snack up --bug random     # surprises you too
+pnpm snack up --bug random
 ```
 
-The bug is injected by the server when the page loads, so it isn't in `lab/app/index.html`. Every pair plays against the same reference app plus one bug.
+It's one of `none`, `memory-only`, `wrong-email`, `lost-confirmation`, `overpromise` or `console-error`. The bug is injected by the server when the page loads, so it isn't in `lab/app/index.html`. Everyone plays against the same reference app plus one bug.
 
-Detective: start with `pnpm snack doctor`. Write down your answer and the output that proves it. When time's up, the saboteur stops `up` (Ctrl+C); the last thing it prints is `{"reveal": "…"}`.
+Start with `pnpm snack doctor`. Write down your answer and the output that proves it. When time's up, stop `up` (Ctrl+C); the last thing it prints is `{"reveal": "…"}`.
 
-Swap roles for round 2. **Solo?** `pnpm snack up --bug random`, find it, then stop `up` to see the answer.
+**Practicing later?** `pnpm snack up --bug NAME` starts a specific bug.
 
 ## Score
 

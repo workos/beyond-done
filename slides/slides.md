@@ -43,7 +43,7 @@ fonts:
 3. **Eyes (10–18):** `snack`, a small CLI that drives the app over the Chrome DevTools Protocol. Everyone drives it.
 4. **The proof (18–30):** attendees write `prove`, the one coding exercise, and read the receipt it produces.
 5. **The agent (30–44):** a feature map, then their own agent: “Repro it. Fix it. Show me proof.” Then the receipt from that run, the copy that still lies, and the stop rule.
-6. **The game (44–55):** a saboteur hides a bug; a detective finds it with snack alone. Every miss becomes a new check. Final boss: a stale receipt.
+6. **The game (44–55):** solo. snack hides a random bug (or none); each attendee finds it with snack alone. Every miss becomes a new check. Final boss: a stale receipt.
 7. **Take it home (55–60):** a tool for your app, browser instruments, receipt history, and concrete examples, then two minutes to write their own first check.
 
 The three verbs to keep repeating: **Observe. Fix. Prove.** They’re the right-hand lane on slide 8 and the close.
@@ -817,13 +817,13 @@ class: indigo
 <p class="small-label">The game: you built the lever. Now try to sneak one past it.</p>
 
 <div class="role-match">
-<div><div class="role-name">Saboteur</div><p>Start the app with a secret bug.<br>Keep a straight face.</p></div>
+<div><div class="role-name">Saboteur</div><p>snack picks a secret bug.<br>Not even you know which.</p></div>
 <span class="versus">vs.</span>
-<div><div class="role-name accent">Detective</div><p>Find it with snack alone.<br>Name the bug and the proof.</p></div>
+<div><div class="role-name accent">Detective</div><p>You. Find it with snack alone.<br>Name the bug and the proof.</p></div>
 </div>
 
-<p class="lede">Two rounds. Switch roles. Sometimes there is no bug.</p>
-<p class="footnote">Solo? <code>pnpm snack up --bug random</code>. Stopping it reveals the answer.</p>
+<p class="lede">Everyone plays solo. One round. Sometimes there is no bug.</p>
+<p class="footnote"><code>pnpm snack up --bug random</code>. Stopping it reveals the answer.</p>
 
 <!--
 **ACT 6 · THE GAME** · 44:00–45:00
@@ -831,13 +831,12 @@ class: indigo
 **Why this slide:** It tests the lever both ways. Can it find a bug that’s there? Can it stay quiet when nothing is wrong? A detective that cries “bug!” every round is as useless as one that never does.
 
 **Say:**
-- “Pair up. One of you is the Saboteur, one is the Detective.”
-- “Saboteur: stop your `up`, then restart it with a secret bug. The detective looks away while you type.”
-- “Detective: you get snack and nothing else. No reading files, no `eval` on the source. Find the bug, name it, and show the command output that proves it.”
-- “Sometimes the saboteur picks ‘none.’ ‘It works’ is a real answer, and it scores.”
-- “Detectives may use their agent. Hand it the skill and say ‘find what’s wrong’.”
+- “No pairing. snack is the saboteur: `--bug random` picks a secret bug, and it hides it from you too.”
+- “You’re the detective. You get snack and nothing else. No reading files, no `eval` on the source. Find the bug, name it, and show the command output that proves it.”
+- “Sometimes it picks ‘none.’ ‘It works’ is a real answer, and it scores.”
+- “You may use your agent. Hand it the skill and say ‘find what’s wrong’.”
 
-**Next →** “Round one.”
+**Next →** “Two minutes. Go.”
 
 **Careful:** The bug is injected by the server at load time, so it isn’t in `lab/app/index.html`. The bug name is revealed only when `up` stops.
 -->
@@ -846,23 +845,22 @@ class: indigo
 ---
 
 <div class="split">
-<div><p class="small-label">Round 1 · then swap</p><h1>Find the bug.</h1><div class="command">pnpm snack up --bug NAME</div><p class="aside-note">none · memory-only · wrong-email<br>lost-confirmation · overpromise · console-error<br>Or <code>--bug random</code>.</p><div class="game-rules"><p>Detective: snack commands only.</p><p>Name the bug and the output that proves it.</p></div></div>
+<div><p class="small-label">One round · 2 minutes</p><h1>Find the bug.</h1><div class="command">pnpm snack up --bug random</div><p class="aside-note">It’s one of: none · memory-only · wrong-email<br>lost-confirmation · overpromise · console-error</p><div class="game-rules"><p>snack commands only.</p><p>Write your answer, then Ctrl+C to reveal.</p></div></div>
 <RoundTimer :seconds="120" />
 </div>
 
 <!--
-**ACT 6 · THE GAME · rounds** · 45:00–50:00 · two 2-minute rounds plus the swap
+**ACT 6 · THE GAME · round** · 45:00–47:30 · one 2-minute solo round, then the reveal
 
 **Why this slide:** Two minutes is enough with the lever and far too little without it. That’s the point.
 
 **Say:**
-- “Saboteurs: Ctrl+C your `up`, then `pnpm snack up --bug` and one name from the list. Or `random` if you want to be surprised too.”
-- “Detectives: go. Start with `doctor`. Then whatever you like.”
-- “Write down your answer before the saboteur reveals it.”
+- “Ctrl+C your `up`, then `pnpm snack up --bug random`. Go. Start with `doctor`. Then whatever you like.”
+- “Write down your answer *before* you Ctrl+C. The last line it prints is the reveal.”
 
-**Do:** Press Start. When the timer ends, saboteurs stop `up` to print the reveal. Swap roles and press Start again.
+**Do:** Press Start. When the timer ends, everyone writes an answer and stops `up` to see the reveal.
 
-**Hints if a pair is stuck:** “Did you run `prove`? Did you *read* everything it printed?” “Did you look at the screenshot?” “What does the console say?”
+**Hints if someone is stuck:** “Did you run `prove`? Did you *read* everything it printed?” “Did you look at the screenshot?” “What does the console say?”
 
 **Next →** “Time. Let’s score it.”
 
@@ -875,7 +873,7 @@ class: indigo
 <div class="split">
 <div><h1>Score the<br>detective.<br><span class="accent">Not the confidence.</span></h1><p class="lede">Who got fooled,<br>and by which bug?</p><div class="game-rules"><p>Bragging rights only.</p></div></div>
 <div class="score-receipt">
-<div class="small-label">Two-round paper scorecard</div>
+<div class="small-label">Paper scorecard</div>
 <div class="score-line"><span>Named the bug, with output</span><strong>+2</strong></div>
 <div class="score-line"><span>Said “it works” and it did</span><strong>+2</strong></div>
 <div class="score-line"><span>Said “it works” and it didn’t</span><strong>−3</strong></div>
@@ -885,7 +883,7 @@ class: indigo
 </div>
 
 <!--
-**ACT 6 · THE GAME · scoring** · 50:00–51:30
+**ACT 6 · THE GAME · scoring** · 47:30–49:00
 
 **Why this slide:** The scoring is the lesson. Calling a broken app done costs the most. Crying wolf costs something too. A guess without evidence earns nothing, even when it’s right.
 
@@ -916,7 +914,7 @@ clicks: 3
 </div>
 
 <!--
-**ACT 6 · THE GAME · the reveal** · 51:30–53:30
+**ACT 6 · THE GAME · the reveal** · 49:00–51:00
 
 **Why this slide:** The lever is never finished. Every bug that slipped through tells you exactly what to add: a check in `prove`, or a gotcha in the map. That’s how the tool gets better, by being attacked.
 
@@ -948,7 +946,7 @@ clicks: 1
 <p class="lede" v-click>Prove it again. Yesterday’s green is not today’s.</p>
 
 <!--
-**ACT 6 · THE GAME · final boss** · 53:30–55:00 · hard stop 55:00
+**ACT 6 · THE GAME · final boss** · 51:00–52:30 · hard stop 55:00 (2:30 slack for earlier overruns)
 
 **Why this slide:** Callback to “doctor first.” Every receipt is stamped with the revision it proved. Change one character and the old PASS stops counting. Agents love to reuse an old green; doctor catches it.
 

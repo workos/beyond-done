@@ -2,29 +2,15 @@
 
 Beyond “Done” · Nick Nisi & Zack Proser · WorkOS
 
-**Pair:** ____________________
+**Name:** ____________________
 
-The saboteur starts `pnpm snack up --bug NAME` while the detective looks away. The detective may use only `pnpm snack` commands (no reading files, no `eval` on the source). Write the answer down **before** the saboteur stops `up` and it prints `{"reveal": "…"}`.
+Solo game. Start `pnpm snack up --bug random`: snack picks a secret bug (or none). Use only `pnpm snack` commands (no reading files, no `eval` on the source). Write your answer down **before** you stop `up` (Ctrl+C) and it prints `{"reveal": "…"}`.
 
 Bugs: `none` · `memory-only` · `wrong-email` · `lost-confirmation` · `overpromise` · `console-error`
 
-## Round 1
+## Your round
 
-Saboteur: __________________    Detective: __________________
-
-Detective's answer (bug, or “it works”): ______________________________
-
-The command and output that prove it: _________________________________
-
-Reveal: __________________    Points: ______
-
-## Round 2
-
-Switch roles.
-
-Saboteur: __________________    Detective: __________________
-
-Detective's answer (bug, or “it works”): ______________________________
+Your answer (bug, or “it works”): ______________________________
 
 The command and output that prove it: _________________________________
 
@@ -40,7 +26,7 @@ Reveal: __________________    Points: ______
 | Blamed a bug that wasn't there | −1 |
 | Right bug, no evidence | 0 |
 
-Each person scores the round they were the detective. The hosts settle disputes. Bragging rights only.
+Score your round. The hosts settle disputes. Bragging rights only.
 
 ## After the game
 

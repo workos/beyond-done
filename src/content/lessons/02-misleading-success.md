@@ -52,7 +52,7 @@ The usual first fix is to write instructions in `AGENTS.md`: “always verify in
 | 3 · Drive the app | Use `snack` to see what the agent will see | `pnpm snack …` |
 | 4 · Build the proof | Write the one function that defines “done” | `lab/exercises/prove.ts` |
 | 5 · Hand it to your agent | Add to the feature map, then let your agent repro, fix and prove | `lab/verify/` |
-| 6 · Break it quietly | Hide bugs from each other; find them with snack | `pnpm snack up --bug …` |
+| 6 · Break it quietly | Find snack's hidden bug with snack alone | `pnpm snack up --bug …` |
 | 7 · Take it home | Plan the lever for your own app | worksheet |
 
 Reference versions live in `lab/solution/`. Add `--solution` to `snack prove` or `lab:exercise` to use the reference without overwriting your work.
