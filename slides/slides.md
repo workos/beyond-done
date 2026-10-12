@@ -236,7 +236,7 @@ class: observe-slide
 ---
 
 <div class="observe-head">
-<div><div class="exercise-number">Build 1 · 10–21 minutes</div><h1>Catch the vanishing act.</h1></div>
+<div><div class="exercise-number">Build 1 · Observe · 10–21 minutes</div><h1>Catch the vanishing act.</h1></div>
 <div><div class="command">pnpm lab:exercise browser</div><p class="aside-note">A missing record is a finding.<br>Don’t turn it into missing evidence.</p></div>
 </div>
 <div class="observe-caption-row"><p class="build-description">Fresh browser → submit → read → reload → read again.</p><p class="code-caption">lab/exercises/observe.ts</p></div>
@@ -332,7 +332,7 @@ Anthropic's planner/generator/evaluator harness is one broader example. Our clas
 ---
 ---
 
-<div class="exercise-number small-label">Build 2 · 23–33 minutes</div>
+<div class="exercise-number small-label">Build 2 · Infer · 23–33 minutes</div>
 
 # Two questions. No vibes check.
 
@@ -412,7 +412,7 @@ Moved from footnote: Synthetic fixtures ignore your question wording entirely.
 ---
 ---
 
-<div class="small-label">Build 3 · 33–43 minutes</div>
+<div class="small-label">Build 3 · Stop · 33–43 minutes</div>
 
 # The bouncer’s rulebook.
 
