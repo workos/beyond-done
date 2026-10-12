@@ -1,6 +1,6 @@
 # Opening: incident → live failure → verification
 
-Keep this sequence inside the existing first five minutes. The excerpt and animation are local, so the opener does not depend on X, a video player, or conference Wi-Fi.
+Keep this sequence inside the first five and a half minutes. The excerpt and animation are local, so the opener does not depend on X, a video player, or conference Wi-Fi.
 
 ## 0:00–0:45 — PocketOS
 
