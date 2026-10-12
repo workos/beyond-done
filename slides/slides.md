@@ -103,6 +103,7 @@ Teaching expectations:
 2:00–4:00. PRIMARY: switch to the already-open actual app from pnpm lab:app --scenario memory-only. Submit ada@example.test, show waitlisted and saved email, then reload and show none and an empty confirmation.
 Return to this slide. The right-hand illustration is a labelled fallback if the app fails to start, not the default proof. Its Reload button shows the same failure.
 Click the slide advance once for the punchline. A passing submit check did not prove persistence.
+Thesis, out loud, in your own words: 'Done' is a claim. Ask for the receipt.
 -->
 
 ---
@@ -636,6 +637,7 @@ Teaching expectations:
 Zack/Nick can act as the label-review jury if a message is ambiguous; don't quietly move the label to fit the model.
 Escalate-everything scores -1 across a bad+good pair, not a perfect defense. Max score is 4.
 Keep the competition about the system, never about embarrassing a participant. No promised physical prize.
+Count hands: how many polite lies got past the door? How many honest rewrites got bounced? Say the room's numbers before the next slide. They're the only real data in the deck.
 -->
 
 ---
@@ -682,6 +684,7 @@ Teaching expectations:
 54:00–55:00. One quick shared fixture: stale evidence is an injected harness fault, not a generated worker config.
 A one-sentence evidence explanation earns the room's final point. Cut this live command if behind, not the transfer exercise.
 Heldout evaluation moves to take-home to protect time for participant-authored attacks.
+Nick: one story of your own here: an agent that handed you a perfect-looking receipt that wasn't real (e.g. touching the proof file instead of running the tests).
 -->
 
 ---
