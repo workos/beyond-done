@@ -1037,9 +1037,9 @@
   "resources": [
     {
       "id": "beyond-done-repo",
-      "title": "nicknisi/beyond-done repository",
+      "title": "workos/beyond-done repository",
       "description": "The workshop workbench: lessons, exercises, reference solutions, and the lab CLI. It is currently private, so ask a host if access fails.",
-      "url": "https://github.com/nicknisi/beyond-done",
+      "url": "https://github.com/workos/beyond-done",
       "sourcePath": "lessons/01-preflight.md",
       "termIds": [
         "verification-loop",

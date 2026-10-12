@@ -4,7 +4,7 @@ This is the build-time coordination reference. The README and lessons are the at
 
 ## Audience, identity, scope
 
-JS/TS developers; no Playwright experience assumed. AIE, Nick Nisi & Zack Proser. WorkOS logo and branding, explicitly requested. Repository [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done), currently private.
+JS/TS developers; no Playwright experience assumed. AIE, Nick Nisi & Zack Proser. WorkOS logo and branding, explicitly requested. Repository [workos/beyond-done](https://github.com/workos/beyond-done), currently private.
 
 ## The task
 

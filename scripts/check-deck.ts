@@ -26,12 +26,17 @@ const browserProofSlide = slideFor('<BrowserProof');
 const historySlide = slideFor('<ReceiptHistory');
 const examplesSlide = slideFor('<VerifierExamples');
 const ctxSlide = slideFor('<CtxWalkthrough');
+const appendixSlides = ['roles', 'example', 'models', 'loop', 'evaluate'].map(topic => ({
+  topic, slide: slideFor(`<DecisionAppendix topic="${topic}"`), clicks: topic === 'loop' ? 3 : 2,
+}));
+assert.ok(appendixSlides[0].slide > slideFor('class="split booth-close"'), 'Optional appendix follows the workshop ending');
 const clickStates = new Map([
   [contrastSlide, [0, 1, 2, 3]],
   [receiptSlide, [0, 1, 2, 3]], [workbenchSlide, [0, 1, 2]],
   [browserProofSlide, [0, 1, 2]], [historySlide, [0, 1, 2, 3]],
   [examplesSlide, [0, 1, 2]],
   [ctxSlide, [0, 1, 2, 3]],
+  ...appendixSlides.map(({ slide, clicks }) => [slide, Array.from({ length: clicks + 1 }, (_, i) => i)] as [number, number[]]),
 ]);
 assert.ok(slideCount, "The presentation must contain slides");
 const site = process.env.DECK_URL ? undefined : await dev({ server: { host: "127.0.0.1", port: 0 } });
@@ -140,6 +145,24 @@ try {
   await expect(hostsTools.locator('.ctx-comparison')).toHaveClass(/focused/);
   await page.keyboard.press('ArrowLeft');
   await expect(hostsTools.locator('.ctx-comparison')).not.toHaveClass(/focused/);
+  for (const { topic, slide, clicks } of appendixSlides) {
+    const root = await go(slide);
+    const appendix = root.locator('.decision-appendix');
+    await expect(appendix).toHaveAttribute('data-topic', topic);
+    for (let click = 1; click <= clicks; click++) {
+      await page.keyboard.press('ArrowRight');
+      await expect(appendix).toHaveAttribute('data-step', String(click));
+    }
+    if (topic === 'example') {
+      await expect(root.locator('.meaning-verdicts')).toContainText('0.01');
+      await expect(root.locator('.meaning-verdicts')).toContainText('0.02');
+      await expect(root.locator('.meaning-action')).toHaveCSS('opacity', '1');
+    }
+    for (let click = clicks - 1; click >= 0; click--) {
+      await page.keyboard.press('ArrowLeft');
+      await expect(appendix).toHaveAttribute('data-step', String(click));
+    }
+  }
   const contrast = await go(contrastSlide, 3);
   await expect(contrast.getByLabel('Illustrative time without verification')).toHaveText('36:00');
   await expect(contrast.getByLabel('Illustrative time with verification')).toHaveText('08:00');
@@ -181,6 +204,8 @@ try {
   await expect(page.locator(`.slidev-page-${missSlide} .miss-list`)).toContainText("It was in the receipt all along.");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
+  const reducedAppendix = await go(appendixSlides[0].slide, 1);
+  assert.equal(await reducedAppendix.locator('.quick .thought-path').evaluate(e => getComputedStyle(e).animationName), 'none');
   for (const [slide, selector, clicks] of [
     [receiptSlide, '.receipt-paper', 3], [workbenchSlide, '.proof-result', 2],
     [browserProofSlide, '.hotspot', 2], [historySlide, '.history-focus', 3],
@@ -203,7 +228,7 @@ try {
   await expect(page.getByText("Data later recovered.", { exact: true })).toBeVisible();
   const repoSlide = await go(slideFor('resource="repo"'));
   const repoLink = repoSlide.getByRole('link', { name: 'Open workshop repository' });
-  await expect(repoLink).toHaveAttribute('href', 'https://github.com/nicknisi/beyond-done');
+  await expect(repoLink).toHaveAttribute('href', 'https://github.com/workos/beyond-done');
   assert.ok(await repoLink.locator('img').evaluate(img => (img as HTMLImageElement).naturalWidth > 0), 'Repo QR loads');
   const round = await go(roundSlide);
   await page.clock.install();

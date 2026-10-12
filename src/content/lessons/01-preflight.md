@@ -14,10 +14,10 @@ Bring the **coding agent you already use**, if you have one: Claude Code, Codex,
 
 ## Install and check
 
-The source is [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). It is currently private: confirm your GitHub account has access before class. A 404 while signed in can mean missing access; ask an instructor before spending time on installation.
+The source is [workos/beyond-done](https://github.com/workos/beyond-done). It is currently private: confirm your GitHub account has access before class. A 404 while signed in can mean missing access; ask an instructor before spending time on installation.
 
 ```bash
-git clone https://github.com/nicknisi/beyond-done.git
+git clone https://github.com/workos/beyond-done.git
 cd beyond-done
 ```
 

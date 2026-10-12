@@ -64,6 +64,6 @@ Test the slide 6 reload illustration, the slide 8 comparison (three advances, re
 
 ## Before public release
 
-The source is hosted privately at [nicknisi/beyond-done](https://github.com/nicknisi/beyond-done). Confirm how attendees will receive access and test that path with an attendee account before class. A working instructor clone doesn't prove attendee access. Don't publish `.env` or `.lab-runs/`. The committed receipts and Jev recording contain only fictional text.
+The source is hosted privately at [workos/beyond-done](https://github.com/workos/beyond-done). Confirm how attendees will receive access and test that path with an attendee account before class. A working instructor clone doesn't prove attendee access. Don't publish `.env` or `.lab-runs/`. The committed receipts and Jev recording contain only fictional text.
 
 The shipped tests don't prove every Windows/Linux setup. `snack up` defaults to a headed browser; on a Linux machine without a display it falls back to headless. Rehearse on the machine and network used on stage, and time a full learner pass.
