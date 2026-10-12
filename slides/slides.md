@@ -1101,3 +1101,7 @@ class: lime
 
 Leave it up while people pack.
 -->
+
+---
+src: ./decision-models.md
+---
