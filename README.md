@@ -23,7 +23,7 @@ Node 24 and pnpm 12.4.1 are pinned in `mise.toml`. Installation happens **before
 
 If using mise in a fresh clone, review `mise.toml`, run `mise trust`, then `mise install`. Activate mise in your shell or use `mise exec -- pnpm …` for the commands below.
 
-This repository is private; your GitHub account must have access.
+This repository is public; you can clone it without being granted access.
 
 ```bash
 gh repo clone workos/beyond-done
@@ -74,7 +74,7 @@ If blocked, pair with someone, or add `--solution` to `snack prove` / `lab:exerc
 
 Lesson 07 includes a first-30-minutes plan, copyable agent prompts, Chrome DevTools references, receipt fields, and a bounded improvement-loop recipe.
 
-The opening repo QR links here. The glossary QR uses `class.config.json`'s hostname. `pnpm slides:qr`, `pnpm slides`, `pnpm dev`, and class builds refresh the local SVGs without an external QR service. The repo is currently private: attendee access must be arranged.
+The opening repo QR links here. The glossary QR uses `class.config.json`'s hostname. `pnpm slides:qr`, `pnpm slides`, `pnpm dev`, and class builds refresh the local SVGs without an external QR service. The repo is public: attendees can clone it without being granted access.
 
 [Opening script and primary sources](docs/opening.md) connect the PocketOS incident, Lauren Tan's pstack verification advice, and the lab. The lab's shape (a project-specific CLI over CDP, a feature map, a proof bar, `doctor` first) is modelled on the verification approach in her [pstack guide](https://x.com/poteto/status/2094457600259842065).
 
@@ -140,7 +140,7 @@ Receipts, screenshots, and event logs live under ignored `.lab-runs/`. Only fict
 - [Implementation contract](docs/lab-contract.md)
 - [Template operations](.agents/skills/workshop/SKILL.md)
 
-`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, after the solo-game and Riker slide changes, then corrected by hand (links to `/materials/` files and Nick's Riker post). Regenerating replaces those corrections. Source is hosted privately at [workos/beyond-done](https://github.com/workos/beyond-done).
+`generated/glossary.json` was regenerated with `pnpm glossary` on 2026-10-12, after the solo-game and Riker slide changes, then corrected by hand (links to `/materials/` files and Nick's Riker post). Regenerating replaces those corrections. Source is public at [workos/beyond-done](https://github.com/workos/beyond-done).
 
 ## Deploying the site
 
