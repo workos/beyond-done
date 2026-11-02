@@ -9,6 +9,6 @@
     "wrangler": "4.132.0"
   },
   "dependencies": {
-    "@workos/alto": "0.14.0"
+    "@workos/alto": "0.21.2"
   }
 }
